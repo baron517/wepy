@@ -1,0 +1,95 @@
+<style>
+  
+.checkbox-group__container .checkbox-item{background:transparent;min-width:25%;padding:0;box-sizing:border-box;padding-left:130rpx;padding-bottom:40rpx;}
+.checkbox-group__container .checkbox-item:nth-child(4n+3){padding-left:120rpx;}
+.checkbox-group__container .checkbox-item:nth-child(4n+2){padding-left:120rpx;}
+.checkbox-group__container .checkbox-item:nth-child(4n+4){padding-left:110rpx;}
+.checkbox-group__container.inline checkbox-group{flex-wrap:wrap;}
+</style>
+<template>
+  <view class="kai-content">
+    
+  <toast />
+
+    <view style="position:relative;z-index:100;">
+
+		<image style="width:100%;"  src="https://tl.pro.youzewang.com/images/erweimaTop.png" mode="widthFix">
+		</image>
+
+     	 <view style="width:100%;position:absolute;top:50%;left:0;">
+
+			<view style="text-align:center;">
+			<image style="width:431rpx;"   src="https://tl.pro.youzewang.com/images/jingcaiText.png" mode="widthFix">
+			</image>
+			</view>
+
+          </view>
+
+	</view>
+
+
+       
+    
+
+    <view style="position:absolute;bottom:0;width:100%;left:0;">
+
+
+
+        <image  style="width:100%;display:block;" src="https://tl.pro.youzewang.com/images/erweimaBottom.png" mode="widthFix">
+        </image>
+    </view>
+
+
+    
+   
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import cell from '@/components/cell/index'
+import panel from '@/components/panel/index'
+import checkbox from '@/components/checkbox/index'
+import Fly from 'flyio/dist/npm/wx'
+import Toast from '@/components/toast/index'
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '提交成功'
+  }
+
+  components = {
+    cell: cell,
+    'checkbox-inline': checkbox,
+    toast: Toast,
+    panel: panel
+  }
+
+  data = {
+    
+  }
+
+  computed = {}
+
+  methods = {
+    
+  }
+
+  events = {
+    'item-tap': (type, url) => {
+      console.log(url)
+      wx.navigateTo({
+        url: url
+      })
+    }
+  }
+
+  onLoad(options) {
+
+   
+  
+
+
+  }
+}
+</script>

@@ -1,0 +1,244 @@
+<style>
+  
+.checkbox-group__container .checkbox-item{background:transparent;min-width:25%;padding:0;box-sizing:border-box;padding-left:130rpx;padding-bottom:40rpx;}
+.checkbox-group__container .checkbox-item:nth-child(4n+3){padding-left:120rpx;}
+.checkbox-group__container .checkbox-item:nth-child(4n+2){padding-left:120rpx;}
+.checkbox-group__container .checkbox-item:nth-child(4n+4){padding-left:110rpx;}
+.checkbox-group__container.inline checkbox-group{flex-wrap:wrap;}
+.hide{display:none;}
+.show{display:block;}
+</style>
+<template>
+  <view class="kai-content">
+    
+  <toast />
+
+    <view style="position:relative;z-index:100;">
+
+      <image style="width:100%;"  src="https://tl.pro.youzewang.com/images/erweimaTop.png" mode="widthFix">
+      </image>
+
+      <view style="width:100%;position:absolute;top:50%;left:0;" class="{{quanxian}}">
+    
+          
+              <view style="position:relative;">
+
+                <image style="width:100%;"  src="https://tl.pro.youzewang.com/images/jingcai_02.png" mode="widthFix">
+                </image>
+
+                  <view style="position:absolute;bottom:0;width:100%;">
+                  <checkbox-inline :config.sync="checkboxConfig2" @bindchange.user="checkboxChange1">
+                  <block slot="check-body">
+                    <repeat for="{{itemsInline}}" index="index" item="item" key="checkbox-{{index}}">
+                      <label class="checkbox-item">
+                        <view class="check-card">{{item.value}}</view>
+                        <checkbox value="{{item.id}}" checked="{{item.checked}}" disabled="{{item.disabled}}"/>
+                      </label>
+                    </repeat>
+                  </block>
+                </checkbox-inline>
+                </view>
+
+            </view>
+         
+
+            <view style="text-align:center;">
+            <image style="width:236rpx;"  @tap="toupiao()" src="https://tl.pro.youzewang.com/images/jingcai_05.png" mode="widthFix">
+            </image>
+            </view>
+
+
+       </view>
+
+       </view>
+
+       <view class="{{quanxianText}}" style="width:100%;text-align:center;font-size:30px;position:absolute;top:50%;">
+         没有权限
+       </view>
+       
+    
+
+    <view style="position:relative;margin-top:-150rpx;">
+
+
+       <view style="text-align:center;position:absolute;left:0;width:100%;top:40%;">
+        <image style="width:width:100%;"  src="https://tl.pro.youzewang.com/images/jingcai_08.png" mode="widthFix">
+        </image>
+      </view>
+
+        <image  style="width:100%;display:block;" src="https://tl.pro.youzewang.com/images/erweimaBottom.png" mode="widthFix">
+        </image>
+    </view>
+
+
+    
+   
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import cell from '@/components/cell/index'
+import panel from '@/components/panel/index'
+import checkbox from '@/components/checkbox/index'
+import Fly from 'flyio/dist/npm/wx'
+import Toast from '@/components/toast/index'
+
+export default class Index extends wepy.page {
+  config = {
+    navigationBarTitleText: '竞猜首页'
+  }
+
+  components = {
+    cell: cell,
+    'checkbox-inline': checkbox,
+    toast: Toast,
+    panel: panel
+  }
+
+  data = {
+    checkedList:[],
+    quanxian:"hide",
+    quanxianText:"hide",
+    token:'',
+    gonghao:'',
+    checkboxConfig2: {
+			position: 'left',
+			circle: true,
+			inline: true
+		},
+     itemsInline: [{id: '1', value: ''}, {id: '2', value: ''},{id: '3', value: ''},{id: '4', value: ''}
+     ,{id: '5', value: ''},{id: '6', value: ''},{id: '7', value: ''},{id: '8', value: ''}]
+  }
+
+  computed = {}
+
+  methods = {
+   
+    toupiao() {
+
+       console.log(this.data.gonghao);
+
+       var options = {
+            content: "请选择你要支持的四个队伍",
+            position: 'middle',
+            duration: 2000,
+            type: '',
+            afterClose: 'afterClose'
+          }
+          var that=this;
+
+       if(this.data.checkedList.length!=4)
+       {
+          
+          this.$invoke('toast', 'show', options)
+       }
+       else{
+           console.log(this.data.checkedList);
+           var s_rs=this.data.checkedList.join(",");
+           console.log(s_rs);
+            var fly=new Fly(); 
+          fly.get('https://tl.pro.youzewang.com/Api/CommonApi/jingcai?gonghao='+this.data.gonghao+'&s_rs='+s_rs)
+          .then(function (response) {
+              console.log(response.data);
+              if(response.data.code==1000)
+              {
+                  options.content=response.data.msg;;
+                  that.$invoke('toast', 'show', options);
+                  setTimeout(function()
+                  {
+                      wx.navigateTo({
+                        url: "result"
+                      })
+                  },1000);
+              }
+              else
+              {
+                  options.content=response.data.msg;;
+                  that.$invoke('toast', 'show', options);
+              }
+              
+
+          }).catch(function (error) {
+            console.log("不可用");
+          });
+
+       }
+
+
+      
+    },
+    checkboxChange1 (res) {
+			console.log(res);
+      this.data.checkedList=res;
+		}
+  }
+
+  events = {
+    'item-tap': (type, url) => {
+      console.log(url)
+      wx.navigateTo({
+        url: url
+      })
+    }
+  }
+
+  onLoad(options) {
+
+
+    if(options.token)
+    {
+      this.data.token=options.token;
+    }
+
+
+   
+    if(options.gonghao)
+    {
+      this.data.gonghao=options.gonghao;
+    }
+
+    var that=this;
+    var fly=new Fly(); 
+
+    fly.get('https://tl.pro.youzewang.com/Api/CommonApi/isUse?token='+this.data.token+'&gonghao='+this.data.gonghao)
+    .then(function (response) {
+      console.log(response.data);
+      
+      if(response.data.data==1)
+      {
+        console.log("可用");
+        that.quanxianText="hide";
+        that.quanxian="show";
+        
+      }
+      else{
+        console.log("不可用");
+        that.quanxianText="show";
+        that.quanxian="hide";
+        
+        
+      }
+
+
+
+      that.$apply();
+      
+
+      
+
+    })
+    .catch(function (error) {
+      console.log("不可用");
+       that.data.quanxianText="show";
+        that.data.quanxian="hide";
+      
+      
+    });
+
+   
+
+
+  }
+}
+</script>
