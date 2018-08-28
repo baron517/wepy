@@ -18,9 +18,33 @@
       <image style="width:100%;"  src="https://tl.pro.youzewang.com/images/erweimaTop.png" mode="widthFix">
       </image>
 
-      <view style="width:100%;position:absolute;top:50%;left:0;" class="{{quanxian}}">
+      <view style="width:100%;position:absolute;top:50%;left:0;">
     
+
+       <view class="{{resultShowClass}}" style="text-align:center;padding-top:30rpx;"> 
+        
+       
+       <view >
+
+        <repeat for="{{xuanzhong}}" index="index" item="item" >
+                     
           
+            <image style="width:124rpx;margin:0 25rpx;"  src="https://tl.pro.youzewang.com/images/{{item}}.png" mode="widthFix">
+            </image>
+
+            
+
+        </repeat>
+       
+       </view>
+
+       <image style="width:431rpx;margin:0 auto;"  src="https://tl.pro.youzewang.com/images/jingcaiText.png" mode="widthFix">
+			 </image>
+       </view>
+          
+
+             <view  class="{{quanxian}}">
+
               <view style="position:relative;">
 
                 <image style="width:100%;"  src="https://tl.pro.youzewang.com/images/jingcai_02.png" mode="widthFix">
@@ -40,11 +64,15 @@
                 </view>
 
             </view>
+
+            
          
 
             <view style="text-align:center;">
             <image style="width:236rpx;"  @tap="toupiao()" src="https://tl.pro.youzewang.com/images/jingcai_05.png" mode="widthFix">
             </image>
+            </view>
+
             </view>
 
 
@@ -58,12 +86,15 @@
        
     
 
-    <view style="position:relative;margin-top:-150rpx;">
+    <view style="position:relative;margin-top:-200rpx;">
 
 
-       <view style="text-align:center;position:absolute;left:0;width:100%;top:40%;" class="{{resultClass}}">
-        <image style="width:width:100%;"  src="https://tl.pro.youzewang.com/images/jingcai_08.png" mode="widthFix">
+       <view style="text-align:center;position:absolute;left:0;width:100%;top:40%;" >
+        <image style="width:100%;"  class="{{resultHideClass}}" src="https://tl.pro.youzewang.com/images/jingcai_08.png" mode="widthFix">
         </image>
+
+      
+
       </view>
 
         <image  style="width:100%;display:block;" src="https://tl.pro.youzewang.com/images/erweimaBottom.png" mode="widthFix">
@@ -100,7 +131,8 @@ export default class Index extends wepy.page {
     checkedList:[],
     quanxian:"hide",
     quanxianText:"hide",
-    resultClass:"show",
+    resultHideClass:"hide",
+    resultShowClass:"hide",
     token:'',
     gonghao:'',
     checkboxConfig2: {
@@ -108,6 +140,7 @@ export default class Index extends wepy.page {
 			circle: true,
 			inline: true
 		},
+    xuanzhong:[],
      itemsInline: [{id: '1', value: ''}, {id: '2', value: ''},{id: '3', value: ''},{id: '4', value: ''}
      ,{id: '5', value: ''},{id: '6', value: ''},{id: '7', value: ''},{id: '', value: ''}]
   }
@@ -146,6 +179,10 @@ export default class Index extends wepy.page {
               {
                   options.content=response.data.msg;;
                   that.$invoke('toast', 'show', options);
+                  that.xuanzhong=that.data.checkedList;
+                  that.quanxian="hide";
+                  that.resultShowClass="show";
+                  that.resultHideClass="hide";
                   
               }
               else
@@ -153,6 +190,8 @@ export default class Index extends wepy.page {
                   options.content=response.data.msg;;
                   that.$invoke('toast', 'show', options);
               }
+
+              that.$apply();
               
 
           }).catch(function (error) {
@@ -204,15 +243,19 @@ export default class Index extends wepy.page {
       if(response.data.data==1)
       {
         console.log("可用");
-        that.quanxianText="hide";
         that.quanxian="show";
-        
+        that.resultHideClass="show";
+      }
+      else if(response.data.data==2)
+      {
+        that.resultShowClass="show";
+        that.xuanzhong=response.data.detail.s_rs.split(",");
+        console.log(that);
+        console.log("已经参加过");
       }
       else{
         console.log("不可用");
         that.quanxianText="show";
-        that.quanxian="hide";
-        
         
       }
 
