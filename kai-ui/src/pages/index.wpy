@@ -61,7 +61,7 @@
     <view style="position:relative;margin-top:-150rpx;">
 
 
-       <view style="text-align:center;position:absolute;left:0;width:100%;top:40%;">
+       <view style="text-align:center;position:absolute;left:0;width:100%;top:40%;" class="{{resultClass}}">
         <image style="width:width:100%;"  src="https://tl.pro.youzewang.com/images/jingcai_08.png" mode="widthFix">
         </image>
       </view>
@@ -100,6 +100,7 @@ export default class Index extends wepy.page {
     checkedList:[],
     quanxian:"hide",
     quanxianText:"hide",
+    resultClass:"show",
     token:'',
     gonghao:'',
     checkboxConfig2: {
@@ -108,7 +109,7 @@ export default class Index extends wepy.page {
 			inline: true
 		},
      itemsInline: [{id: '1', value: ''}, {id: '2', value: ''},{id: '3', value: ''},{id: '4', value: ''}
-     ,{id: '5', value: ''},{id: '6', value: ''},{id: '7', value: ''},{id: '8', value: ''}]
+     ,{id: '5', value: ''},{id: '6', value: ''},{id: '7', value: ''},{id: '', value: ''}]
   }
 
   computed = {}
@@ -145,12 +146,7 @@ export default class Index extends wepy.page {
               {
                   options.content=response.data.msg;;
                   that.$invoke('toast', 'show', options);
-                  setTimeout(function()
-                  {
-                      wx.navigateTo({
-                        url: "result"
-                      })
-                  },1000);
+                  
               }
               else
               {
