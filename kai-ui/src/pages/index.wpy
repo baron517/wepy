@@ -90,7 +90,7 @@
 
 
        <view style="text-align:center;position:absolute;left:0;width:100%;top:40%;" >
-        <image style="width:100%;"  class="{{resultHideClass}}" src="https://tl.pro.youzewang.com/images/jingcai_08.png" mode="widthFix">
+        <image style="width:100%;"  class="{{resultHideClass}}" src="https://tl.pro.youzewang.com/images/jingcai_08.png?v=1" mode="widthFix">
         </image>
 
       
