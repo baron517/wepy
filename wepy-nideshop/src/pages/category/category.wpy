@@ -119,6 +119,7 @@
 </style>
 <template>
   <view class="container">
+
     <view class="cate-nav">
       <scroll-view scroll-x="true" class="cate-nav-body" style="width: 750rpx;" scroll-left="{{scrollLeft}}">
         <view  wx:for="{{navList}}" wx:key="item.id" class="item {{ id == item.id ? 'active' : ''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">
@@ -126,6 +127,8 @@
         </view>
       </scroll-view>
     </view>
+
+    
     <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height:{{scrollHeight}};">
 
       <view class="cate-item">

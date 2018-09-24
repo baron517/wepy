@@ -1,7 +1,8 @@
-const ApiRootUrl = 'http://106.14.44.160:8360/api/'
+const ApiRootUrl = 'http://106.14.44.160:8360/api/';
+const ServerUrl='https://yfmy.pro.youzewang.com';
 
 module.exports = {
-  IndexUrl: ApiRootUrl + 'index/index', // 首页数据接口
+  IndexUrl: ServerUrl+'/api/index/index.json', // 首页数据接口
   CatalogList: ApiRootUrl + 'catalog/index',  // 分类目录全部分类数据接口
   CatalogCurrent: ApiRootUrl + 'catalog/current',  // 分类目录当前分类数据接口
 
@@ -36,7 +37,9 @@ module.exports = {
   CommentCount: ApiRootUrl + 'comment/count',  // 评论总数
   CommentPost: ApiRootUrl + 'comment/post',   // 发表评论
 
-  TopicList: ApiRootUrl + 'topic/list',  // 专题列表
+  //TopicList: ApiRootUrl + 'topic/list',  // 专题列表
+  TopicList: ServerUrl+'/api/topic/list.json',  // 专题列表
+
   TopicDetail: ApiRootUrl + 'topic/detail',  // 专题详情
   TopicRelated: ApiRootUrl + 'topic/related',  // 相关专题
 

@@ -92,46 +92,52 @@
     margin-bottom: 16rpx;
   }
 
-  .user-menu .icon.order{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -437.5rpx no-repeat;
+  .user-menu .icon.dingdan{
+    background: url(https://yfmy.pro.youzewang.com/images/dingdan.png);
     background-size: 52.803rpx;
   }
 
-  .user-menu .icon.coupon{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -62.4997rpx no-repeat;
+  .user-menu .icon.yuyue{
+    background: url(https://yfmy.pro.youzewang.com/images/yuyue.png);
     background-size: 52.803rpx;
   }
 
-  .user-menu .icon.gift{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -187.5rpx no-repeat;
+  .user-menu .icon.pingjia{
+    background: url(https://yfmy.pro.youzewang.com/images/pingjia.png);
     background-size: 52.803rpx;
   }
 
-  .user-menu .icon.address{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 0 no-repeat;
+  .user-menu .icon.zhifu{
+    background: url(https://yfmy.pro.youzewang.com/images/zhifu.png);
     background-size: 52.803rpx;
   }
 
-  .user-menu .icon.security{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -500rpx no-repeat;
+  .user-menu .icon.daishiyong{
+    background: url(https://yfmy.pro.youzewang.com/images/daishiyong.png);
+    background-size: 52.803rpx;
+  }
+
+    .user-menu .icon.daipingjia{
+    background: url(https://yfmy.pro.youzewang.com/images/daipingjia.png);
     background-size: 52.803rpx;
   }
 
   .user-menu .icon.kefu{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -312.5rpx no-repeat;
+    background: url(https://yfmy.pro.youzewang.com/images/kefu.png);
     background-size: 52.803rpx;
   }
 
-  .user-menu .icon.help{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -250rpx no-repeat;
+  .user-menu .icon.huiyuanka{
+    background: url(https://yfmy.pro.youzewang.com/images/huiyuanka.png);
     background-size: 52.803rpx;
   }
 
-  .user-menu .icon.feedback{
-    background: url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/sprites/ucenter-sdf6a55ee56-f2c2b9c2f0.png) 0 -125rpx no-repeat;
+  .user-menu .icon.youhuiquan{
+    background: url(https://yfmy.pro.youzewang.com/images/youhuiquan.png);
     background-size: 52.803rpx;
   }
 
+  
 
   .user-menu .txt{
     display: block;
@@ -165,70 +171,62 @@
     <view class="user-menu">
       <view class="item">
         <navigator url="/pages/ucenter/order" class="a">
-          <text class="icon order"></text>
+          <text class="icon dingdan"></text>
           <text class="txt">我的订单</text>
         </navigator>
       </view>
       <view class="item">
         <navigator url="/pages/ucenter/coupon" class="a">
-          <text class="icon coupon"></text>
-          <text class="txt">优惠券</text>
+          <text class="icon yuyue"></text>
+          <text class="txt">我的预约</text>
         </navigator>
       </view>
       <view class="item no-border">
-        <navigator url="url" class="a">
-          <text class="icon gift"></text>
-          <text class="txt">礼品卡</text>
+
+        <navigator url="/pages/ucenter/coupon" class="a">
+          <text class="icon pingjia"></text>
+          <text class="txt">我的评价</text>
         </navigator>
+
       </view>
       <view class="item">
         <navigator url="/pages/ucenter/collect" class="a">
-          <text class="icon address"></text>
-          <text class="txt">我的收藏</text>
+          <text class="icon zhifu"></text>
+          <text class="txt">待支付</text>
         </navigator>
       </view>
       <view class="item">
         <navigator url="/pages/ucenter/footprint" class="a">
-          <text class="icon security"></text>
-          <text class="txt">我的足迹</text>
+          <text class="icon daishiyong"></text>
+          <text class="txt">待使用</text>
         </navigator>
       </view>
       <view class="item no-border">
         <navigator url="url" class="a">
-          <text class="icon kefu"></text>
-          <text class="txt">会员福利</text>
+          <text class="icon daipingjia"></text>
+          <text class="txt">待评价</text>
         </navigator>
       </view>
-      <view class="item">
+      <view class="item item-bottom">
         <navigator url="/pages/ucenter/address" class="a">
-          <text class="icon address"></text>
-          <text class="txt">地址管理</text>
+          <text class="icon huiyuanka"></text>
+          <text class="txt">会员卡</text>
         </navigator>
       </view>
-      <view class="item">
-        <navigator url="url" class="a">
-          <text class="icon security"></text>
-          <text class="txt">账号安全</text>
+      <view class="item item-bottom">
+        <navigator url="coupon" class="a">
+          <text class="icon youhuiquan"></text>
+          <text class="txt">优惠券</text>
         </navigator>
       </view>
-      <view class="item no-border">
-        <navigator url="url" class="a">
+      <view class="item no-border item-bottom">
+        <view  class="a" @tap="tel()">
           <text class="icon kefu"></text>
           <text class="txt">联系客服</text>
-        </navigator>
+        </view>
       </view>
-      <view class="item item-bottom">
-        <navigator url="url" class="a">
-          <text class="icon help"></text>
-          <text class="txt">帮助中心</text>
-        </navigator>
-      </view>
-      <view class="item item-bottom">
-        <navigator url="/pages/ucenter/feedback" class="a">
-          <text class="icon feedback"></text>
-          <text class="txt">意见反馈</text>
-        </navigator>
-      </view>
+      
+     
     </view>
 
     <view class="logout" bindtap="exitLogin" wx:if="{{token}}">退出登录</view>
@@ -279,6 +277,13 @@
           })
         }
       },
+
+      async tel () {
+        wx.makePhoneCall({
+          phoneNumber: "8888888",
+        })
+      },
+
       async exitLogin () {
         try {
           let res = await wepy.showModal({

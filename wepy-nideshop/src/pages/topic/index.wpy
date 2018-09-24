@@ -14,7 +14,7 @@
 
   .topic-list .item{
     width: 100%;
-    height: 625rpx;
+    height: 555rpx;
     overflow: hidden;
     background: #fff;
     margin-bottom: 20rpx;
@@ -51,11 +51,13 @@
     height: 24rpx;
     line-height: 24rpx;
     overflow: hidden;
-    color: #999;
     font-size: 24rpx;
     margin-top: 16rpx;
     margin-bottom: 30rpx;
   }
+
+  .topic-list .desc .text{margin:0 20rpx;color: #999;}
+
 
   .topic-list .price{
     display: block;
@@ -101,8 +103,8 @@
         <image class="img" src="{{item.scene_pic_url}}"></image>
         <view class="info">
           <text class="title">{{item.title}}</text>
-          <text class="desc">{{item.subtitle}}</text>
-          <text class="price">{{item.price_info}}元起</text>
+          
+          <view class="desc"><text class="text">2018-09-03</text>  <text class="text">点击看详情>></text></view>
         </view>
       </navigator>
       <view class="page" wx:if="{{showPage}}">

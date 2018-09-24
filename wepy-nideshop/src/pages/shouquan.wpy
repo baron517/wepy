@@ -1,0 +1,45 @@
+<style lang="less">
+
+</style>
+<template>
+
+<view style="padding:80rpx 30rpx;text-align:center;">
+
+<image style="width:200rpx;border-raduis:50%;"   src="https://yfmy.pro.youzewang.com/images/logo.png" mode="widthFix">
+</image>
+
+  <view style="padding:10rpx 0 20rpx 0;color:#999;">获取你的昵称，头像等</view>
+  <button open-type="getUserInfo" type="primary" lang="zh_CN" bindgetuserinfo="onGotUserInfo">微信登录</button>
+
+</view>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Example extends wepy.page {
+    config = {
+      navigationBarTitleText: '用户授权'
+    }
+
+     methods = {
+        onGotUserInfo: function (e) {
+          console.log(e.detail.errMsg)
+          console.log(e.detail.userInfo)
+          console.log(e.detail.rawData)
+
+          this.$parent.globalData.userInfo = res.data.userInfo
+          this.$parent.globalData.token = res.data.token
+
+
+        }
+     }
+
+    onLoad() {
+
+
+
+    }
+  }
+</script>
