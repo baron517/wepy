@@ -1,0 +1,186 @@
+<style lang="less">
+  page ,.container{
+    width: 750rpx;
+    height: 100%;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+  .topic-list{
+    width: 750rpx;
+    height: 100%;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+
+  .topic-list .item{
+    width: 100%;
+    height: 555rpx;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 20rpx;
+  }
+
+  .topic-list .img{
+    margin-top:26rpx;
+    margin-right:18rpx;
+    margin-left:30rpx;
+    float:left;
+    width:160rpx;
+    height:160rpx;
+    border-radius:6rpx;
+    border:3px solid #fff;
+
+  }
+
+  .topic-list .info{
+    width: 100%;
+    height: 300rpx;
+    overflow: hidden;
+    background: #d9282e;
+    box-sizing: border-box;
+    color:#fff;
+    border-radius: 20rpx;
+  }
+.topic-list .info .info-middle{height:100rpx;}
+  .topic-list .info .info-right{float:left;width:416rpx;color:#fff;}
+
+  .topic-list .info .top-text{border-bottom:1px dashed #fff;color:#fff;line-height:50rpx;padding-left:20rpx;}
+  .topic-list .info text{color:#fff;}
+  .topic-list button{border:1px solid #fff;background: transparent;color:#fff;display: inline-block;line-height:50rpx;font-size:24rpx;}
+
+
+  .topic-list .title{
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 33rpx;
+    line-height: 35rpx;
+    color: #fff;
+    overflow: hidden;
+    font-size: 35rpx;
+    margin-top: 30rpx;
+  }
+
+  .topic-list .desc{
+    display: block;
+    text-align: center;
+    position: relative;
+    width: auto;
+    height: 24rpx;
+    line-height: 24rpx;
+    overflow: hidden;
+    font-size: 24rpx;
+    margin-top: 16rpx;
+    margin-bottom: 30rpx;
+  }
+
+  .topic-list .desc .text{margin:0 20rpx;color: #999;}
+
+
+  .topic-list .price{
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 27rpx;
+    line-height: 27rpx;
+    overflow: hidden;
+    color: #b4282d;
+    font-size: 27rpx;
+  }
+
+
+ 
+
+  .info-col{padding:0 50rpx;}
+
+</style>
+<template>
+  <view class="container">
+    <scroll-view class="topic-list" scroll-y="true" scroll-top="{{scrollTop}}">
+
+      <view class="info-col">
+      <navigator class="item">
+        <view class="info">
+          <view class="top-text">会员卡</view>
+          <view class="info-middle">
+
+            <image class="img" src="https://yfmy.pro.youzewang.com/images/pro1.png" background-size="cover"></image>
+
+            <view class="info-right">
+            <view class="title"><text class="left-col">足疗年卡</text><text class="right-col">60分钟</text></view>
+            <view class="desc"><text class="text">2018-09-03到2018-09-20</text>  <text class="text">立即购买</text></view>
+            <view class="desc"><text class="text">2018-09-03到2018-09-20</text>  <text class="text">2018-09-03到2018-09-20</text></view>
+            </view>
+
+          </view>
+
+          <view class="text"><text>杭州胤妃美业</text>  <button>立即购买</button></view>
+
+
+        </view>
+      </navigator>
+      </view>
+
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import util from '../../utils/util.js'
+  import api from '../../config/api.js'
+
+  export default class Index extends wepy.page {
+    data = {
+      topicList: [],
+      page: 1,
+      size: 10,
+      count: 0,
+      scrollTop: 0,
+      showPage: false
+    }
+    async onLoad() {
+      // 页面初始化 options为页面跳转所带来的参数
+      await this.getTopic()
+    }
+    async getTopic() {
+      this.scrollTop = 0
+      this.showPage = false
+      this.topicList = []
+      this.$apply()
+      // 页面渲染完成
+      wepy.showToast({
+        title: '加载中...',
+        icon: 'loading',
+        duration: 2000
+      })
+      let res = await util.request(api.TopicList, { page: this.page, size: this.size })
+      if (res.errno === 0) {
+        this.scrollTop = 0
+        this.topicList = res.data.data
+        this.showPage = true
+        this.count = res.data.count
+        this.$apply()
+      }
+      wepy.hideToast()
+    }
+    methods = {
+      nextPage: async function (event) {
+        if (this.page + 1 > this.count / this.size) {
+          return true
+        }
+        this.page = parseInt(this.page) + 1
+        this.$apply()
+        await this.getTopic()
+      },
+      prevPage: async function (event) {
+        if (this.page <= 1) {
+          return false
+        }
+        this.page = parseInt(this.page) - 1
+        this.$apply()
+        await this.getTopic()
+      }
+    }
+  }
+</script>

@@ -35,6 +35,8 @@ export default class extends wepy.app {
       'pages/category/catalog',
       'pages/brand/index',
       'pages/brand/detail',
+      'pages/chongzhi/index',
+      'pages/chongzhi/detail',
       'pages/goods/index',
       'pages/goods/hot',
       'pages/goods/new',
@@ -89,7 +91,7 @@ export default class extends wepy.app {
           'text': '预约'
         },
         {
-          'pagePath': 'pages/topic/index',
+          'pagePath': 'pages/chongzhi/index',
           'iconPath': 'static/images/money.png',
           'selectedIconPath': 'static/images/money_active.png',
           'text': '充值'

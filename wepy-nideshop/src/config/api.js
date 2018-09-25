@@ -10,7 +10,7 @@ module.exports = {
 
   GoodsCount: ApiRootUrl + 'goods/count',  // 统计商品总数
   GoodsList: ApiRootUrl + 'goods/list',  // 获得商品列表
-  GoodsCategory: ApiRootUrl + 'goods/category',  // 获得分类数据
+  GoodsCategory: ServerUrl + '/api/fenlei.json',  // 获得分类数据
   GoodsDetail: ApiRootUrl + 'goods/detail',  // 获得商品的详情
   GoodsNew: ApiRootUrl + 'goods/new',  // 新品
   GoodsHot: ApiRootUrl + 'goods/hot',  // 热门

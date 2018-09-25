@@ -11,7 +11,8 @@
 
   .m-menu {
     display: flex;
-    height: 291rpx;
+    height: 350rpx;
+    padding:16rpx 0 30rpx 0;
     width: 750rpx;
     flex-flow: row wrap;
     align-items: center;
@@ -26,11 +27,12 @@
     min-width:25%;
   }
 
+  .m-menu .item .icon-col{width:80rpx;height:80rpx;background: #ff4545;margin:0 auto 16rpx auto;border-radius: 50%;text-align: center;}
+
   .m-menu image {
-    display: block;
-    width: 58rpx;
-    height: 58rpx;
-    margin: 0 auto;
+    width: 48rpx;
+    height: 48rpx;
+    margin: 12rpx auto;
     margin-bottom: 12rpx;
   }
 
@@ -194,11 +196,12 @@
   }
 
   .a-popular .b .img {
-    margin-top: 12rpx;
-    margin-right: 12rpx;
+    margin-top: 26rpx;
+    margin-right: 18rpx;
     float: left;
-    width: 240rpx;
-    height: 240rpx;
+    width: 200rpx;
+    height: 200rpx;
+    border-radius: 6rpx;
   }
 
   .a-popular .b .right {
@@ -238,10 +241,14 @@
   .a-popular .b .price {
     width: 456rpx;
     display: block;
-    color: #b4282d;
     line-height: 50rpx;
+    height:60rpx;
     font-size: 33rpx;
   }
+
+  .a-popular .b .price .left-col{color: #b4282d;font-size:40rpx;float:left;}
+  .a-popular .b .price .right-col{float:right;color:#666;}
+  .a-popular .b .yishou{color:#666;}
 
   .a-topic .b {
     height: 533rpx;
@@ -516,10 +523,47 @@
       </swiper-item>
     </swiper>
     <view class="m-menu">
-      <navigator  class="item" url="{{item.url}}" wx:for="{{channel}}" wx:key="{{item.id}}">
-        <image src="{{item.icon_url}}" background-size="cover"></image>
-        <text>{{item.name}}</text>
+      <navigator  class="item">
+        <view class="icon-col"><image src="https://yfmy.pro.youzewang.com/images/home/yuyue.png" background-size="cover"></image></view>
+        <text>技师预约</text>
       </navigator>
+
+        <navigator  class="item">
+        <view class="icon-col" style="background:#ff6c44;"><image src="https://yfmy.pro.youzewang.com/images/home/youhuiquan.png" background-size="cover"></image></view>
+        <text>优惠券</text>
+      </navigator>
+
+        <navigator  class="item">
+        <view class="icon-col" style="background:#ff962a;"><image src="https://yfmy.pro.youzewang.com/images/home/chongzhi.png" background-size="cover"></image></view>
+        <text>会员充值</text>
+      </navigator>
+
+        <navigator  class="item">
+        <view class="icon-col" style="background:#947fff;"><image src="https://yfmy.pro.youzewang.com/images/home/maidan.png" background-size="cover"></image></view>
+        <text>店内买单</text>
+      </navigator>
+
+      <navigator  class="item">
+        <view class="icon-col" style="background:#fe5e5e;"><image src="https://yfmy.pro.youzewang.com/images/home/huodong.png" background-size="cover"></image></view>
+        <text>活动</text>
+      </navigator>
+
+        <navigator  class="item">
+        <view class="icon-col" style="background:#3298e6;"><image src="https://yfmy.pro.youzewang.com/images/home/wodeyuyue.png" background-size="cover"></image></view>
+        <text>我的预约</text>
+      </navigator>
+
+        <navigator  class="item">
+        <view class="icon-col" style="background:#fe6194;"><image src="https://yfmy.pro.youzewang.com/images/home/wo.png" background-size="cover"></image></view>
+        <text>会员中心</text>
+      </navigator>
+
+        <navigator  class="item">
+        <view class="icon-col" style="background:#50c4d6;"><image src="https://yfmy.pro.youzewang.com/images/home/mall.png" background-size="cover"></image></view>
+        <text>分销商城</text>
+      </navigator>
+
+
     </view>
     <view class="a-section a-brand">
      
@@ -582,22 +626,20 @@
     <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" >
         
          <view class="a-section a-popular" wx:if="{{hotGoods.length > 0}}">
-            <view class="h">
-              <view>
-                <navigator url="../hotGoods/hotGoods">
-                  <text class="txt">人气推荐</text>
-                </navigator>
-              </view>
-            </view>
 
             <view class="b">
               <view class="item" wx:for="{{goodsList}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex">
                 <navigator url="/pages/goods/index?id={{iitem.id}}">
-                  <image class="img" src="{{iitem.list_pic_url}}" background-size="cover"></image>
+                  <image class="img" src="https://yfmy.pro.youzewang.com/images/pro1.png" background-size="cover"></image>
                   <view class="right">
                     <view class="text">
                       <text class="name">{{iitem.name}}</text>
-                      <text class="price">￥{{item.retail_price}}</text>
+                      <view class="price">
+                        <text class="left-col">￥{{iitem.retail_price}}</text>
+                        <text class="right-col">60分钟</text>
+                      </view>
+                       <text class="yishou">已售320件</text>
+
                     </view>
                   </view>
                 </navigator>
