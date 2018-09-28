@@ -9,17 +9,20 @@
 .show{display:block;}
 </style>
 <template>
-  <view class="kai-content">
+  <view class="kai-content" style="overflow:auto;">
     
   <toast />
 
     <view style="position:relative;z-index:100;">
 
-      <image style="width:100%;"  src="https://tl.pro.youzewang.com/images/erweimaTop.png" mode="widthFix">
-      </image>
+      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_01.jpg" mode="widthFix">
+        </image>
 
-      <view style="width:100%;position:absolute;top:50%;left:0;">
+      <view style="width:100%;position:relative;">
     
+        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_02.jpg" mode="widthFix">
+        </image>
+
 
        <view class="{{resultShowClass}}" style="text-align:center;padding-top:30rpx;"> 
         
@@ -38,8 +41,7 @@
        
        </view>
 
-       <image style="width:431rpx;margin:0 auto;"  src="https://tl.pro.youzewang.com/images/jingcaiText.png" mode="widthFix">
-			 </image>
+      
        </view>
           
 
@@ -86,19 +88,41 @@
        
     
 
-    <view style="position:relative;margin-top:-200rpx;">
+    <view style="position:relative;">
 
 
-       <view style="text-align:center;position:absolute;left:0;width:100%;top:40%;" >
-        <image style="width:100%;"  class="{{resultHideClass}}" src="https://tl.pro.youzewang.com/images/jingcai_08.png?v=2" mode="widthFix">
+       <view style="text-align:center;" >
+
+        <view class="{{resultHideClass}}">
+       
+        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_03.jpg" mode="widthFix">
+        </image>
+        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_04.jpg" mode="widthFix">
+        </image>
+        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_05.jpg" mode="widthFix">
+        </image>
+        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_06.jpg" mode="widthFix">
         </image>
 
+          <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_07.jpg" mode="widthFix">
+        </image>
+
+          <view style="position:relative;">
+          <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_08.jpg" mode="widthFix">
+          </image>
+
+          <image style="width:241rpx;display:block;margin:0 auto;position:absolute;top:10%;left:50%;margin-left:-120rpx;"   src="https://tl.pro.youzewang.com/images/update/btn.png" mode="widthFix">
+          </image>
+
+          </view>
+
+
+        </view>
       
 
       </view>
 
-        <image  style="width:100%;display:block;" src="https://tl.pro.youzewang.com/images/erweimaBottom.png" mode="widthFix">
-        </image>
+       
     </view>
 
 
@@ -240,6 +264,8 @@ export default class Index extends wepy.page {
     .then(function (response) {
       console.log(response.data);
       
+      response.data.data=1;
+
       if(response.data.data==1)
       {
         console.log("可用");
