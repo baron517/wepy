@@ -1,10 +1,10 @@
 <style>
   
-.checkbox-group__container .checkbox-item{background:transparent;min-width:25%;padding:0;box-sizing:border-box;padding-left:130rpx;padding-bottom:40rpx;}
-.checkbox-group__container .checkbox-item:nth-child(4n+3){padding-left:120rpx;}
-.checkbox-group__container .checkbox-item:nth-child(4n+2){padding-left:120rpx;}
-.checkbox-group__container .checkbox-item:nth-child(4n+4){padding-left:110rpx;}
-.checkbox-group__container.inline checkbox-group{flex-wrap:wrap;}
+.radio-group__container .radio-item{background:transparent;min-width:25%;padding:0;box-sizing:border-box;padding-left:130rpx;padding-bottom:40rpx;}
+.radio-group__container .radio-item:nth-child(4n+3){padding-left:120rpx;}
+.radio-group__container .radio-item:nth-child(4n+2){padding-left:120rpx;}
+.radio-group__container .radio-item:nth-child(4n+4){padding-left:110rpx;}
+.radio-group__container.inline radio-group{flex-wrap:wrap;}
 .hide{display:none;}
 .show{display:block;}
 </style>
@@ -13,121 +13,128 @@
     
   <toast />
 
-    <view style="position:relative;z-index:100;">
 
-      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_01.jpg" mode="widthFix">
-        </image>
+    <view class="{{resultHideClass}}">
+    <view style="position:relative;z-index:100;" >
+
+      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_01.jpg" mode="widthFix"></image>
 
       <view style="width:100%;position:relative;">
     
-        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_02.jpg" mode="widthFix">
-        </image>
+        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_02.jpg" mode="widthFix"></image>
 
 
-       <view class="{{resultShowClass}}" style="text-align:center;padding-top:30rpx;"> 
-        
-       
-       <view >
+             <view  class="{{quanxian}}" style="position:absolute;top:5%;left:0;width:100%;">
+
+                      <view style="position:relative;">
+                            <image style="width:100%;"  src="https://tl.pro.youzewang.com/images/update/jingcai_02.png" mode="widthFix">
+                            </image>
+                            <view style="position:absolute;bottom:4rpx;width:100%;">
+                              <radio-line :config.sync="config2" @bindchange.user="radioChange">
+                              <block slot="radio-body">
+                                <repeat for="{{itemsInline}}" index="index" item="item" key="radio-{{index}}">
+                                  <label class="radio-item">
+                                    <view class="radio-card">{{item.value}}</view>
+                                    <radio value="{{item.id}}" checked="{{item.checked}}" disabled="{{item.disabled}}"/>
+                                  </label>
+                                </repeat>
+                              </block>
+                            </radio-line>
+                            </view>
+                      </view>
+
+                      <view style="text-align:center;margin-top:10rpx;">
+                      <image style="width:236rpx;"  @tap="toupiao()" src="https://tl.pro.youzewang.com/images/jingcai_05.png" mode="widthFix">
+                      </image>
+                      </view>
+
+            </view>
+
+
+       </view>
+
+       </view>
+
+
+        <view style="position:relative;">
+
+
+                <view style="text-align:center;" >
+
+                      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_03.jpg" mode="widthFix">
+                      </image>
+                      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_04.jpg" mode="widthFix">
+                      </image>
+                      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_05.jpg" mode="widthFix">
+                      </image>
+                      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_06.jpg" mode="widthFix">
+                      </image>
+
+                        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_07.jpg" mode="widthFix">
+                      </image>
+
+                      <view style="position:relative;">
+                      <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_08.jpg" mode="widthFix"></image>
+
+                      <image @tap="backTop();" style="width:241rpx;display:block;margin:0 auto;position:absolute;top:10%;left:50%;margin-left:-120rpx;"   src="https://tl.pro.youzewang.com/images/update/btn.png" mode="widthFix"></image>
+
+                      </view>
+
+                </view>
+
+          
+        </view>
+
+
+     </view>
+     
+
+     <view class="{{resultShowClass}}" style="text-align:center;width:100%;height:100vh;position: relative;">
+
+
+         <view class="{{quanxianText}}" style="width:100%;text-align:center;font-size:30px;position:absolute;top:50%;z-index:200;">
+             没有权限
+         </view>
+
+
+         <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/jieshu_01.jpg" mode="widthFix"></image>
+
+
+         <image style="width:100%;display:block;position: absolute;bottom:0;left:0;"   src="https://tl.pro.youzewang.com/images/update/jieshu_02.jpg" mode="widthFix"></image>
+
+
+
+         <view  style="position: absolute;top:40%;left:0;width:100%;z-index:10;" wx:if="{{quanxianText=='hide'}}" >
+
+
+
 
         <repeat for="{{xuanzhong}}" index="index" item="item" >
                      
           
-            <image style="width:124rpx;margin:0 25rpx;"  src="https://tl.pro.youzewang.com/images/{{item}}.png" mode="widthFix">
+            <image style="width:196rpx;margin:0 25rpx;"  src="https://tl.pro.youzewang.com/images/{{item}}.png" mode="widthFix">
             </image>
 
             
 
         </repeat>
-       
+
+           <image style="width:394rpx;display:block;margin:0 auto;"   src="https://tl.pro.youzewang.com/images/update/toupiaojieguo.png" mode="widthFix"></image>
+
+
        </view>
+
 
       
        </view>
-          
-
-             <view  class="{{quanxian}}">
-
-              <view style="position:relative;">
-
-                <image style="width:100%;"  src="https://tl.pro.youzewang.com/images/jingcai_02.png" mode="widthFix">
-                </image>
-
-                  <view style="position:absolute;bottom:0;width:100%;">
-                  <checkbox-inline :config.sync="checkboxConfig2" @bindchange.user="checkboxChange1">
-                  <block slot="check-body">
-                    <repeat for="{{itemsInline}}" index="index" item="item" key="checkbox-{{index}}">
-                      <label class="checkbox-item">
-                        <view class="check-card">{{item.value}}</view>
-                        <checkbox value="{{item.id}}" checked="{{item.checked}}" disabled="{{item.disabled}}"/>
-                      </label>
-                    </repeat>
-                  </block>
-                </checkbox-inline>
-                </view>
-
-            </view>
-
-            
-         
-
-            <view style="text-align:center;">
-            <image style="width:236rpx;"  @tap="toupiao()" src="https://tl.pro.youzewang.com/images/jingcai_05.png" mode="widthFix">
-            </image>
-            </view>
-
-            </view>
-
-
-       </view>
-
-       </view>
-
-       <view class="{{quanxianText}}" style="width:100%;text-align:center;font-size:30px;position:absolute;top:50%;">
-         没有权限
-       </view>
-       
-    
-
-    <view style="position:relative;">
-
-
-       <view style="text-align:center;" >
-
-        <view class="{{resultHideClass}}">
-       
-        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_03.jpg" mode="widthFix">
-        </image>
-        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_04.jpg" mode="widthFix">
-        </image>
-        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_05.jpg" mode="widthFix">
-        </image>
-        <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_06.jpg" mode="widthFix">
-        </image>
-
-          <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_07.jpg" mode="widthFix">
-        </image>
-
-          <view style="position:relative;">
-          <image style="width:100%;display:block;"   src="https://tl.pro.youzewang.com/images/update/guanjun_08.jpg" mode="widthFix">
-          </image>
-
-          <image style="width:241rpx;display:block;margin:0 auto;position:absolute;top:10%;left:50%;margin-left:-120rpx;"   src="https://tl.pro.youzewang.com/images/update/btn.png" mode="widthFix">
-          </image>
-
-          </view>
-
-
-        </view>
-      
-
-      </view>
-
-       
-    </view>
-
 
     
    
+  
+  
+  
+  
+  
   </view>
 </template>
 
@@ -135,7 +142,7 @@
 import wepy from 'wepy'
 import cell from '@/components/cell/index'
 import panel from '@/components/panel/index'
-import checkbox from '@/components/checkbox/index'
+import radio from '@/components/radio/index'
 import Fly from 'flyio/dist/npm/wx'
 import Toast from '@/components/toast/index'
 
@@ -145,10 +152,10 @@ export default class Index extends wepy.page {
   }
 
   components = {
-    cell: cell,
-    'checkbox-inline': checkbox,
-    toast: Toast,
-    panel: panel
+    'cell': cell,
+    'radio-line': radio,
+    'toast': Toast,
+    'panel': panel
   }
 
   data = {
@@ -159,7 +166,7 @@ export default class Index extends wepy.page {
     resultShowClass:"hide",
     token:'',
     gonghao:'',
-    checkboxConfig2: {
+   config2: {
 			position: 'left',
 			circle: true,
 			inline: true
@@ -172,13 +179,22 @@ export default class Index extends wepy.page {
   computed = {}
 
   methods = {
-   
+   radioChange (res) {
+      console.log(res);
+      this.data.checkedList=res;
+    },
+      backTop:function(){
+          // 控制滚动
+          wx.pageScrollTo({
+              scrollTop: 0
+          })
+      },
     toupiao() {
 
        console.log(this.data.gonghao);
 
        var options = {
-            content: "请选择你要支持的四个队伍",
+            content: "请选择你要支持的1个队伍",
             position: 'middle',
             duration: 2000,
             type: '',
@@ -186,14 +202,14 @@ export default class Index extends wepy.page {
           }
           var that=this;
 
-       if(this.data.checkedList.length!=4)
+       if(this.data.checkedList.length!=1)
        {
           
           this.$invoke('toast', 'show', options)
        }
        else{
            console.log(this.data.checkedList);
-           var s_rs=this.data.checkedList.join(",");
+           var s_rs=this.data.checkedList;
            console.log(s_rs);
             var fly=new Fly(); 
           fly.get('https://tl.pro.youzewang.com/Api/CommonApi/jingcai?gonghao='+this.data.gonghao+'&s_rs='+s_rs)
@@ -263,8 +279,6 @@ export default class Index extends wepy.page {
     fly.get('https://tl.pro.youzewang.com/Api/CommonApi/isUse?token='+this.data.token+'&gonghao='+this.data.gonghao)
     .then(function (response) {
       console.log(response.data);
-      
-      response.data.data=1;
 
       if(response.data.data==1)
       {
@@ -282,6 +296,7 @@ export default class Index extends wepy.page {
       else{
         console.log("不可用");
         that.quanxianText="show";
+          that.resultShowClass="show";
         
       }
 
