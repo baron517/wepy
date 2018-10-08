@@ -1,159 +1,137 @@
 <style lang="less">
-  page{
+  page ,.container{
+    width: 750rpx;
     height: 100%;
-    width: 100%;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+  .topic-list{
+    width: 750rpx;
+    height: 100%;
+    overflow: hidden;
     background: #f4f4f4;
   }
 
-  .container{
-    height: 100%;
+  .topic-list .item{
     width: 100%;
-  }
-
-  .address-list{
-    padding-left: 31.25rpx;
-    background: #fff url(http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/address-bg-bd30f2bfeb.png) 0 0 repeat-x;
-    background-size: auto 10.5rpx;
-    margin-bottom: 90rpx;
-  }
-
-  .address-list .item{
-    height: 156.55rpx;
-    align-items: center;
-    display: flex;
-    border-bottom: 1rpx solid #DCD9D9;
-  }
-
-  .address-list .item:last-child{
-
-    border-bottom: none;
-  }
-
-  .address-list .l{
-    width: 125rpx;
-    height: 80rpx;
+    height: 320rpx;
     overflow: hidden;
+    margin-bottom: 20rpx;
   }
 
-  .address-list .name{
-    width: 125rpx;
-    height: 43rpx;
-    font-size: 29rpx;
-    color: #333;
-    margin-bottom: 5.2rpx;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .topic-list .img{
+    margin-top:26rpx;
+    margin-right:20rpx;
+    margin-left:30rpx;
+    float:left;
+    width:150rpx;
+    height:150rpx;
+    border-radius:6rpx;
+    border:3px solid #fff;
+
+  }
+
+  .topic-list .info{
+    width: 100%;
+    height: 320rpx;
     overflow: hidden;
+    background: #d9282e;
+    box-sizing: border-box;
+    color:#fff;
+    border-radius: 20rpx;
   }
+  .topic-list .info .info-middle{height:180rpx;}
+  .topic-list .info .info-right{float:left;width:416rpx;color:#fff;}
 
-  .address-list .default{
-    width: 62.5rpx;
-    height: 33rpx;
-    line-height: 28rpx;
-    text-align: center;
-    font-size: 20rpx;
-    color: #b4282d;
-    border: 1rpx solid #b4282d;
-    visibility: visible;
-  }
+  .topic-list .info .top-text{border-bottom:1px dashed #fff;color:#fff;line-height:50rpx;padding-left:20rpx;}
+  .topic-list .info text{color:#fff;}
+  .topic-list button{border:1px solid #fff;background: transparent;color:#fff;display: inline-block;line-height:50rpx;font-size:24rpx;}
 
 
-  .address-list .c{
-    flex: 1;
-    height: auto;
-    overflow: hidden;
-  }
-
-  .address-list .mobile{
-
-    height: 29rpx;
-    font-size: 29rpx;
-    line-height: 29rpx;
-    overflow: hidden;
-    color: #333;
-    margin-bottom: 6.25rpx;
-  }
-
-  .address-list .address{
-    height: 37rpx;
-    font-size: 25rpx;
-    line-height: 37rpx;
-    overflow: hidden;
-    color: #666;
-  }
-
-  .address-list .r{
-    width: 52rpx;
-    height: auto;
-    overflow: hidden;
-    margin-right: 16.5rpx;
-  }
-
-  .address-list .del{
+  .topic-list .title{
     display: block;
-    width: 52rpx;
-    height: 52rpx;
-  }
-
-  .add-address{
-    background: #b4282d;
     text-align: center;
     width: 100%;
-    height: 99rpx;
-    line-height: 99rpx;
-    position: fixed;
-    border-radius: 0;
-    border: none;
+    height: 33rpx;
+    line-height: 35rpx;
     color: #fff;
-    font-size: 29rpx;
-    bottom: 0;
-    left:0;
+    overflow: hidden;
+    font-size: 35rpx;
+    margin-top: 30rpx;
   }
 
-  .empty-view{
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .empty-view .icon{
-    height: 248rpx;
-    width: 258rpx;
+  .topic-list .title .left-col{float:left;}
+  .topic-list .title .right-col{float:right;}
+  .topic-list .desc .left-col{float:left;}
+  .topic-list .desc .right-col{float:right;}
+  .topic-list .desc{
+    display: block;
+    text-align: left;
+    position: relative;
+    width: auto;
+    height: 30rpx;
+    line-height: 30rpx;
+    overflow: hidden;
+    font-size: 24rpx;
+    margin-top: 10rpx;
     margin-bottom: 10rpx;
   }
 
-  .empty-view .text{
-    width: auto;
-    font-size: 28rpx;
-    line-height: 35rpx;
-    color: #999;
+  .topic-list .desc .text{color: #fff;position: relative;}
+  .topic-list .desc .text.huadiao::before{display: block;content:"";width:100%;left:0;position: absolute;height:1px;background: #fff;}
+  .topic-list .desc.bottom{height:56px;padding:0 30rpx;}
+  .topic-list .desc.bottom .left-col{margin-top:10rpx;}
+
+  .topic-list .price{
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 27rpx;
+    line-height: 27rpx;
+    overflow: hidden;
+    color: #b4282d;
+    font-size: 27rpx;
   }
+
+
+
+
+  .info-col{padding:20rpx 30rpx;}
+
 </style>
 <template>
   <view class="container">
-    <view class="address-list" wx:if="{{ addressList.length > 0 }}">
-      <view class="item" wx:for="{{addressList}}" wx:key="{{item.id}}" bindtap="selectAddress" data-address-id="{{item.id}}">
-        <view class="l">
-          <view class="name">{{item.name}}</view>
-          <view class="default" wx:if="{{item.is_default}}">默认</view>
-        </view>
-        <view class="c">
-          <view class="mobile">{{item.mobile}}</view>
-          <view class="address">{{item.full_region + item.address}}</view>
-        </view>
-        <view class="r">
-          <image catchtap="addressAddOrUpdate" data-address-id="{{item.id}}" class="del" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/address-edit-7fee7b0d63.png"></image>
-        </view>
+    <scroll-view class="topic-list" scroll-y="true" scroll-top="{{scrollTop}}">
+
+      <view class="info-col">
+
+
+        <navigator class="item" wx:for="{{topicList}}" wx:key="{{item.hy_id}}" url="detail?id={{item.hy_id}}">
+          <view class="info">
+            <view class="top-text">会员卡</view>
+            <view class="info-middle">
+
+              <image class="img" src="{{item.hy_img}}" background-size="cover"></image>
+
+              <view class="info-right">
+                <view class="title"><text class="left-col">{{item.hy_name}}</text><text class="right-col">{{item.hy_shijian}}分钟</text></view>
+                <view class="desc"><text class="left-col yuanjia">价格：￥{{item.hy_yuanjia}}</text>  <text class="right-col">{{item.hy_yitiyan}}人已体验</text></view>
+                <view class="desc"><text class="text">套餐：￥{{item.hy_xianjia_text}}</text></view>
+              </view>
+
+            </view>
+
+            <view class="desc bottom"><text class="left-col">杭州胤妃美业</text>  </view>
+
+
+          </view>
+        </navigator>
+
+
+
       </view>
-    </view>
-    <view class="empty-view" wx:if="{{ addressList.length <= 0 }}">
-      <image class="icon" src="http://yanxuan.nosdn.127.net/hxm/yanxuan-wap/p/20161201/style/img/icon-normal/noAddress-26d570cefa.png"></image>
-      <text class="text">收货地址在哪里</text>
-    </view>
-    <view class="add-address" bindtap="addressAddOrUpdate" data-address-id="0">新建</view>
+
+    </scroll-view>
   </view>
 </template>
 
@@ -162,41 +140,59 @@
   import util from '../../utils/util.js'
   import api from '../../config/api.js'
 
-  export default class Address extends wepy.page {
-    data = {
-      addressList: []
+  export default class Index extends wepy.page {
+
+    config = {
+      navigationBarTitleText: '我的会员卡'
     }
-    onLoad() {
-      this.getAddressList()
+
+    data = {
+      topicList: [],
+      page: 1,
+      size: 10,
+      count: 0,
+      scrollTop: 0,
+      showPage: false
+    }
+    async onLoad() {
+      // 页面初始化 options为页面跳转所带来的参数
+      await this.getTopic()
+    }
+    async getTopic() {
+      this.scrollTop = 0
+      this.showPage = false
+      this.topicList = []
+      this.$apply()
+      // 页面渲染完成
+      wepy.showToast({
+        title: '加载中...',
+        icon: 'loading',
+        duration: 2000
+      })
+      let res = await util.request(api.getHuiyuanka, { page: this.page, size: this.size })
+      if (res.errno === 0) {
+        this.scrollTop = 0
+        this.topicList = res.data
+        this.$apply()
+      }
+      wepy.hideToast()
     }
     methods = {
-      addressAddOrUpdate (event) {
-        wepy.navigateTo({
-          url: '/pages/ucenter/addressAdd?id=' + event.currentTarget.dataset.addressId
-        })
-      },
-      async deleteAddress(event) {
-        console.log(event.target)
-        let res = wepy.showModal({
-          title: '',
-          content: '确定要删除地址？'
-        })
-        if (res.confirm) {
-          let addressId = event.target.dataset.addressId
-          let ret = await util.request(api.AddressDelete, { id: addressId }, 'POST')
-          if (ret.errno === 0) {
-            this.getAddressList()
-          }
-          console.log('用户点击确定')
+      nextPage: async function (event) {
+        if (this.page + 1 > this.count / this.size) {
+          return true
         }
-        return false
-      }
-    }
-    async getAddressList () {
-      let res = await util.request(api.AddressList)
-      if (res.errno === 0) {
-        this.addressList = res.data
+        this.page = parseInt(this.page) + 1
         this.$apply()
+        await this.getTopic()
+      },
+      prevPage: async function (event) {
+        if (this.page <= 1) {
+          return false
+        }
+        this.page = parseInt(this.page) - 1
+        this.$apply()
+        await this.getTopic()
       }
     }
   }

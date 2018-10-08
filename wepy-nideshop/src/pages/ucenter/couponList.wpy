@@ -192,7 +192,7 @@
             <view class="time">失效时间：{{item.yhq_exp_date}}</view>
           </view>
           <view class="right">
-            <button class="go" @tap="shiyong">使用</button>
+            <button class="go" @tap="shiyong">领取</button>
           </view>
         </view>
         <view class="condition">
@@ -214,7 +214,7 @@
   export default class Coupon extends wepy.page {
 
     config = {
-      navigationBarTitleText: '我的优惠券'
+      navigationBarTitleText: '优惠券'
     }
 
     data={
@@ -224,8 +224,11 @@
       shiyong()
       {
         console.log("使用");
-        wx.switchTab({
-          url:"/pages/category/catalog"
+        wepy.showToast({
+          title: '领取成功',
+          complete: function() {
+
+          }
         })
 
       }

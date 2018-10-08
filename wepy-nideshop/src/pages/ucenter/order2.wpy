@@ -114,30 +114,6 @@
   <view class="container">
     <view class="orders">
 
-      <view  class="order" >
-        <view class="h top">
-          <view class="l">杭州胤妃美业</view>
-          <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
-        </view>
-        <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：待商家确认</view>
-        </view>
-        <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
-          </view>
-          <view class="status"></view>
-        </view>
-        <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
-            <button class="btn" data-order-index="{{index}}" catchtap="payOrder">取消预约</button>
-          </view>
-        </view>
-      </view>
 
       <view  class="order" >
         <view class="h top">
@@ -165,55 +141,6 @@
       </view>
 
 
-      <view  class="order" >
-        <view class="h top">
-          <view class="l">杭州胤妃美业</view>
-          <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
-        </view>
-        <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：待使用</view>
-        </view>
-        <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
-          </view>
-          <view class="status"></view>
-        </view>
-        <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
-            <button class="btn" data-order-index="{{index}}" catchtap="payOrder">立即使用</button>
-          </view>
-        </view>
-      </view>
-
-      <view  class="order" >
-        <view class="h top">
-          <view class="l">杭州胤妃美业</view>
-          <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
-        </view>
-        <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：待评价</view>
-        </view>
-        <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
-          </view>
-          <view class="status"></view>
-        </view>
-        <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
-            <button class="btn" data-order-index="{{index}}" catchtap="payOrder">立即评价</button>
-          </view>
-        </view>
-      </view>
 
     </view>
   </view>
@@ -228,8 +155,8 @@
     data = {
       orderList: []
     }
-    async onLoad() {
-      this.getOrderList();
+    onLoad() {
+      this.getOrderList()
     }
     async getOrderList() {
       let res =await util.request(api.OrderList);
@@ -242,10 +169,10 @@
     }
     methods = {
       async tel () {
-          wx.makePhoneCall({
-                  phoneNumber: "8888888",
-                  })
-        }
+    wx.makePhoneCall({
+            phoneNumber: "8888888",
+            })
+  }
     }
   }
 </script>

@@ -105,32 +105,32 @@
 
       <view class="info-col">
 
-      <navigator class="item">
+      <view class="item">
         <view class="info">
           <view class="top-text">会员卡</view>
           <view class="info-middle">
 
-            <image class="img" src="https://yfmy.pro.youzewang.com/images/pro1.png" background-size="cover"></image>
+            <image class="img" src="{{topicList.hy_img}}" background-size="cover"></image>
 
             <view class="info-right">
-            <view class="title"><text class="left-col">足疗年卡</text><text class="right-col">60分钟</text></view>
-            <view class="desc"><text class="left-col yuanjia">价格：￥100/次</text>  <text class="right-col">1人已体验</text></view>
-            <view class="desc"><text class="text">套餐：￥500/一年</text></view>
+            <view class="title"><text class="left-col">{{topicList.hy_name}}</text><text class="right-col">{{topicList.hy_shijian}}分钟</text></view>
+            <view class="desc"><text class="left-col yuanjia">价格：￥{{topicList.hy_yuanjia}}</text>  <text class="right-col">{{topicList.hy_yitiyan}}人已体验</text></view>
+            <view class="desc"><text class="text">套餐：￥{{topicList.hy_xianjia_text}}</text></view>
             </view>
 
           </view>
 
-          <view class="desc bottom"><text class="left-col">杭州胤妃美业</text>  </view>
+          <view class="desc bottom"><text class="left-col">杭州胤妃美业</text> </view>
 
 
         </view>
-      </navigator>
+      </view>
 
       </view>
 
     </scroll-view>
 
-    <view class="bottom-btn">去支付(￥<text class="text">500</text>)</view>
+    <view class="bottom-btn">去支付(￥<text class="text">{{topicList.hy_xianjia}}</text>)</view>
   </view>
 </template>
 
@@ -145,16 +145,17 @@
       page: 1,
       size: 10,
       count: 0,
+      id:0,
       scrollTop: 0,
       showPage: false
     }
-    async onLoad() {
+    async onLoad(options) {
       // 页面初始化 options为页面跳转所带来的参数
+      this.id = parseInt(options.id);
       await this.getTopic()
     }
     async getTopic() {
       this.scrollTop = 0
-      this.showPage = false
       this.topicList = []
       this.$apply()
       // 页面渲染完成
@@ -163,33 +164,19 @@
         icon: 'loading',
         duration: 2000
       })
-      let res = await util.request(api.TopicList, { page: this.page, size: this.size })
+      let res = await util.request(api.getHuiyuanKaDetail, { id: this.id });
+
+      console.log(res);
+
       if (res.errno === 0) {
         this.scrollTop = 0
-        this.topicList = res.data.data
-        this.showPage = true
-        this.count = res.data.count
+        this.topicList = res.data
         this.$apply()
       }
       wepy.hideToast()
     }
     methods = {
-      nextPage: async function (event) {
-        if (this.page + 1 > this.count / this.size) {
-          return true
-        }
-        this.page = parseInt(this.page) + 1
-        this.$apply()
-        await this.getTopic()
-      },
-      prevPage: async function (event) {
-        if (this.page <= 1) {
-          return false
-        }
-        this.page = parseInt(this.page) - 1
-        this.$apply()
-        await this.getTopic()
-      }
+
     }
   }
 </script>

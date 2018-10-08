@@ -1,0 +1,289 @@
+<style lang="less">
+
+  .container{
+    margin-bottom: 100rpx;background: #fff;;
+  }
+  .top-tab{height:100rpx;}
+  .top-tab .tab-detail{width:33.33%;float:left;text-align: center;background: #fff;padding:10rpx 0 18rpx 0;border-bottom:1px solid #ccc;}
+  .top-tab .tab-detail.active{border-bottom:1px solid #b4282d;color:#b4282d;}
+  .top-tab .tab-detail.active view{color:#b4282d;}
+
+  .top-second-tab{height:80rpx;}
+  .top-second-tab .tab-detail{width:50%;float:left;padding:16rpx 0;border-bottom:1px solid #ccc;text-align: center;background: #fff;}
+  .top-second-tab .tab-detail.active{color:#b4282d;}
+  .bottom-btn .r{
+    background: #b4282d;
+    display: block;
+    height: 80rpx;
+    width:100%;
+    line-height: 80rpx;
+    text-align: center;
+    color: #fff;
+  }
+
+  .bottom-btn{
+    position: fixed;
+    left:0;
+    bottom:0;
+    z-index: 1000;
+    width: 750rpx;
+    height: 80rpx;
+    background: #fff;
+  }
+
+
+  .shijian-col{padding:10rpx 18rpx;}
+  .shijian-col .shijian-detail{float:left;width:25%;box-sizing: border-box;background: #fff;padding:10rpx;}
+  .shijian-col .shijian-detail view, .xiao-shijian-list .shijian-detail view{border:1px solid #b4282d;color:#b4282d;text-align: center;padding:16rpx 0;}
+  .shijian-col .shijian-detail.active view,.xiao-shijian-list .shijian-detail.active view{background:#b4282d;color:#fff;}
+  .shijian-col .shijian-detail.disabled view{background:#ddd;color:#fff;border:1px solid #ddd;}
+
+  .xiao-shijian-list .shijian-detail{float:left;width:16.6667%;box-sizing: border-box;background: #fff;padding:10rpx;}
+
+</style>
+<template>
+  <scroll-view class="container" scroll-y="true">
+    <view>
+      <view class="top-tab">
+        <view class="tab-detail {{tabActive=='1'?'active':''}}" @tap="qiehuan(1)"><view>{{jintian}}</view>今天</view>
+        <view class="tab-detail {{tabActive=='2'?'active':''}}" @tap="qiehuan(2)"><view>{{mingtian}}</view>明天</view>
+        <view class="tab-detail {{tabActive=='3'?'active':''}}" @tap="qiehuan(3)"><view>{{houtian}}</view>后天</view>
+      </view>
+
+      <view class="top-second-tab">
+        <view class="tab-detail {{secondTabActive=='1'?'active':''}}" @tap="qiehuanShijian(1)">08:00-17:30</view>
+        <view class="tab-detail {{secondTabActive=='2'?'active':''}}" @tap="qiehuanShijian(2)">18:00-23:00</view>
+      </view>
+
+      <view class="shijian-col clearfix">
+        <view  wx:for="{{shijianList}}" wx:key="{{item.id}}" class="shijian-detail {{item.class}}" @tap="xuanze('{{item.id}}')">
+          <view>{{item.time}}</view>
+        </view>
+      </view>
+
+
+
+
+      <view style="margin-top:30rpx;padding:0 30rpx;">具体时间点：</view>
+      <view class="xiao-shijian-list" style="padding:0 12rpx;box-sizing: border-box;">
+
+        <view  wx:for="{{xiaoShijianList}}" wx:key="{{item.id}}" class="shijian-detail {{item.class}}" @tap="xuanzeXiao('{{item.id}}')">
+          <view>{{item.time}}</view>
+        </view>
+
+      </view>
+
+
+
+
+
+    </view>
+
+
+
+
+  </scroll-view>
+
+  <view class="bottom-btn">
+    <view class="r" @tap="queren">确认选择</view>
+  </view>
+
+
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import WxParse from '../../lib/wxParse/wxParse.js'
+  import util from '../../utils/util.js'
+  import api from '../../config/api.js'
+  import moment from '../../utils/moment.min.js'
+
+  export default class Index extends wepy.page {
+    data = {
+      id: 0,
+      tabActive:1,
+      xiaoShijianList:[],
+      jintian:moment().format("MM-DD"),
+      mingtian:moment().add(1, 'days').format("MM-DD"),
+      houtian:moment().add(2, 'days').format("MM-DD"),
+      shijianList:[],
+      xuanzhong:'',
+      secondTabActive:1,
+      goods: {}
+    }
+    methods = {
+
+      queren()
+      {
+
+        console.log("############"+this.xuanzhong);
+        if(this.xuanzhong=="")
+        {
+          util.showErrorToast('时间没有选');
+          return;
+        }
+
+        wx.navigateTo({
+          url: '/pages/category/category?time='+this.xuanzhong
+        })
+
+      },
+      qiehuan(str){
+        console.log(str);
+        this.tabActive=str;
+        this.xuanzhong="";
+        this.chushihua();
+      },
+      qiehuanShijian(str){
+        console.log(str);
+        this.secondTabActive=str;
+        this.xuanzhong="";
+        this.chushihua();
+      },
+      xuanzeXiao(index)
+      {
+        if(this.xiaoShijianList[index].class!="disabled") {
+          for (var i = 0; i < this.xiaoShijianList.length; i++) {
+            if (this.xiaoShijianList[i].class == "active") {
+              this.xiaoShijianList[i].class = "";
+            }
+          }
+
+          this.xiaoShijianList[index].class = "active";
+        }
+
+        if(this.tabActive==1)
+        {
+          this.xuanzhong=moment().format("YYYY-MM-DD "+this.xiaoShijianList[index].time);
+        }
+        else if(this.tabActive==2)
+        {
+          this.xuanzhong=moment().add(1, 'days').format("YYYY-MM-DD "+this.xiaoShijianList[index].time);
+        }
+        else
+        {
+          this.xuanzhong=moment().add(2, 'days').format("YYYY-MM-DD "+this.xiaoShijianList[index].time);
+        }
+
+
+        console.log(this.xuanzhong);
+
+      },
+      xuanze(index)
+      {
+        if(this.shijianList[index].class!="disabled")
+        {
+          for(var i=0;i<this.shijianList.length;i++)
+          {
+            if(this.shijianList[i].class=="active")
+            {
+              this.shijianList[i].class="";
+            }
+          }
+
+          this.shijianList[index].class="active";
+
+
+          var addTime=0;
+          var jinriStr=moment().format("YYYY-MM-DD "+this.shijianList[index].time+":00");
+          this.xiaoShijianList=[];
+          for(var i=0;i<6;i++)
+          {
+            var obj={};
+            obj.id=i;
+            obj.time=moment(jinriStr).add(addTime, "minute").format("HH:mm");
+            addTime=addTime+5;
+            if(i==0)
+            {
+              obj.class="active";
+
+
+
+              if(this.tabActive==1)
+              {
+                this.xuanzhong=moment().format("YYYY-MM-DD "+obj.time);
+              }
+              else if(this.tabActive==2)
+              {
+                this.xuanzhong=moment().add(1, 'days').format("YYYY-MM-DD "+obj.time);
+              }
+              else
+              {
+                this.xuanzhong=moment().add(2, 'days').format("YYYY-MM-DD "+obj.time);
+              }
+
+
+            }
+
+            this.xiaoShijianList.push(obj);
+          }
+          console.log(this.xuanzhong);
+
+        }
+      }
+
+    }
+
+    chushihua()
+    {
+      this.shijianList=[];
+      this.xiaoShijianList=[];
+      var length=20;
+
+      if(this.tabActive==1&&this.secondTabActive==1)
+      {
+        var jinriStr=moment().format("YYYY-MM-DD 07:30:00");
+      }
+      else if(this.tabActive==2&&this.secondTabActive==1)
+      {
+        var jinriStr=moment().add(1, 'days').format("YYYY-MM-DD 07:30:00");
+      }
+      else if(this.tabActive==3&&this.secondTabActive==1)
+      {
+        var jinriStr=moment().add(2, 'days').format("YYYY-MM-DD 07:30:00");
+      }
+      else if(this.tabActive==1&&this.secondTabActive==2)
+      {
+        var jinriStr=moment().format("YYYY-MM-DD 17:30:00");
+        length=10;
+      }
+      else if(this.tabActive==2&&this.secondTabActive==2)
+      {
+        var jinriStr=moment().add(1, 'days').format("YYYY-MM-DD 17:30:00");
+        length=10;
+      }
+      else if(this.tabActive==3&&this.secondTabActive==2)
+      {
+        var jinriStr=moment().add(2, 'days').format("YYYY-MM-DD 17:30:00");
+        length=10;
+      }
+
+
+      var addTime=0;
+      for(var i=0;i<length;i++)
+      {
+        addTime=addTime+30;
+        var obj={};
+        obj.id=i;
+        obj.time=moment(jinriStr).add(addTime, "minute").format("HH:mm");
+        if(moment().format("HH:mm")>=obj.time&&this.tabActive==1)
+        {
+          obj.class="disabled";
+        }
+
+        this.shijianList.push(obj);
+      }
+    }
+
+    async onLoad (options) {
+      // 页面初始化 options为页面跳转所带来的参数
+      this.id = parseInt(options.id);
+
+      this.chushihua();
+
+
+
+    }
+  }
+</script>

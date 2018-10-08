@@ -186,6 +186,8 @@
     width: 750rpx;
     height: auto;
     overflow: hidden;
+    margin-top:0;
+    background:#fff;
   }
 
   .a-popular .b .item {
@@ -507,7 +509,11 @@
     font-size: 30rpx;
     color: #b4282d;
   }
-  
+
+  .tab-col{height:80rpx;line-height: 80rpx;}
+  .tab-col .tab-detail{width:50%;float:left;text-align: center;background: #fff;font-size:36rpx;color:#666;}
+  .tab-col .tab-detail i{font-size:46rpx;margin-right:8rpx;}
+  .tab-col .tab-detail.active{color: #b4282d;border-bottom:2px solid #b4282d;}
 
 </style>
 <template>
@@ -516,47 +522,47 @@
 
   <view class="container">
     <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
-      <swiper-item wx:for="{{banner}}" wx:key="{{item.id}}">
+      <swiper-item wx:for="{{banner}}" wx:key="{{item.lb_id}}">
         <navigator url="{{item.link}}">
-          <image src="{{item.image_url}}" background-size="cover"></image>
+          <image src="{{item.lb_img}}" background-size="cover"></image>
         </navigator>
       </swiper-item>
     </swiper>
     <view class="m-menu">
-      <navigator  class="item">
+      <view  class="item"  @tap="tiaozhuan('category/catalog')">
         <view class="icon-col"><image src="https://yfmy.pro.youzewang.com/images/home/yuyue.png" background-size="cover"></image></view>
         <text>技师预约</text>
-      </navigator>
+      </view>
 
-        <navigator  class="item">
+        <navigator  class="item" url="/pages/ucenter/couponList">
         <view class="icon-col" style="background:#ff6c44;"><image src="https://yfmy.pro.youzewang.com/images/home/youhuiquan.png" background-size="cover"></image></view>
         <text>优惠券</text>
       </navigator>
 
-        <navigator  class="item">
+        <view  class="item"  @tap="tiaozhuan('chongzhi/index')">
         <view class="icon-col" style="background:#ff962a;"><image src="https://yfmy.pro.youzewang.com/images/home/chongzhi.png" background-size="cover"></image></view>
         <text>会员充值</text>
-      </navigator>
+      </view>
 
-        <navigator  class="item">
+        <navigator  class="item" url="/pages/ucenter/maidan">
         <view class="icon-col" style="background:#947fff;"><image src="https://yfmy.pro.youzewang.com/images/home/maidan.png" background-size="cover"></image></view>
         <text>店内买单</text>
       </navigator>
 
-      <navigator  class="item">
+      <view  class="item" @tap="tiaozhuan('topic/index')" >
         <view class="icon-col" style="background:#fe5e5e;"><image src="https://yfmy.pro.youzewang.com/images/home/huodong.png" background-size="cover"></image></view>
         <text>活动</text>
-      </navigator>
+      </view>
 
-        <navigator  class="item">
+        <navigator  class="item" url="/pages/ucenter/order">
         <view class="icon-col" style="background:#3298e6;"><image src="https://yfmy.pro.youzewang.com/images/home/wodeyuyue.png" background-size="cover"></image></view>
         <text>我的预约</text>
       </navigator>
 
-        <navigator  class="item">
+        <view  class="item"  @tap="tiaozhuan('ucenter/index')">
         <view class="icon-col" style="background:#fe6194;"><image src="https://yfmy.pro.youzewang.com/images/home/wo.png" background-size="cover"></image></view>
         <text>会员中心</text>
-      </navigator>
+      </view>
 
         <navigator  class="item">
         <view class="icon-col" style="background:#50c4d6;"><image src="https://yfmy.pro.youzewang.com/images/home/mall.png" background-size="cover"></image></view>
@@ -584,25 +590,26 @@
     </view>
 
 
-
-    <view class="a-section a-new" wx:if="{{newGoods.length > 0}}">
-      <view class="h">
-        <view>
-          <navigator url="/pages/goods/new">
-            <text class="txt">预约</text>
-          </navigator>
-        </view>
+    <view class="tab-col">
+      <view class="tab-detail {{tabActive==1?'active':''}}" @tap="tabSwitch(1)">
+      <i class="iconfont icon-yuyue"></i>预约
       </view>
+      <view class="tab-detail {{tabActive==2?'active':''}}" @tap="tabSwitch(2)">
+        <i class="iconfont icon-biaoqian"></i>项目展示
+      </view>
+    </view>
 
+
+    <view class="a-section a-new" style="margin-top:0;padding-top:10rpx;" wx:if="{{tabActive==1}}">
       <view class="b">
-        <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.id}}">
-          <navigator url="/pages/goods/index?id={{item.id}}">
-            <image class="img" src="{{item.list_pic_url}}" background-size="cover"></image>
+        <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.js_id}}">
+          <navigator url="/pages/goods/index?id={{item.js_id}}">
+            <image class="img" src="{{item.js_img1}}" background-size="cover"></image>
             <view class="price">
-             <text class="top"> 001</text>
-             <text class="bottom"> 暂无评分</text>
+             <text class="top"> 编号：{{item.js_id}}</text>
+             <text class="bottom"> {{item.js_pingfen=="" ?'暂无评分':item.js_pingfen+"分"}}</text>
             </view>
-            <view class="name"><text class="left">40单</text><text class="right">已为您服务0次</text></view>
+            <view class="name"><text class="left">{{item.js_danshu}}单</text><text class="right">已为您服务0次</text></view>
             
           </navigator>
         </view>
@@ -610,35 +617,32 @@
     </view>
 
 
-   
-
-
+    <view wx:if="{{tabActive==2}}">
 
      <view class="cate-nav">
       <scroll-view scroll-x="true" class="cate-nav-body" style="width: 750rpx;" scroll-left="{{scrollLeft}}">
-        <view  wx:for="{{navList}}" wx:key="item.id" class="item {{ id == item.id ? 'active' : ''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">
-          <view class="name">{{item.name}}</view>
+        <view  wx:for="{{navList}}" wx:key="item.t_id" class="item {{ xm_type == item.t_name ? 'active' : ''}}" data-id="{{item.t_name}}" data-index="{{index}}" bindtap="switchCate">
+          <view class="name">{{item.t_name}}</view>
         </view>
       </scroll-view>
     </view>
 
-    
-    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" >
+
         
-         <view class="a-section a-popular" wx:if="{{hotGoods.length > 0}}">
+         <view class="a-section a-popular">
 
             <view class="b">
-              <view class="item" wx:for="{{goodsList}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex">
-                <navigator url="/pages/goods/index?id={{iitem.id}}">
-                  <image class="img" src="https://yfmy.pro.youzewang.com/images/pro1.png" background-size="cover"></image>
+              <view class="item" wx:for="{{goodsList}}" wx:key="iitem.xm_id" wx:for-item="iitem" wx:for-index="iindex">
+                <navigator url="/pages/goods/proDetail?id={{iitem.xm_id}}">
+                  <image class="img" src="{{iitem.xm_img1}}" background-size="cover"></image>
                   <view class="right">
                     <view class="text">
-                      <text class="name">{{iitem.name}}</text>
+                      <text class="name">{{iitem.xm_biaoti}}</text>
                       <view class="price">
-                        <text class="left-col">￥{{iitem.retail_price}}</text>
-                        <text class="right-col">60分钟</text>
+                        <text class="left-col">￥{{iitem.xm_xianjia}}</text>
+                        <text class="right-col">{{iitem.xm_shichang}}分钟</text>
                       </view>
-                       <text class="yishou">已售320件</text>
+                       <text class="yishou">已售{{iitem.xm_yishou}}件</text>
 
                     </view>
                   </view>
@@ -650,8 +654,9 @@
           </view>
     
       
-    </scroll-view>
 
+
+    </view>
    
   </view>
 
@@ -675,11 +680,10 @@
       floorGoods: [],
       banner: [],
       channel: [],
-
+      tabActive:1,
       navList: [],
       goodsList: [],
-      id: 1005000,
-      currentCategory: {},
+      xm_type: "",
       scrollLeft: 0,
       scrollTop: 0,
       page: 1,
@@ -688,41 +692,53 @@
 
     }
     methods = {
+              tiaozhuan(url)
+              {
+                  wx.switchTab({
+                    url:url
+                })
+              },
+              tabSwitch(index)
+              {
+                this.tabActive=index;
+              },
 
-
-              async switchCate (event) {
-                if (this.id === event.currentTarget.dataset.id) {
+              async switchCate (event)
+              {
+                if (this.xm_type === event.currentTarget.dataset.id)
+                {
                   return false
                 }
                 var clientX = event.detail.x
                 var currentTarget = event.currentTarget
-                if (clientX < 60) {
+                if (clientX < 60)
+                {
                   this.scrollLeft = currentTarget.offsetLeft - 60
-                } else if (clientX > 330) {
+                } else if (clientX > 330)
+                {
                   this.scrollLeft = currentTarget.offsetLeft
                 }
-                this.id = event.currentTarget.dataset.id
+                this.xm_type = event.currentTarget.dataset.id
                 this.$apply()
                 await this.getCategoryInfo()
               }
-            
-           
-
-
     }
      async getCategoryInfo () {
-              let res = await util.request(api.GoodsCategory, {id: this.id});
+              let res = await util.request(api.GoodsCategory);
               console.log("分类");
               console.log(res);
               if (res.errno === 0) {
-                this.navList = res.data.brotherCategory
-                this.currentCategory = res.data.currentCategory
+                this.navList = res.data;
+                if(!this.xm_type)
+                {
+                  this.xm_type = res.data[0].t_name;
+                }
                 // nav位置
                 let currentIndex = 0
                 let navListCount = this.navList.length
                 for (let i = 0; i < navListCount; i++) {
                   currentIndex += 1
-                  if (this.navList[i].id === this.id) {
+                  if (this.navList[i].t_name === this.xm_type) {
                     break
                   }
                 }
@@ -733,29 +749,29 @@
                 await this.getGoodsList()
               }
             }
-            async getGoodsList () {
-              let res = await util.request(api.GoodsList, {categoryId: this.id, page: this.page, size: this.size})
+    async getGoodsList () {
+              let res = await util.request(api.GoodsList, {categoryId: this.xm_type, page: this.page, size: this.size})
               if (res.data) {
-                this.goodsList = res.data.goodsList
+                this.goodsList = res.data
                 this.$apply()
               }
             }
 
-    async getIndexData () {
-      let res = await util.request(api.IndexUrl)
-      if (res.errno === 0) {
-        this.newGoods = res.data.newGoodsList
-        this.hotGoods = res.data.hotGoodsList
-        this.topics = res.data.topicList
-        this.brand = res.data.brandList
-        this.floorGoods = res.data.categoryList
-        this.banner = res.data.banner
-        this.channel = res.data.channel
-        this.$apply()
-      }
+  async getLunbo () {
+    let res = await util.request(api.getLunbo);
+    if (res.errno === 0) {
+      this.banner = res.data
+      this.$apply()
     }
-    events = {
-      'index-emit': (...args) => {
+  }
+
+    async getIndexData () {
+      let res = await util.request(api.IndexUrl);
+    console.log("###########3");
+    console.log(res);
+      if (res.errno === 0) {
+        this.newGoods = res.data
+        this.$apply()
       }
     }
     onLoad() {
@@ -765,9 +781,8 @@
       //   url: "shouquan"
       // })
 
-      
+      this.getLunbo();
       this.getIndexData();
-
 
       console.log("#########88888###");
 

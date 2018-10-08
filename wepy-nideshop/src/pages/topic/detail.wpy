@@ -3,10 +3,11 @@
     width: 100%;
     height: auto;
     font-size: 0;
+    background: #fff;;
   }
 
   .content image{
-    display: inline-block;
+    display: block;
     width: 100%;
   }
 
@@ -218,7 +219,7 @@
       let res = await util.request(api.TopicDetail, {id: this.id})
       if (res.errno === 0) {
         this.topic = res.data
-        WxParse.wxParse('topicDetail', 'html', res.data.content, this)
+        WxParse.wxParse('topicDetail', 'html', res.data.hd_detail, this)
       }
 
      

@@ -282,7 +282,7 @@
     width: 750rpx;
     height: auto;
     overflow: hidden;
-    padding: 0 31.25rpx 120rpx 31.25rpx;
+    padding: 0 31.25rpx 25rpx 31.25rpx;
     background: #fff;
   }
 
@@ -291,9 +291,12 @@
     height: 104rpx;
     line-height: 104rpx;
     position: relative;
+    padding-left:16px;
     font-size: 36rpx;
   }
 
+  .goods-attr .t:before{content: " ";width:3px;height:36rpx;background: #b4282d;display: block;position: absolute;left:0;top:30rpx;}
+  .title-col{color:#666;padding:20rpx 0;}
   .goods-attr .item{
     width: 687.5rpx;
     height: 68rpx;
@@ -507,7 +510,7 @@
     bottom:0;
     z-index: 10;
     width: 750rpx;
-    height: 80rpx;
+    height: 100rpx;
     display: flex;
     background: #fff;
   }
@@ -580,12 +583,13 @@
   }
 
   .bottom-btn .r{
+    border:1px solid #b4282d;
     background: #b4282d;
-    height: 80rpx;
-    width:100%;
-    line-height: 80rpx;
+    float: left;
+    height: 100rpx;
+    line-height: 96rpx;
+    flex: 1;
     text-align: center;
-    display: block;
     color: #fff;
   }
   @import "../../lib/wxParse/wxParse.wxss";
@@ -711,41 +715,53 @@
   <scroll-view class="container" scroll-y="true">
     <view>
       <swiper class="goodsimgs" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
-        <swiper-item wx:if="{{goods.js_img1}}">
-          <image src="{{goods.js_img1}}" background-size="cover"></image>
+        <swiper-item wx:if="{{goods.xm_img1}}">
+          <image src="{{goods.xm_img1}}" background-size="cover"></image>
         </swiper-item>
-        <swiper-item wx:if="{{goods.js_img2}}">
-          <image src="{{goods.js_img2}}" background-size="cover"></image>
+        <swiper-item wx:if="{{goods.xm_img2}}">
+          <image src="{{goods.xm_img2}}" background-size="cover"></image>
         </swiper-item>
-        <swiper-item wx:if="{{goods.js_img3}}">
-          <image src="{{goods.js_img3}}" background-size="cover"></image>
+        <swiper-item wx:if="{{goods.xm_img3}}">
+          <image src="{{goods.xm_img3}}" background-size="cover"></image>
         </swiper-item>
       </swiper>
       <view class="service-policy">
-        <view class="item">{{goods.js_danshu}}单</view>
-        <view class="item">已为您服务多少{{}}次</view>
+        <view class="item">{{goods.js_name}}</view>
       </view>
       <view class="goods-info">
         <view class="c">
-          编号：{{goods.js_id}}
+          已售{{goods.xm_yishou}}件
         </view>
         <view class="c"  style="text-align: center;">
-          {{goods.js_name}}
+          时长：{{goods.xm_shichang}}分钟
         </view>
         <view class="c" style="text-align: right;">
-          {{goods.js_pingfen==""?"暂无评分":goods.js_pingfen+"分"}}
+          分类：{{goods.xm_type}}
         </view>
       </view>
       <view class="section-nav section-attr">
-        <view class="t">擅长：{{goods.js_shanchang}}</view>
+        <view class="t">地址：{{goods.js_shanchang}}</view>
       </view>
 
 
       <view class="goods-attr">
-        <view class="t">简介</view>
+        <view class="t">详细内容</view>
         <view class="l">
 
-          {{goods.js_jianjie}}
+          <view wx:if="{{goods.xm_shichang}}">
+          <view class="title-col">服务时长</view>
+          <view class="detail-col"><text> • </text>{{goods.xm_shichang}}分钟</view>
+          </view>
+
+          <view wx:if="{{goods.xm_liucheng}}">
+          <view class="title-col">服务流程</view>
+          <view class="detail-col"><text> • </text>{{goods.xm_liucheng}}</view>
+          </view>
+
+          <view wx:if="{{goods.xm_zengpin}}">
+          <view class="title-col">赠品</view>
+          <view class="detail-col"><text> • </text>{{goods.xm_zengpin}}</view>
+          </view>
 
         </view>
       </view>
@@ -757,11 +773,6 @@
 
 
   </scroll-view>
-
-  <view class="bottom-btn">
-    <navigator class="r" url="/pages/category/shijian">立即预约</navigator>
-  </view>
-
 </template>
 
 <script>
@@ -780,7 +791,7 @@
 
     }
     async getGoodsInfo () {
-      let res = await util.request(api.getJishiDetail, { id: this.id });
+      let res = await util.request(api.proDetail, { id: this.id });
       console.log("详情");
       console.log(res);
       if (res.errno === 0) {

@@ -1,6 +1,6 @@
 <style lang="less">
   .container{
-    background: #f9f9f9;
+    background: #fff;
   }
   .cate-nav{
     position: fixed;
@@ -32,7 +32,10 @@
     color: #333;
     font-size: 30rpx;
     width: auto;
+    position: relative;
   }
+
+  .cate-nav .item .name .yuan{background: #ab2b2b;color:#fff;font-size:12px;width:14px;height:14px;line-height:14px;border-radius: 50%;top:3px;right:0;position: absolute;text-align: center;}
 
   .cate-nav .item.active .name{
     color: #ab2b2b;
@@ -85,8 +88,11 @@
     height: auto;
     overflow: hidden;
     text-align: center;
+    position: relative;;
   }
 
+  .cate-item .b .item .iconfont{position: absolute;right:40rpx;top:10rpx;color:#fff;font-size:60rpx;}
+  .cate-item .b .item .icon-roundcheckfill{color:#b4282d;}
   .cate-item .b .item-b{
     margin-left: 6.25rpx;
   }
@@ -98,54 +104,85 @@
 
   .cate-item .item .name{
     display: block;
-    width: 365.625rpx;
+    width: 302rpx;
     height: 35rpx;
-    margin: 11.5rpx 0 22rpx 0;
-    text-align: center;
+    margin: 11.5rpx auto 22rpx auto;
+    text-align: left;
     overflow: hidden;
-    padding: 0 20rpx;
     font-size: 30rpx;
     color: #333;
   }
 
+  .cate-item .item .name text:first-child{float:left;}
+  .cate-item .item .name text:last-child{float:right;}
+
   .cate-item .item .price{
     display: block;
-    width: 365.625rpx;
+    width: 302rpx;
+    margin:0 auto;
     height: 30rpx;
-    text-align: center;
-    font-size: 30rpx;
-    color: #b4282d;
+    text-align: left;
   }
+  .cate-item .item .price text{font-size: 30rpx;color: #b4282d;}
+  .cate-item .item .price text:first-child{float:left;}
+  .cate-item .item .price text:last-child{float:right;}
+
+  .bottom-btn .r{
+    background: #b4282d;
+    display: block;
+    height: 80rpx;
+    width:100%;
+    line-height: 80rpx;
+    text-align: center;
+    color: #fff;
+  }
+
+  .bottom-btn{
+    position: fixed;
+    left:0;
+    bottom:0;
+    z-index: 1000;
+    width: 750rpx;
+    height: 80rpx;
+    background: #fff;
+  }
+
 </style>
 <template>
+
   <view class="container">
 
     <view class="cate-nav">
       <scroll-view scroll-x="true" class="cate-nav-body" style="width: 750rpx;" scroll-left="{{scrollLeft}}">
-        <view  wx:for="{{navList}}" wx:key="item.id" class="item {{ id == item.id ? 'active' : ''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="switchCate">
-          <view class="name">{{item.name}}</view>
+        <view  wx:for="{{navList}}" wx:key="item.t_id" class="item {{ xm_type == item.t_name ? 'active' : ''}}" data-id="{{item.t_name}}" data-index="{{index}}" bindtap="switchCate">
+          <view class="name">{{item.t_name}}<view class="yuan" wx:if="{{item.selectedList.length>0}}">{{item.selectedList.length}}</view></view>
         </view>
       </scroll-view>
     </view>
 
-    
-    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height:{{scrollHeight}};">
+
+    <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height:{{scrollHeight}};" style="margin-top:16rpx;">
 
       <view class="cate-item">
-        <view class="h">
-          <text class="name">{{currentCategory.name}}</text>
-          <text class="desc">{{currentCategory.front_name}}</text>
-        </view>
         <view class="b">
-          <navigator class="item {{(iindex + 1) % 2 == 0 ? 'item-b' : ''}}"   url="/pages/goods/index?id={{iitem.id}}" wx:for="{{goodsList}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex" >
-            <image class="img" src="{{iitem.list_pic_url}}" background-size="cover"></image>
-            <text class="name">{{iitem.name}}</text>
-            <text class="price">￥{{iitem.retail_price}}</text>
-          </navigator>
+          <view class="item {{(iindex + 1) % 2 == 0 ? 'item-b' : ''}}"  wx:for="{{goodsList}}" wx:key="iitem.xm_id" wx:for-item="iitem" wx:for-index="iindex" @tap="xuanze({{iindex}})">
+            <image class="img" src="{{iitem.xm_img1}}" background-size="cover"></image>
+            <view class="name"><text>{{iitem.xm_biaoti}}</text><text>{{iitem.xm_shichang}}分钟</text></view>
+            <view class="price"><text>￥{{iitem.xm_xianjia}}</text> <text>已售{{iitem.xm_yishou}}件</text></view>
+
+            <text class="iconfont icon-roundcheckfill" wx:if="{{iitem.selected}}"></text>
+            <text class="iconfont icon-roundcheck" wx:if="{{!iitem.selected}}"></text>
+
+          </view>
         </view>
       </view>
     </scroll-view>
   </view>
+
+  <view class="bottom-btn">
+    <view class="r" @tap="tijiao">选好了(支持多选)</view>
+  </view>
+
 </template>
 
 <script>
@@ -161,9 +198,11 @@
       navList: [],
       goodsList: [],
       id: 0,
+      navIndex:0,
       currentCategory: {},
       scrollLeft: 0,
       scrollTop: 0,
+      xm_type: "",
       scrollHeight: 0,
       page: 1,
       size: 10000
@@ -179,13 +218,49 @@
           this.scrollHeight = res.windowHeight
         }
       } catch (e) {}
-      await this.getCategoryInfo()
+      await this.getCategoryInfo();
+      await this.getGoodsList();
     }
     methods = {
+
+      xuanze(index)
+      {
+        console.log(index);
+        console.log(this.navIndex);
+        var navArray=this.navList[this.navIndex];
+
+        if(!navArray.selectedList)
+        {
+          console.log("数组");
+          navArray.selectedList=[];
+        }
+
+        if(this.goodsList[index].selected)
+        {
+          this.goodsList[index].selected=false;
+          var indexValue = navArray.selectedList.indexOf(this.goodsList[index].xm_id);
+          if (indexValue > -1) {
+            navArray.selectedList.splice(indexValue, 1);
+          }
+        }
+        else
+        {
+          this.goodsList[index].selected=true;
+          navArray.selectedList.push(this.goodsList[index].xm_id);
+        }
+
+        console.log("####"+navArray.selectedList);
+
+
+      },
+
       async switchCate (event) {
-        if (this.id === event.currentTarget.dataset.id) {
+          if (this.xm_type === event.currentTarget.dataset.id)
+        {
           return false
         }
+
+        this.navIndex=event.currentTarget.dataset.index;
         var clientX = event.detail.x
         var currentTarget = event.currentTarget
         if (clientX < 60) {
@@ -193,16 +268,20 @@
         } else if (clientX > 330) {
           this.scrollLeft = currentTarget.offsetLeft
         }
-        this.id = event.currentTarget.dataset.id
+        this.xm_type = event.currentTarget.dataset.id;
+        await this.getGoodsList()
         this.$apply()
-        await this.getCategoryInfo()
+
       }
     }
     async getCategoryInfo () {
       let res = await util.request(api.GoodsCategory, {id: this.id})
       if (res.errno === 0) {
-        this.navList = res.data.brotherCategory
-        this.currentCategory = res.data.currentCategory
+        this.navList = res.data;
+        if(!this.xm_type)
+        {
+          this.xm_type = res.data[0].t_name;
+        }
         // nav位置
         let currentIndex = 0
         let navListCount = this.navList.length
@@ -216,15 +295,31 @@
           this.scrollLeft = currentIndex * 60
         }
         this.$apply()
-        await this.getGoodsList()
+
       }
     }
     async getGoodsList () {
-      let res = await util.request(api.GoodsList, {categoryId: this.id, page: this.page, size: this.size})
-      if (res.data) {
-        this.goodsList = res.data.goodsList
-        this.$apply()
-      }
+        let res = await util.request(api.GoodsList, {categoryId: this.xm_type, page: this.page, size: this.size})
+        if (res.data) {
+          this.goodsList = res.data;
+          var navArray=this.navList[this.navIndex];
+          if(!navArray.selectedList)
+          {
+            navArray.selectedList=[];
+          }
+          for(var i=0;i<this.goodsList.length;i++)
+          {
+             for(var j=0;j<navArray.selectedList.length;j++)
+             {
+                if(navArray.selectedList[j]==this.goodsList[i].xm_id)
+                {
+                  this.goodsList[i].selected=true;
+                }
+             }
+          }
+
+          this.$apply()
+        }
     }
   }
 </script>

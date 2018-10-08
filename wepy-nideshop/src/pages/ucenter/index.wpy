@@ -171,40 +171,40 @@
     <view class="user-menu">
       <view class="item">
         <navigator url="/pages/ucenter/order" class="a">
-          <text class="icon dingdan"></text>
-          <text class="txt">我的订单</text>
-        </navigator>
-      </view>
-      <view class="item">
-        <navigator url="/pages/ucenter/coupon" class="a">
           <text class="icon yuyue"></text>
           <text class="txt">我的预约</text>
         </navigator>
       </view>
+      <view class="item">
+        <navigator url="/pages/ucenter/order1" class="a">
+          <text class="icon dingdan"></text>
+          <text class="txt">待确认</text>
+        </navigator>
+      </view>
       <view class="item no-border">
 
-        <navigator url="/pages/ucenter/coupon" class="a">
-          <text class="icon pingjia"></text>
-          <text class="txt">我的评价</text>
-        </navigator>
-
-      </view>
-      <view class="item">
-        <navigator url="/pages/ucenter/collect" class="a">
+        <navigator url="/pages/ucenter/order2" class="a">
           <text class="icon zhifu"></text>
           <text class="txt">待支付</text>
         </navigator>
+
       </view>
       <view class="item">
-        <navigator url="/pages/ucenter/footprint" class="a">
+        <navigator url="/pages/ucenter/order3" class="a">
           <text class="icon daishiyong"></text>
           <text class="txt">待使用</text>
         </navigator>
       </view>
-      <view class="item no-border">
-        <navigator url="url" class="a">
+      <view class="item">
+        <navigator url="url" class="a" url="/pages/ucenter/order4">
           <text class="icon daipingjia"></text>
           <text class="txt">待评价</text>
+        </navigator>
+      </view>
+      <view class="item no-border">
+        <navigator url="/pages/ucenter/order5" class="a">
+          <text class="icon pingjia"></text>
+          <text class="txt">已完成</text>
         </navigator>
       </view>
       <view class="item item-bottom">
@@ -238,15 +238,17 @@
   import user from '../../services/user.js'
 
   export default class Index extends wepy.page {
+
     config = {
-      backgroundColor: '#f4f4f4'
+      backgroundColor: '#f4f4f4',
+      navigationBarTitleText: '会员中心'
     }
     data = {
       userInfo: {},
       token: ''
     }
     onLoad() {
-      console.log(this.$parent.globalData)
+      console.log(this.$parent.globalData);
     }
     onShow() {
       let userInfo = wepy.getStorageSync('userInfo')

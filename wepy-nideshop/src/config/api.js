@@ -2,16 +2,24 @@ const ApiRootUrl = 'http://106.14.44.160:8360/api/';
 const ServerUrl='https://yfmy.pro.youzewang.com';
 
 module.exports = {
-  IndexUrl: ServerUrl+'/api/index/index.json', // 首页数据接口
+  IndexUrl: ServerUrl+'/Api/CommonApi/getJishiList', // 首页数据接口
+  getLunbo: ServerUrl+'/Api/CommonApi/getLunbo',
   CatalogList: ApiRootUrl + 'catalog/index',  // 分类目录全部分类数据接口
   CatalogCurrent: ApiRootUrl + 'catalog/current',  // 分类目录当前分类数据接口
 
   AuthLoginByWeixin: ApiRootUrl + 'auth/loginByWeixin', // 微信登录
 
   GoodsCount: ApiRootUrl + 'goods/count',  // 统计商品总数
-  GoodsList: ApiRootUrl + 'goods/list',  // 获得商品列表
-  GoodsCategory: ServerUrl + '/api/fenlei.json',  // 获得分类数据
-  GoodsDetail: ApiRootUrl + 'goods/detail',  // 获得商品的详情
+  GoodsList: ServerUrl + '/Api/CommonApi/getProList',
+  proDetail: ServerUrl + '/Api/CommonApi/getProDetail',
+
+
+  couponList: ServerUrl + '/Api/CommonApi/couponList',
+  couponMyList: ServerUrl + '/Api/CommonApi/couponMyList',
+
+
+  GoodsCategory: ServerUrl + '/Api/CommonApi/getTagList',  // 获得分类数据
+  getJishiDetail: ServerUrl + '/Api/CommonApi/getJishiDetail',  // 获得商品的详情
   GoodsNew: ApiRootUrl + 'goods/new',  // 新品
   GoodsHot: ApiRootUrl + 'goods/hot',  // 热门
   GoodsRelated: ApiRootUrl + 'goods/related',  // 商品详情页的关联商品（大家都在看）
@@ -38,9 +46,9 @@ module.exports = {
   CommentPost: ApiRootUrl + 'comment/post',   // 发表评论
 
   //TopicList: ApiRootUrl + 'topic/list',  // 专题列表
-  TopicList: ServerUrl+'/api/topic/list.json',  // 专题列表
+  TopicList: ServerUrl+'/Api/CommonApi/getHuodong',  // 专题列表
 
-  TopicDetail: ApiRootUrl + 'topic/detail',  // 专题详情
+  TopicDetail: ServerUrl+'/Api/CommonApi/getHuodongDetail',  // 专题详情
   TopicRelated: ApiRootUrl + 'topic/related',  // 相关专题
 
   SearchIndex: ApiRootUrl + 'search/index',  // 搜索页面数据
@@ -55,7 +63,13 @@ module.exports = {
 
   RegionList: ApiRootUrl + 'region/list',  // 获取区域列表
 
-  OrderList: ApiRootUrl + 'order/list',  // 订单列表
+  getHuiyuanka: ServerUrl + '/Api/CommonApi/getHuiyuanKa',
+  getHuiyuanKaDetail: ServerUrl + '/Api/CommonApi/getHuiyuankaDetail',
+
+  OrderList: ServerUrl + '/api/order_list.json',  // 订单列表
+
+
+
   OrderDetail: ApiRootUrl + 'order/detail',  // 订单详情
   OrderCancel: ApiRootUrl + 'order/cancel',  // 取消订单
   OrderExpress: ApiRootUrl + 'order/express', // 物流详情

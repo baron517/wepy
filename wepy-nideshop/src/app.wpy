@@ -17,6 +17,43 @@
     font-size: 29rpx;
     color: #333;
   }
+
+  .loading{text-align: center;padding:6rpx 0;}
+
+  .clearfix:after{content:'';display:block;height:0;clear:both}
+  .clearfix{zoom:1}
+
+
+  @font-face {font-family: "iconfont";
+    src: url('//at.alicdn.com/t/font_860225_uwryyrexuze.eot?t=1538885722825'); /* IE9*/
+    src: url('//at.alicdn.com/t/font_860225_uwryyrexuze.eot?t=1538885722825#iefix') format('embedded-opentype'), /* IE6-IE8 */
+    url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),
+    url('//at.alicdn.com/t/font_860225_uwryyrexuze.ttf?t=1538885722825') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    url('//at.alicdn.com/t/font_860225_uwryyrexuze.svg?t=1538885722825#iconfont') format('svg'); /* iOS 4.1- */
+  }
+
+  .iconfont {
+    font-family:"iconfont" !important;
+    font-size:16px;
+    font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .icon-roundcheckfill:before { content: "\e656"; }
+
+  .icon-roundcheck:before { content: "\e657"; }
+
+  .icon-dianhua:before { content: "\e626"; }
+
+  .icon-arrow-right:before { content: "\e612"; }
+
+  .icon-biaoqian:before { content: "\e608"; }
+
+  .icon-yuyue:before { content: "\e6c3"; }
+
+
+
 </style>
 
 
@@ -27,17 +64,20 @@ import wepy from 'wepy'
 import 'wepy-async-function'
 import user from './services/user.js'
 
+
 export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
       'pages/category/category',
       'pages/category/catalog',
+      'pages/category/shijian',
       'pages/brand/index',
       'pages/brand/detail',
       'pages/chongzhi/index',
       'pages/chongzhi/detail',
       'pages/goods/index',
+      'pages/goods/proDetail',
       'pages/goods/hot',
       'pages/goods/new',
       'pages/topic/index',
@@ -52,9 +92,16 @@ export default class extends wepy.app {
       'pages/ucenter/addressAdd',
       'pages/ucenter/collect',
       'pages/ucenter/coupon',
+      'pages/ucenter/couponList',
       'pages/ucenter/feedback',
       'pages/ucenter/footprint',
       'pages/ucenter/order',
+      'pages/ucenter/order1',
+      'pages/ucenter/order2',
+      'pages/ucenter/order3',
+      'pages/ucenter/order4',
+      'pages/ucenter/order5',
+      'pages/ucenter/maidan',
       'pages/ucenter/orderDetail',
       'pages/ucenter/express',
       'pages/logs',
@@ -68,9 +115,9 @@ export default class extends wepy.app {
     window: {
       backgroundTextStyle: 'dark',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: '胤妃美业',
+      navigationBarTitleText: '杭州胤妃美业',
       navigationBarTextStyle: 'black',
-      enablePullDownRefresh: true
+      enablePullDownRefresh: false
     },
     'tabBar': {
       'backgroundColor': '#fafafa',
@@ -85,7 +132,7 @@ export default class extends wepy.app {
           'text': '首页'
         },
         {
-          'pagePath': 'pages/topic/index',
+          'pagePath': 'pages/category/catalog',
           'iconPath': 'static/images/ic_menu_topic_nor.png',
           'selectedIconPath': 'static/images/ic_menu_topic_pressed.png',
           'text': '预约'
@@ -97,9 +144,9 @@ export default class extends wepy.app {
           'text': '充值'
         },
         {
-          'pagePath': 'pages/category/catalog',
+          'pagePath': 'pages/topic/index',
           'iconPath': 'static/images/ic_menu_sort_nor.png',
-          'selectedIconPath': 'static/images/ic_menu_shoping_pressed.png',
+          'selectedIconPath': 'static/images/ic_menu_sort_pressed.png',
           'text': '活动'
         },
         {
