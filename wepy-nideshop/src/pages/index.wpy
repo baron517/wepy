@@ -776,11 +776,6 @@
     }
     onLoad() {
 
-
-      // wx.navigateTo({
-      //   url: "shouquan"
-      // })
-
       this.getLunbo();
       this.getIndexData();
 
