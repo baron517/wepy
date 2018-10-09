@@ -16,22 +16,46 @@
 </template>
 
 <script>
-  import wepy from 'wepy'
+    import wepy from 'wepy'
+    import util from '../utils/util.js'
+    import api from '../config/api.js'
 
   export default class Example extends wepy.page {
     config = {
       navigationBarTitleText: '用户授权'
     }
 
+      async  userInfoSave(obj) {
+
+          let rs = await util.request(api.userInfoSave,obj,"post");
+          wx.navigateTo({
+              url: "index"
+          })
+
+      }
+
      methods = {
         onGotUserInfo: function (e) {
           console.log(e.detail.errMsg)
-          console.log(e.detail.userInfo)
-          console.log(e.detail.rawData)
+            if(e.detail.errMsg=="getUserInfo:ok")
+            {
+                console.log(e.detail.userInfo.avatarUrl);
+                console.log(this.$parent.globalData.userInfo);
+                this.$parent.globalData.userInfo.avatar=e.detail.userInfo.avatarUrl;
+                this.$parent.globalData.userInfo.sex=e.detail.userInfo.gender;
+                this.$parent.globalData.userInfo.username=e.detail.userInfo.nickName;
 
-          this.$parent.globalData.userInfo = res.data.userInfo
-          this.$parent.globalData.token = res.data.token
+                wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
 
+                var obj=this.$parent.globalData.userInfo;
+
+                console.log(obj);
+                this.userInfoSave(obj);
+
+
+
+
+            }
 
         }
      }

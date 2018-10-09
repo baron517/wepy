@@ -113,9 +113,9 @@
             <image class="img" src="{{topicList.hy_img}}" background-size="cover"></image>
 
             <view class="info-right">
-            <view class="title"><text class="left-col">{{topicList.hy_name}}</text><text class="right-col">{{topicList.hy_shijian}}分钟</text></view>
-            <view class="desc"><text class="left-col yuanjia">价格：￥{{topicList.hy_yuanjia}}</text>  <text class="right-col">{{topicList.hy_yitiyan}}人已体验</text></view>
-            <view class="desc"><text class="text">套餐：￥{{topicList.hy_xianjia_text}}</text></view>
+            <view class="title"><text class="left-col">{{topicList.hy_name}}</text></view>
+            <view class="desc"><text class="left-col yuanjia">价格：￥{{topicList.hy_jiage}}</text>  </view>
+            <view class="desc"><text class="text">折扣：消费打{{topicList.hy_zhekou}}折</text></view>
             </view>
 
           </view>
@@ -130,7 +130,7 @@
 
     </scroll-view>
 
-    <view class="bottom-btn">去支付(￥<text class="text">{{topicList.hy_xianjia}}</text>)</view>
+    <view class="bottom-btn">去支付(￥<text class="text">{{topicList.hy_jiage}}</text>)</view>
   </view>
 </template>
 

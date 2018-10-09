@@ -27,8 +27,7 @@ async function request(url, data = {}, method = 'GET') {
     data: data,
     method: method,
     header: {
-      'Content-Type': 'application/json',
-      'X-Nideshop-Token': wepy.getStorageSync('token')
+      'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
   if (res.statusCode === 200) {

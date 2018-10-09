@@ -2,6 +2,9 @@ const ApiRootUrl = 'http://106.14.44.160:8360/api/';
 const ServerUrl='https://yfmy.pro.youzewang.com';
 
 module.exports = {
+
+  getUserInfo: ServerUrl + '/Api/CommonApi/getUserInfo',
+  userInfoSave: ServerUrl + '/Api/CommonApi/userInfoSave',
   IndexUrl: ServerUrl+'/Api/CommonApi/getJishiList', // 首页数据接口
   getLunbo: ServerUrl+'/Api/CommonApi/getLunbo',
   CatalogList: ApiRootUrl + 'catalog/index',  // 分类目录全部分类数据接口
