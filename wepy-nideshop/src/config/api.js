@@ -4,7 +4,9 @@ const ServerUrl='https://yfmy.pro.youzewang.com';
 module.exports = {
 
   getUserInfo: ServerUrl + '/Api/CommonApi/getUserInfo',
+  getOpenid: ServerUrl + '/Api/CommonApi/getOpenid',
   userInfoSave: ServerUrl + '/Api/CommonApi/userInfoSave',
+  weixinPay: ServerUrl + '/Api/CommonApi/weixinPay',
   IndexUrl: ServerUrl+'/Api/CommonApi/getJishiList', // 首页数据接口
   getLunbo: ServerUrl+'/Api/CommonApi/getLunbo',
   CatalogList: ApiRootUrl + 'catalog/index',  // 分类目录全部分类数据接口

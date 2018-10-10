@@ -115,7 +115,7 @@
 
             <view class="info-right">
             <view class="title"><text class="left-col">{{item.hy_name}}</text></view>
-            <view class="desc"><text class="left-col yuanjia">价格：￥{{item.hy_jiage}}</text>  ></view>
+            <view class="desc"><text class="left-col yuanjia">价格：￥{{item.hy_jiage}}</text></view>
             <view class="desc"><text class="text">折扣：消费打{{item.hy_zhekou}}折</text></view>
             </view>
 

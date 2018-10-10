@@ -186,7 +186,7 @@ export default class extends wepy.app {
     var that=this;
 
     async function getUserInfo(code) {
-      let rs = await util.request(api.getUserInfo,{code:code});
+      let rs = await util.request(api.getOpenid,{code:code});
 
       console.log(rs.user_info.username);
 

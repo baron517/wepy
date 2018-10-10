@@ -93,7 +93,7 @@
     font-size: 27rpx;
   }
 
-  .bottom-btn{position: fixed;bottom:0;left:0;width:100%;left:0;line-height: 60rpx;background: #d9282e;color:#fff;text-align: center;}
+  .bottom-btn{position: fixed;bottom:0;left:0;width:100%;left:0;line-height: 80rpx;background: #d9282e;color:#fff;text-align: center;}
  .bottom-btn .text{color:#fff;}
 
   .info-col{padding:20rpx 30rpx;}
@@ -130,7 +130,7 @@
 
     </scroll-view>
 
-    <view class="bottom-btn">去支付(￥<text class="text">{{topicList.hy_jiage}}</text>)</view>
+    <view class="bottom-btn" @tap="zhifu('{{topicList}}')">去支付(￥<text class="text">{{topicList.hy_jiage}}</text>)</view>
   </view>
 </template>
 
@@ -154,6 +154,28 @@
       this.id = parseInt(options.id);
       await this.getTopic()
     }
+    async getUserInfo() {
+
+      let res = await util.request(api.getUserInfo, { m_id: this.$parent.globalData.userInfo.m_id });
+      if(res.code==1000)
+      {
+        this.$parent.globalData.userInfo=res.data;
+        wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
+        console.log(this.$parent.globalData.userInfo);
+                
+      }
+
+      wepy.showToast({
+        title: "支付成功",
+        duration: 2000
+      })
+
+       wx.switchTab({
+           url: "/pages/ucenter/index"
+           })
+
+
+    }
     async getTopic() {
       this.scrollTop = 0
       this.topicList = []
@@ -175,7 +197,62 @@
       }
       wepy.hideToast()
     }
+
+     async weixinPay(obj) {
+     
+       console.log(this.$parent.globalData.userInfo);
+
+       if(this.$parent.globalData.userInfo.is_huiyuan)
+       {
+         util.showErrorToast('已经是会员了');
+         return;
+       }
+
+       var body=obj.hy_name+"#"+obj.hy_zhekou+"#1#"+obj.hy_img;
+       let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:obj.hy_jiage,detail:"ka",body:body},"post");
+
+       
+       if(res.code==1000)
+       {
+         console.log(res);
+          var $that=this;
+         wx.requestPayment({
+        'timeStamp': res.timeStamp,
+        'nonceStr': res.nonceStr,
+        'package': res.package,
+        'signType': res.signType,
+        'paySign': res.paySign,
+        'success':function(res){
+          console.log(res);
+            $that.getUserInfo();
+        },
+        'fail':function(res){},
+        'complete':function(res){
+          console.log("完成");
+          console.log(res);
+
+        }
+         });
+
+          console.log("支付");
+       
+
+       }
+
+      
+
+
+    }
+
+
     methods = {
+
+      zhifu(money)
+      {
+
+        this.weixinPay(money);
+
+      }
 
     }
   }
