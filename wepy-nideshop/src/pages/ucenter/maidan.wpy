@@ -124,10 +124,28 @@
         <view class="h top">
           <view class="l">杭州胤妃美业</view>
         </view>
+
+        <view class="goods">
+          <view class="info">
+            <view class="name">选择项目</view>
+            <view class="number">还未选择<text class="iconfont icon-arrow-right"></text></view>
+          </view>
+        </view>
+
+        <view class="goods">
+          <view class="info">
+            <view class="name">服务人员</view>
+            <view class="number" @tap="xuanzeRenyuan()">还未选择<text class="iconfont icon-arrow-right"></text></view>
+          </view>
+        </view>
+
+
         <view class="h">
           <view class="l">消费总金额(元)</view>
           <view class="r"><input value="{{money}}" maxlength="6" bindinput="bindUsernameInput" style="width:480rpx;text-align: right;" placeholder="请询问店员后输入" type="text" ></view>
         </view>
+
+
         <view class="goods">
           <view class="info">
             <view class="name">优惠券(元)</view>
@@ -143,7 +161,7 @@
       </view>
 
       <view style="padding:30rpx;">
-      <view class="btn">立即买单</view>
+      <view class="btn" @tap="maidan()">立即买单</view>
       </view>
 
     </view>
@@ -167,6 +185,14 @@
     }
 
     methods = {
+      maidan(e)
+      {
+
+      },
+      xuanzeRenyuan()
+      {
+
+      },
       bindUsernameInput(e)
       {
         this.money = e.detail.value;

@@ -72,6 +72,7 @@ export default class extends wepy.app {
       'pages/index',
       'pages/category/category',
       'pages/category/catalog',
+      'pages/category/jishiXuanze',
       'pages/category/shijian',
       'pages/brand/index',
       'pages/brand/detail',

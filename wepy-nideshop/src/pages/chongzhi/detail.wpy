@@ -200,9 +200,9 @@
 
      async weixinPay(obj) {
      
-       console.log(this.$parent.globalData.userInfo);
+       console.log(this.$parent.globalData.userInfo.is_huiyuan);
 
-       if(this.$parent.globalData.userInfo.is_huiyuan)
+       if(this.$parent.globalData.userInfo.is_huiyuan==1)
        {
          util.showErrorToast('已经是会员了');
          return;
