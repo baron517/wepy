@@ -473,7 +473,7 @@
     <view class="a-section a-new" style="margin-top:0;padding-top:10rpx;">
       <view class="b">
         <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.js_id}}">
-          <navigator url="/pages/ucenter/maidan?id={{item.js_id}}&name={{item.js_name}}">
+          <view @tap="xuanze({{item.js_id}},{{item.js_name}})">
             <image class="img" src="{{item.js_img1}}" background-size="cover"></image>
             <view class="price">
               <text class="top"> 编号：{{item.js_id}}</text>
@@ -481,7 +481,7 @@
             </view>
             <view class="name"><text class="left">{{item.js_danshu}}单</text><text class="right">已为您服务0次</text></view>
 
-          </navigator>
+          </view>
         </view>
       </view>
     </view>
@@ -499,12 +499,24 @@
 
   export default class Catalog extends wepy.page {
     config = {
-      navigationBarTitleText: '预约'
+      navigationBarTitleText: '技师选择'
     }
     data = {
-      newGoods:[]
+      newGoods:[],
+      proName:"",
+      jish_id:"",
+      name:"",
+      money:0,
     }
-    onLoad() {
+    onLoad(options) {
+
+      console.log(options);
+      if(options.money)
+      {
+        this.money = options.money;
+        this.proName=options.pro_name;
+      }
+
 
       console.log("#########88888###");
       this.getIndexData();
@@ -520,8 +532,18 @@
         this.$apply()
       }
     }
-
     methods = {
+
+      xuanze(id,name)
+      {
+
+        console.log("IDDDDDDDDDDDD"+id);
+
+        wx.navigateTo({
+          url: '/pages/ucenter/maidan?jish_id='+id+"&name="+name+"&money="+this.money+"&pro_name="+this.proName　　
+        })
+
+      }
 
 
 

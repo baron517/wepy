@@ -113,6 +113,10 @@
 
   .btn{color: #fff;background: #b4282d;line-height: 80rpx;width:100%;margin:0 auto;text-align: center;}
 
+  .pay-way{height:100rpx;margin-top:30rpx;text-align: center;}
+  .pay-way view{width:230rpx;padding:20rpx 0;display: inline-block;text-align: center;border:1px solid #ddd;border-radius: 8px;margin:0 10rpx;box-sizing: border-box;}
+  .pay-way view.active{border:1px solid #b4282d;color:#b4282d;}
+  .pay-way view.active text{color:#b4282d;}
 </style>
 <template>
   <view class="container">
@@ -126,16 +130,29 @@
         </view>
 
         <view class="goods">
-          <view class="info">
+          <view class="info" @tap="xuanzexiangmu">
             <view class="name">选择项目</view>
-            <view class="number">还未选择<text class="iconfont icon-arrow-right"></text></view>
+            <view class="number">
+
+              <text wx:if="{{proName}}">{{proName}}</text>
+
+              <text wx:elif> 还未选择</text>
+
+              <text class="iconfont icon-arrow-right"></text></view>
           </view>
         </view>
 
         <view class="goods">
           <view class="info">
             <view class="name">服务人员</view>
-            <view class="number" @tap="xuanzeRenyuan()">还未选择<text class="iconfont icon-arrow-right"></text></view>
+            <view class="number" @tap="xuanzeRenyuan()">
+
+              <text wx:if="{{jishiName}}">编号：{{nameId}}-{{jishiName}}</text>
+
+              <text wx:elif> 还未选择</text>
+
+
+              <text class="iconfont icon-arrow-right"></text></view>
           </view>
         </view>
 
@@ -152,12 +169,29 @@
             <view class="number">暂无可用<text class="iconfont icon-arrow-right"></text></view>
           </view>
         </view>
+
+        <view class="b" wx:if="{{isHuiyuan==1}}">
+          <view class="l">会员打折</view>
+          <view class="r" style="color:#b4282d;font-size:32rpx;">
+             打 {{dazhe}}折
+          </view>
+        </view>
+
         <view class="b" wx:if="{{money!=''}}">
           <view class="l">实付金额(元)</view>
           <view class="r" style="color:#b4282d;font-size:32rpx;">
-            ￥{{money}}
+            ￥{{shijiMoney}}
           </view>
         </view>
+
+
+      </view>
+
+      <view class="pay-way">
+
+        <view class="{{active==0?'active':''}}" @tap="zhifu(0)"><text  class="iconfont icon-weixin-copy"></text> 微信支付</view>
+        <view class="{{active==1?'active':''}}" @tap="zhifu(1)"><text class="iconfont icon-yue"></text> 余额支付</view>
+
       </view>
 
       <view style="padding:30rpx;">
@@ -178,9 +212,125 @@
       navigationBarTitleText: '店内买单'
     }
     data = {
-      money:''
+      money:'',
+      shijiMoney:'',
+      nameId:'',
+      active:0,
+      proName:'',
+      dazhe:1,
+      isHuiyuan:0,
+      jishiName:''
     }
-    onLoad() {
+    onLoad(options) {
+
+      this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
+
+      if(this.isHuiyuan)
+      {
+        console.log(this.$parent.globalData.userInfo);
+        this.dazhe=this.$parent.globalData.userInfo.m_hy_zhekou;
+        console.log(this.dazhe);
+      }
+      console.log(options);
+      console.log("开始"+options.pro_name);
+      if(options.jish_id)
+      {
+        this.nameId = options.jish_id;
+        this.jishiName=options.name;
+      }
+
+      if(options.money)
+      {
+        this.money=options.money;
+        this.shijiMoney=this.money*this.dazhe/10;
+        this.proName=options.pro_name;
+      }
+
+      this.$apply()
+
+    }
+
+    async weixinPay(body) {
+
+
+
+      let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:this.shijiMoney,detail:"daodian",body:body},"post");
+
+
+      if(res.code==1000)
+      {
+        console.log(res);
+        var $that=this;
+        wx.requestPayment({
+          'timeStamp': res.timeStamp,
+          'nonceStr': res.nonceStr,
+          'package': res.package,
+          'signType': res.signType,
+          'paySign': res.paySign,
+          'success':function(res){
+            console.log(res);
+
+            wx.switchTab({
+              url: "/pages/index"
+            })
+
+          },
+          'fail':function(res){},
+          'complete':function(res){
+            console.log("完成");
+            console.log(res);
+
+          }
+        });
+
+        console.log("支付");
+
+
+      }
+
+
+
+
+    }
+
+
+    async yuePay()
+    {
+      let res = await util.request(api.yuePay, {
+      openid:this.$parent.globalData.userInfo.openid,
+      p_money:this.shijiMoney,
+      p_xm_name:this.proName,
+      p_js_id:this.nameId,
+      p_js_name:this.jishiName,
+      p_dazhe:this.dazhe,
+      m_id:this.$parent.globalData.userInfo.m_id,
+      p_type:2
+    },"post");
+
+
+      if(res.code==1000)
+      {
+        wepy.showToast({
+          title: "支付成功",
+          duration: 2000
+        })
+
+       setTimeout(function()
+       {
+
+         wx.switchTab({
+           url: "/pages/index"
+         })
+
+       },200)
+
+
+
+      }
+      else
+      {
+        util.showErrorToast('支付失败');
+      }
 
     }
 
@@ -188,14 +338,62 @@
       maidan(e)
       {
 
+       if(this.proName=="")
+       {
+         util.showErrorToast('请选择项目');
+         return;
+       }
+
+        if(this.nameId=="")
+        {
+          util.showErrorToast('请选择技师');
+          return;
+        }
+
+        if(this.shijiMoney<=0||this.shijiMoney=="")
+        {
+          util.showErrorToast("金额不能为0");
+          return;
+        }
+
+
+         if(this.active==1)
+         {
+            this.yuePay();
+         }
+         else
+         {
+
+           var body=this.nameId+"#"+this.jishiName+"#2#"+this.proName+"#"+this.dazhe;
+           this.weixinPay(body)
+
+         }
+
+
+      },
+      zhifu(index)
+      {
+        console.log(index);
+        this.active=index;
+      },
+      xuanzexiangmu()
+      {
+          wx.navigateTo({
+            url: "/pages/ucenter/catalogXuanze?jishi_id="+this.nameId+"&name="+this.jishiName
+          });
       },
       xuanzeRenyuan()
       {
+
+        wx.navigateTo({
+          url: "/pages/ucenter/jishiXuanze?money="+this.money+"&pro_name="+this.proName
+        })
 
       },
       bindUsernameInput(e)
       {
         this.money = e.detail.value;
+        this.shijiMoney=this.money*this.dazhe/10;
         console.log(this.money);
       }
     }

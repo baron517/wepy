@@ -102,6 +102,7 @@
   export default class Index extends wepy.page {
     data = {
       id: 0,
+      js_name:"",
       tabActive:1,
       xiaoShijianList:[],
       jintian:moment().format("MM-DD"),
@@ -125,7 +126,8 @@
         }
 
         wx.navigateTo({
-          url: '/pages/category/category?time='+this.xuanzhong
+          url: '/pages/category/category?time='+this.xuanzhong+"&id="+this.id+"&js_name="+this.js_name
+
         })
 
       },
@@ -279,6 +281,7 @@
     async onLoad (options) {
       // 页面初始化 options为页面跳转所带来的参数
       this.id = parseInt(options.id);
+      this.js_name=options.js_name;
 
       this.chushihua();
 

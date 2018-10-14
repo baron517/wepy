@@ -163,8 +163,10 @@
     <view class="profile-info" bindtap="goLogin">
       <image class="avatar" src="{{userInfo.avatar}}"></image>
       <view class="info">
-        <text class="name">{{userInfo.nickname}}</text>
-        <text class="level">{{userInfo.username}}</text>
+        <text class="name">{{userInfo.username}}</text>
+        <text class="level">余额：{{userInfo.m_yue}} 元</text>
+
+
       </view>
     </view>
 
@@ -249,6 +251,10 @@
     }
     onLoad() {
       console.log(this.$parent.globalData);
+
+
+
+
     }
     onShow() {
       let userInfo = wepy.getStorageSync('userInfo')

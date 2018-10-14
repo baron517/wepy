@@ -114,106 +114,51 @@
   <view class="container">
     <view class="orders">
 
-      <view  class="order" >
+      <view  class="order"  wx:for="{{orderList}}" wx:key="item.yy_id" wx:for-item="item" wx:for-index="index">
         <view class="h top">
           <view class="l">杭州胤妃美业</view>
           <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
         </view>
         <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：待商家确认</view>
+          <view class="l">预约服务时间：{{item.yy_time}}</view>
+          <view class="r" wx:if="{{item.yy_status=='已确认'}}">状态：待支付</view>
+          <view class="r" wx:elif="{{item.yy_status=='已使用'}}">状态：待评价</view>
+
+          <view class="r" wx:else>状态：{{item.yy_status}}</view>
         </view>
         <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
+          <view class="info" wx:for="{{item.yy_pro}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex">
+            <text class="name">编号：{{item.yy_js_id}} {{item.yy_js_name}}</text>
+            <text class="middle">{{iitem.name}}</text>
+            <text class="number">{{iitem.time}}分钟</text>
           </view>
           <view class="status"></view>
         </view>
         <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
-            <button class="btn" data-order-index="{{index}}" catchtap="payOrder">取消预约</button>
-          </view>
-        </view>
-      </view>
+          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">打折后：{{item.allMoney}}</text></view>
 
-      <view  class="order" >
-        <view class="h top">
-          <view class="l">杭州胤妃美业</view>
-          <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
-        </view>
-        <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：待付款</view>
-        </view>
-        <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
+          <view class="r" wx:if="{{item.yy_status=='待商家确认'}}">
+            <button class="btn"  data-order-index="{{index}}" catchtap="quxiao('{{item.yy_id}}',{{index}})">取消预约</button>
           </view>
-          <view class="status"></view>
-        </view>
-        <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
-            <button class="btn" data-order-index="{{index}}" catchtap="payOrder">立即付款</button>
+
+          <view class="r" wx:if="{{item.yy_status=='已确认'}}">
+            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}}')">立即付款</button>
           </view>
+
+          <view class="r" wx:if="{{item.yy_status=='已取消'}}">
+           已取消
+          </view>
+
+          <view class="r" wx:if="{{item.yy_status=='已使用'}}">
+            <button class="btn"  data-order-index="{{index}}" catchtap="pingjia('{{item.yy_id}}',{{index}})">立即评价</button>
+          </view>
+
+
+
         </view>
       </view>
 
 
-      <view  class="order" >
-        <view class="h top">
-          <view class="l">杭州胤妃美业</view>
-          <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
-        </view>
-        <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：待使用</view>
-        </view>
-        <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
-          </view>
-          <view class="status"></view>
-        </view>
-        <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
-            <button class="btn" data-order-index="{{index}}" catchtap="payOrder">立即使用</button>
-          </view>
-        </view>
-      </view>
-
-      <view  class="order" >
-        <view class="h top">
-          <view class="l">杭州胤妃美业</view>
-          <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
-        </view>
-        <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：待评价</view>
-        </view>
-        <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
-          </view>
-          <view class="status"></view>
-        </view>
-        <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
-            <button class="btn" data-order-index="{{index}}" catchtap="payOrder">立即评价</button>
-          </view>
-        </view>
-      </view>
 
     </view>
   </view>
@@ -226,21 +171,119 @@
 
   export default class Order extends wepy.page {
     data = {
-      orderList: []
+      orderList: [],
+      dazhe:10,
+      isHuiyuan:0
     }
     async onLoad() {
       this.getOrderList();
+
+      this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
+
+      if(this.isHuiyuan)
+      {
+        console.log(this.$parent.globalData.userInfo);
+        this.dazhe=this.$parent.globalData.userInfo.m_hy_zhekou;
+        console.log(this.dazhe);
+      }
+
     }
     async getOrderList() {
-      let res =await util.request(api.OrderList);
+      let res =await util.request(api.getAllOrder,{yy_m_id:this.$parent.globalData.userInfo.m_id});
+      console.log(res);
+      if (res.code ==1000) {
 
-      if (res.errno === 0) {
+        for(var i=0;i<res.data.length;i++)
+        {
+          res.data[i].allMoney=(res.data[i].allMoney*(this.dazhe/10)).toFixed(2);
+          res.data[i]["yy_pro"]=JSON.parse(res.data[i]["yy_pro"]);
+        }
+
         this.orderList = res.data;
         this.$apply()
         console.log(this.orderList);
       }
     }
+    async quxiaoCaozuo(yy_id,indexStr) {
+
+      console.log(indexStr);
+
+      let res =await util.request(api.quxiao,{yy_id:yy_id});
+      console.log(res);
+      if (res.code ==1000) {
+
+        this.orderList[indexStr].yy_status="已取消";
+
+        wepy.showToast({
+          title:res.msg,
+          duration: 2000
+        })
+
+        this.$apply()
+        console.log(this.orderList);
+
+      }
+      else {
+
+        util.showErrorToast(res.msg);
+
+      }
+
+    }
+
+    async weixinPay(body,indexStr) {
+
+
+      var that=this;
+
+      let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:this.shijiMoney,detail:"daodian",body:body},"post");
+
+
+      if(res.code==1000)
+      {
+        console.log(res);
+        var $that=this;
+        wx.requestPayment({
+          'timeStamp': res.timeStamp,
+          'nonceStr': res.nonceStr,
+          'package': res.package,
+          'signType': res.signType,
+          'paySign': res.paySign,
+          'success':function(res){
+            console.log(res);
+            this.orderList[indexStr].yy_status="待使用";
+
+
+          },
+          'fail':function(res){},
+          'complete':function(res){
+            console.log("完成");
+            console.log(res);
+
+          }
+        });
+
+        console.log("支付");
+
+
+      }
+
+
+
+
+    }
+
+
     methods = {
+      daifukuan(yy_id,index)
+      {
+        var body=this.nameId+"#"+this.jishiName+"#3#"+this.proName+"#"+this.dazhe+"#"+this.yy_id;
+        this.weixinPay(body);
+      },
+      async quxiao(yy_id,indexStr)
+      {
+        this.quxiaoCaozuo(yy_id,indexStr);
+      },
       async tel () {
           wx.makePhoneCall({
                   phoneNumber: "8888888",

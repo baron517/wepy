@@ -198,24 +198,33 @@
       navList: [],
       goodsList: [],
       id: 0,
-      js_name:"",
+      jishi_id:0,
+      name:'',
       navIndex:0,
       currentCategory: {},
       scrollLeft: 0,
-      allMoney:0,
       scrollTop: 0,
       xm_type: "",
+      allMoney:0,
+      proName:[],
       scrollHeight: 0,
       page: 1,
-      time:'',
       size: 10000
     }
     async onLoad(options) {
       // 页面初始化 options为页面跳转所带来的参数
-      this.id = parseInt(options.id);
-      this.time = options.time;
-      this.js_name=options.js_name;
 
+      console.log(options);
+      if(options.jishi_id)
+      {
+        this.jishi_id= parseInt(options.jishi_id);
+        this.name= options.name;
+      }
+
+
+      if (options.id) {
+        this.id = parseInt(options.id)
+      }
       try {
         let res = await wepy.getSystemInfo()
         if (res) {
@@ -225,69 +234,15 @@
       await this.getCategoryInfo();
       await this.getGoodsList();
     }
-
-    async yuyue(obj)
-    {
-
-    let res = await util.request(api.yuyue,obj,"POST")
-
-      console.log(res);
-
-      if (res.code == 1000) {
-
-        console.log("成功111111111111111");
-        wepy.showToast({
-          title: res.msg,
-          duration: 2000
-        });
-        setTimeout(function()
-        {
-          wx.switchTab({
-            url: "/pages/ucenter/index"
-          });
-        },500);
-
-
-      }
-      else
-      {
-        util.showErrorToast(res.msg);
-      }
-
-    }
-
     methods = {
-      tijiao()
-      {
-        var obj={};
-        obj.yy_js_id=this.id;
-        obj.yy_m_id=this.$parent.globalData.userInfo.m_id;
-        obj.yy_time=this.time;
-        obj.yy_js_name=this.js_name;
-        obj.yy_pro=[];
-        for(var i=0;i<this.navList.length;i++)
-        {
-          if(this.navList[i].selectedList)
-          {
-            obj.yy_pro=obj.yy_pro.concat(this.navList[i].selectedList);
-          }
+      tijiao(){
 
-        }
+        console.log(this.allMoney);
+        console.log(this.proName.join());
 
-        if(obj.yy_pro.length<=0)
-        {
-          util.showErrorToast("请选择项目");
-          return;
-        }
-
-        obj.yy_pro=JSON.stringify(obj.yy_pro);
-
-        obj.yy_money=this.allMoney;
-
-        this.yuyue(obj);
-
-        console.log(obj);
-        console.log(this.navList);
+        wx.navigateTo({
+          url: "/pages/ucenter/maidan?money="+this.allMoney+"&jishi_id="+this.jishi_id+"&name="+this.name+"&pro_name="+this.proName.join()
+        })
 
 
       },
@@ -307,89 +262,103 @@
         {
           this.goodsList[index].selected=false;
           this.allMoney=parseFloat(this.allMoney)-parseFloat(this.goodsList[index].xm_xianjia);
+
+
           var indexValue = navArray.selectedList.indexOf(this.goodsList[index].xm_id);
           if (indexValue > -1) {
             navArray.selectedList.splice(indexValue, 1);
           }
+
+          var indexName = this.proName.indexOf(this.goodsList[index].xm_biaoti);
+          if (indexName > -1) {
+            navArray.selectedList.splice(indexValue, 1);
+            this.proName.splice(indexName,1);
+          }
+
+
+
         }
         else
         {
-          this.goodsList[index].selected=true;
           this.allMoney=parseFloat(this.allMoney)+parseFloat(this.goodsList[index].xm_xianjia);
+          console.log(this.proName);
+          this.proName.push(this.goodsList[index].xm_biaoti);
+          this.goodsList[index].selected=true;
           navArray.selectedList.push(this.goodsList[index].xm_id);
         }
 
-        console.log("####"+navArray.selectedList);
+
+        console.log("####"+this.proName);
 
 
       },
 
       async switchCate (event) {
-          if (this.xm_type === event.currentTarget.dataset.id)
-        {
-          return false
-        }
+    if (this.xm_type === event.currentTarget.dataset.id)
+  {
+    return false
+  }
 
-        this.navIndex=event.currentTarget.dataset.index;
-        var clientX = event.detail.x
-        var currentTarget = event.currentTarget
-        if (clientX < 60) {
-          this.scrollLeft = currentTarget.offsetLeft - 60
-        } else if (clientX > 330) {
-          this.scrollLeft = currentTarget.offsetLeft
-        }
-        this.xm_type = event.currentTarget.dataset.id;
-        await this.getGoodsList()
-        this.$apply()
+  this.navIndex=event.currentTarget.dataset.index;
+  var clientX = event.detail.x
+  var currentTarget = event.currentTarget
+  if (clientX < 60) {
+    this.scrollLeft = currentTarget.offsetLeft - 60
+  } else if (clientX > 330) {
+    this.scrollLeft = currentTarget.offsetLeft
+  }
+  this.xm_type = event.currentTarget.dataset.id;
+  await this.getGoodsList()
+  this.$apply()
 
+  }
+  }
+  async getCategoryInfo () {
+    let res = await util.request(api.GoodsCategory, {id: this.id})
+    if (res.errno === 0) {
+      this.navList = res.data;
+      if(!this.xm_type)
+      {
+        this.xm_type = res.data[0].t_name;
       }
-    }
-    async getCategoryInfo () {
-      let res = await util.request(api.GoodsCategory, {id: this.id})
-      if (res.errno === 0) {
-        this.navList = res.data;
-        if(!this.xm_type)
-        {
-          this.xm_type = res.data[0].t_name;
+      // nav位置
+      let currentIndex = 0
+      let navListCount = this.navList.length
+      for (let i = 0; i < navListCount; i++) {
+        currentIndex += 1
+        if (this.navList[i].id === this.id) {
+          break
         }
-        // nav位置
-        let currentIndex = 0
-        let navListCount = this.navList.length
-        for (let i = 0; i < navListCount; i++) {
-          currentIndex += 1
-          if (this.navList[i].id === this.id) {
-            break
-          }
-        }
-        if (currentIndex > navListCount / 2 && navListCount > 5) {
-          this.scrollLeft = currentIndex * 60
-        }
-        this.$apply()
-
       }
-    }
-    async getGoodsList () {
-        let res = await util.request(api.GoodsList, {categoryId: this.xm_type, page: this.page, size: this.size})
-        if (res.data) {
-          this.goodsList = res.data;
-          var navArray=this.navList[this.navIndex];
-          if(!navArray.selectedList)
-          {
-            navArray.selectedList=[];
-          }
-          for(var i=0;i<this.goodsList.length;i++)
-          {
-             for(var j=0;j<navArray.selectedList.length;j++)
-             {
-                if(navArray.selectedList[j]==this.goodsList[i].xm_id)
-                {
-                  this.goodsList[i].selected=true;
-                }
-             }
-          }
+      if (currentIndex > navListCount / 2 && navListCount > 5) {
+        this.scrollLeft = currentIndex * 60
+      }
+      this.$apply()
 
-          this.$apply()
-        }
     }
+  }
+  async getGoodsList () {
+    let res = await util.request(api.GoodsList, {categoryId: this.xm_type, page: this.page, size: this.size})
+    if (res.data) {
+      this.goodsList = res.data;
+      var navArray=this.navList[this.navIndex];
+      if(!navArray.selectedList)
+      {
+        navArray.selectedList=[];
+      }
+      for(var i=0;i<this.goodsList.length;i++)
+      {
+        for(var j=0;j<navArray.selectedList.length;j++)
+        {
+          if(navArray.selectedList[j]==this.goodsList[i].xm_id)
+          {
+            this.goodsList[i].selected=true;
+          }
+        }
+      }
+
+      this.$apply()
+    }
+  }
   }
 </script>

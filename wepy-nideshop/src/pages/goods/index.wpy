@@ -759,7 +759,7 @@
   </scroll-view>
 
   <view class="bottom-btn">
-    <navigator class="r" url="/pages/category/shijian">立即预约</navigator>
+    <navigator class="r" url="/pages/category/shijian?id={{id}}&js_name={{goods.js_name}}">立即预约</navigator>
   </view>
 
 </template>

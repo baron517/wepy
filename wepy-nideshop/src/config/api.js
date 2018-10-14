@@ -1,5 +1,5 @@
 const ApiRootUrl = 'http://106.14.44.160:8360/api/';
-const ServerUrl='https://yfmy.pro.youzewang.com';
+const ServerUrl='https://wxyy.cnyinfei.com';
 
 module.exports = {
 
@@ -7,6 +7,11 @@ module.exports = {
   getOpenid: ServerUrl + '/Api/CommonApi/getOpenid',
   userInfoSave: ServerUrl + '/Api/CommonApi/userInfoSave',
   weixinPay: ServerUrl + '/Api/CommonApi/weixinPay',
+  yuyue: ServerUrl + '/Api/CommonApi/yuyue',
+  getAllOrder: ServerUrl + '/Api/CommonApi/getAllOrder',
+  getOrder: ServerUrl + '/Api/CommonApi/getOrder',
+  quxiao: ServerUrl + '/Api/CommonApi/quxaoCaozuo',
+  yuePay: ServerUrl + '/Api/CommonApi/yuePay',
   IndexUrl: ServerUrl+'/Api/CommonApi/getJishiList', // 首页数据接口
   getLunbo: ServerUrl+'/Api/CommonApi/getLunbo',
   CatalogList: ApiRootUrl + 'catalog/index',  // 分类目录全部分类数据接口

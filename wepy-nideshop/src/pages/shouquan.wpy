@@ -28,9 +28,18 @@
       async  userInfoSave(obj) {
 
           let rs = await util.request(api.userInfoSave,obj,"post");
-          wx.navigateTo({
-              url: "index"
-          })
+          if(rs.code==1000)
+          {
+
+              wx.switchTab({
+                  url: "/pages/index"
+              })
+          }
+          else
+          {
+              util.showErrorToast('授权失败');
+          }
+
 
       }
 

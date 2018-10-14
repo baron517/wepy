@@ -564,10 +564,10 @@
         <text>会员中心</text>
       </view>
 
-        <navigator  class="item">
+        <view  class="item" @tap="fenxiao">
         <view class="icon-col" style="background:#50c4d6;"><image src="https://yfmy.pro.youzewang.com/images/home/mall.png" background-size="cover"></image></view>
         <text>分销商城</text>
-      </navigator>
+      </view>
 
 
     </view>
@@ -692,6 +692,22 @@
 
     }
     methods = {
+              fenxiao()
+              {
+                console.log("#####3");
+                wx.navigateToMiniProgram({
+                  envVersion:'develop',
+                  appId: 'wxe206957266e9bb55', // 要跳转的小程序的appid
+                  path: 'pages/index/index', // 跳转的目标页面
+                  extarData: {
+                    open: 'auth'
+                  },
+                  success(res) {
+
+                  }
+                })
+
+              },
               tiaozhuan(url)
               {
                   wx.switchTab({
@@ -774,6 +790,7 @@
         this.$apply()
       }
     }
+
     onLoad() {
 
       this.getLunbo();
