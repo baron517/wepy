@@ -2,7 +2,7 @@
   page{
     height: 100%;
     width: 100%;
-    background: #f4f4f4;
+    background: #fff;
   }
 
   .orders{
@@ -114,7 +114,7 @@
   <view class="container">
     <view class="orders">
 
-      <view  class="order"  wx:for="{{orderList}}" wx:key="item.yy_id" wx:for-item="item" wx:for-index="index">
+      <view  class="order">
         <view class="h top">
           <view class="l">杭州胤妃美业</view>
           <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
@@ -134,28 +134,23 @@
           </view>
           <view class="status"></view>
         </view>
-        <view class="b">
-          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">打折后：{{item.allMoney}} 元</text></view>
 
-          <view class="r" wx:if="{{item.yy_status=='待商家确认'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="quxiao('{{item.yy_id}}',{{index}})">取消预约</button>
+        <view style="box-sizing: border-box;padding:20rpx;">
+
+          <view>评分：
+
+            <radio-group bindchange="listenerRadioGroup">
+              <label style="display: inline-block;margin:0 10rpx;" wx:for-items="{{array}}">
+                <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+              </label>
+            </radio-group>
+
+
           </view>
 
-          <view class="r" wx:if="{{item.yy_status=='已确认'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}})">立即付款</button>
-          </view>
-
-          <view class="r" wx:if="{{item.yy_status=='已取消'}}">
-           已取消
-          </view>
-
-          <view class="r" wx:if="{{item.yy_status=='已使用'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="pingjia('{{item.yy_id}}')">立即评价</button>
-          </view>
-
-
-
+          <textarea style="width:100%;border:1px solid #ccc;padding:20rpx;box-sizing: border-box;"></textarea>
         </view>
+
       </view>
 
 
@@ -171,11 +166,23 @@
 
   export default class Order extends wepy.page {
     data = {
-      orderList: [],
+      item: [],
       dazhe:10,
+      yy_id:0,
+      array:[
+        {name: '5分', value: '5', checked: 'true'},
+        {name: '4分', value: '4'},
+        {name: '3分', value: '3'},
+        {name: '2分', value: '2'},
+        {name: '1分', value: '1'},
+      ],
       isHuiyuan:0
     }
-    async onLoad() {
+    async onLoad(options) {
+
+      console.log(options);
+
+      this.yy_id=options.yy_id;
       this.getOrderList();
 
       this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
@@ -189,20 +196,19 @@
 
     }
     async getOrderList() {
-      let res =await util.request(api.getAllOrder,{yy_m_id:this.$parent.globalData.userInfo.m_id});
+      let res =await util.request(api.getOrderDetail,{yy_id:this.yy_id});
       console.log(res);
       if (res.code ==1000) {
 
-        for(var i=0;i<res.data.length;i++)
-        {
-          console.log(this.dazhe/10);
-          res.data[i].allMoney=(res.data[i].yy_money*(this.dazhe/10)).toFixed(2);
-          res.data[i]["yy_pro"]=JSON.parse(res.data[i]["yy_pro"]);
-        }
 
-        this.orderList = res.data;
+          console.log(this.dazhe/10);
+          res.data.allMoney=(res.data.yy_money*(this.dazhe/10)).toFixed(2);
+          res.data["yy_pro"]=JSON.parse(res.data["yy_pro"]);
+
+
+        this.item = res.data;
         this.$apply()
-        console.log(this.orderList);
+        console.log(this.item);
       }
     }
     async quxiaoCaozuo(yy_id,indexStr) {
@@ -291,9 +297,7 @@
     methods = {
       pingjia(yy_id)
       {
-        wx.navigateTo({
-          url: "pingjia?yy_id="+yy_id
-        })
+
       },
       daifukuan(yy_id,index)
       {

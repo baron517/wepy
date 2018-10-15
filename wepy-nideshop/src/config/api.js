@@ -12,6 +12,9 @@ module.exports = {
   getMyYouhuiquan: ServerUrl + '/Api/CommonApi/getMyYouhuiquan',
   lingquYouhuiquan: ServerUrl + '/Api/CommonApi/lingquYouhuiquan',
   getAllOrder: ServerUrl + '/Api/CommonApi/getAllOrder',
+
+  getOrderDetail: ServerUrl + '/Api/CommonApi/getOrderDetail',
+
   getOrder: ServerUrl + '/Api/CommonApi/getOrder',
   quxiao: ServerUrl + '/Api/CommonApi/quxaoCaozuo',
   yuePay: ServerUrl + '/Api/CommonApi/yuePay',
@@ -25,6 +28,8 @@ module.exports = {
   GoodsCount: ApiRootUrl + 'goods/count',  // 统计商品总数
   GoodsList: ServerUrl + '/Api/CommonApi/getProList',
   proDetail: ServerUrl + '/Api/CommonApi/getProDetail',
+
+
 
 
   couponList: ServerUrl + '/Api/CommonApi/couponList',
