@@ -184,7 +184,7 @@
 
     <view class="coupon-list">
 
-      <view class="item" wx:for="{{couponList}}" wx:key="item.yhq_id">
+      <view class="item" wx:for="{{couponList}}" wx:key="item.yhq_id" wx:for-item="item" wx:for-index="index">
         <view class="tag">优惠券</view>
         <view class="content">
           <view class="left">
@@ -192,7 +192,7 @@
             <view class="time">失效时间：{{item.yhq_exp_date}}</view>
           </view>
           <view class="right">
-            <button class="go" @tap="shiyong">使用</button>
+            <button class="go" @tap="shiyong({{index}})">使用</button>
           </view>
         </view>
         <view class="condition">
@@ -214,15 +214,39 @@
   export default class Coupon extends wepy.page {
 
     config = {
-      navigationBarTitleText: '我的优惠券'
+      navigationBarTitleText: '优惠券'
     }
 
     data={
       couponList:[]
     }
-    methods = {
-      shiyong()
+    async lingquYouhuiquan(index)
+    {
+      var obj=this.couponList[index];
+      obj.yhq_m_id=this.$parent.globalData.userInfo.m_id;
+      let res =await util.request(api.lingquYouhuiquan,obj,"post");
+
+      if (res.code == 1000) {
+
+        wepy.showToast({
+          title: res.msg,
+          complete: function() {
+
+          }
+        })
+
+      }
+      else
       {
+        util.showErrorToast(res.msg);
+      }
+
+    }
+
+    methods = {
+      shiyong(index)
+      {
+        console.log(index);
         console.log("使用");
         wx.switchTab({
           url:"/pages/category/catalog"
@@ -232,9 +256,12 @@
     }
     async couponList()
     {
-      let res =await util.request(api.couponList);
 
-      if (res.errno === 0) {
+      var yhq_m_id=this.$parent.globalData.userInfo.m_id;
+
+      let res =await util.request(api.getMyYouhuiquan,{yhq_m_id:yhq_m_id});
+
+      if (res.code == 1000) {
 
         this.couponList = res.data;
         this.$apply()
