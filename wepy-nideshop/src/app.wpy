@@ -176,7 +176,7 @@ export default class extends wepy.app {
     userInfo: {
       nickname: 'Hi,游客',
       username: '点击去登录',
-      avatar: 'https://yfmy.pro.youzewang.com/images/touxiang.png'
+      avatar: 'https://wxyy.cnyinfei.com/images/touxiang.png'
     },
     token: ''
   }
@@ -188,45 +188,6 @@ export default class extends wepy.app {
   }
 
   async onLaunch() {
-
-
-    var that=this;
-
-    async function getUserInfo(code) {
-      let rs = await util.request(api.getOpenid,{code:code});
-
-      console.log(rs.user_info.username);
-
-       if(rs) {
-       console.log('app login');
-         wepy.setStorageSync('userInfo',rs.user_info);
-         that.globalData.userInfo = rs.user_info;
-         if(!that.globalData.userInfo.username)
-         {
-           wx.navigateTo({
-           url: "shouquan"
-           })
-         }
-       }
-
-
-
-    }
-
-
-    wx.login({
-      //获取code
-      success: function(res) {
-
-        console.log("启动");
-
-        var code = res.code //返回code
-        getUserInfo(code);
-
-
-      }
-    })
-
 
 
 

@@ -142,7 +142,7 @@
           </view>
 
           <view class="r" wx:if="{{item.yy_status=='已确认'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}}')">立即付款</button>
+            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}})">立即付款</button>
           </view>
 
           <view class="r" wx:if="{{item.yy_status=='已取消'}}">
@@ -195,7 +195,8 @@
 
         for(var i=0;i<res.data.length;i++)
         {
-          res.data[i].allMoney=(res.data[i].allMoney*(this.dazhe/10)).toFixed(2);
+          console.log(this.dazhe/10);
+          res.data[i].allMoney=(res.data[i].yy_money*(this.dazhe/10)).toFixed(2);
           res.data[i]["yy_pro"]=JSON.parse(res.data[i]["yy_pro"]);
         }
 
@@ -235,8 +236,9 @@
 
 
       var that=this;
+      var shijiMoney=this.orderList[indexStr].allMoney;
 
-      let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:this.shijiMoney,detail:"daodian",body:body},"post");
+      let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:shijiMoney,detail:"daodian",body:body},"post");
 
 
       if(res.code==1000)
@@ -251,7 +253,15 @@
           'paySign': res.paySign,
           'success':function(res){
             console.log(res);
-            this.orderList[indexStr].yy_status="待使用";
+
+             wepy.showToast({
+              title: "支付成功",
+              duration: 2000
+            })
+
+            that.orderList[indexStr].yy_status="待使用";
+
+           
 
 
           },
@@ -267,6 +277,10 @@
 
 
       }
+      else
+      {
+        util.showErrorToast('支付失败');
+      }
 
 
 
@@ -275,10 +289,36 @@
 
 
     methods = {
+      pingjia(yy_id,index)
+      {
+
+      },
       daifukuan(yy_id,index)
       {
-        var body=this.nameId+"#"+this.jishiName+"#3#"+this.proName+"#"+this.dazhe+"#"+this.yy_id;
-        this.weixinPay(body);
+
+        console.log(index);
+        var dangqian=this.orderList[index];
+        console.log(dangqian);
+
+        var proName="";
+        for(var i=0;i<dangqian.yy_pro.length;i++)
+        {
+          if(i==0)
+          {
+            proName=proName+dangqian.yy_pro[i].name;
+          }
+          else
+          {
+            proName=proName+","+dangqian.yy_pro[i].name;
+          }
+        }
+
+        var body=dangqian.yy_js_id+"#"+dangqian.yy_js_name+"#3#"+proName+"#"+this.dazhe+"#"+yy_id;
+
+        console.log(body);
+
+        this.weixinPay(body,index);
+
       },
       async quxiao(yy_id,indexStr)
       {

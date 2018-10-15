@@ -530,42 +530,42 @@
     </swiper>
     <view class="m-menu">
       <view  class="item"  @tap="tiaozhuan('category/catalog')">
-        <view class="icon-col"><image src="https://yfmy.pro.youzewang.com/images/home/yuyue.png" background-size="cover"></image></view>
+        <view class="icon-col"><image src="https://wxyy.cnyinfei.com/images/home/yuyue.png" background-size="cover"></image></view>
         <text>技师预约</text>
       </view>
 
         <navigator  class="item" url="/pages/ucenter/couponList">
-        <view class="icon-col" style="background:#ff6c44;"><image src="https://yfmy.pro.youzewang.com/images/home/youhuiquan.png" background-size="cover"></image></view>
+        <view class="icon-col" style="background:#ff6c44;"><image src="https://wxyy.cnyinfei.com/images/home/youhuiquan.png" background-size="cover"></image></view>
         <text>优惠券</text>
       </navigator>
 
         <view  class="item"  @tap="tiaozhuan('chongzhi/index')">
-        <view class="icon-col" style="background:#ff962a;"><image src="https://yfmy.pro.youzewang.com/images/home/chongzhi.png" background-size="cover"></image></view>
+        <view class="icon-col" style="background:#ff962a;"><image src="https://wxyy.cnyinfei.com/images/home/chongzhi.png" background-size="cover"></image></view>
         <text>会员充值</text>
       </view>
 
         <navigator  class="item" url="/pages/ucenter/maidan">
-        <view class="icon-col" style="background:#947fff;"><image src="https://yfmy.pro.youzewang.com/images/home/maidan.png" background-size="cover"></image></view>
+        <view class="icon-col" style="background:#947fff;"><image src="https://wxyy.cnyinfei.com/images/home/maidan.png" background-size="cover"></image></view>
         <text>店内买单</text>
       </navigator>
 
       <view  class="item" @tap="tiaozhuan('topic/index')" >
-        <view class="icon-col" style="background:#fe5e5e;"><image src="https://yfmy.pro.youzewang.com/images/home/huodong.png" background-size="cover"></image></view>
+        <view class="icon-col" style="background:#fe5e5e;"><image src="https://wxyy.cnyinfei.com/images/home/huodong.png" background-size="cover"></image></view>
         <text>活动</text>
       </view>
 
         <navigator  class="item" url="/pages/ucenter/order">
-        <view class="icon-col" style="background:#3298e6;"><image src="https://yfmy.pro.youzewang.com/images/home/wodeyuyue.png" background-size="cover"></image></view>
+        <view class="icon-col" style="background:#3298e6;"><image src="https://wxyy.cnyinfei.com/images/home/wodeyuyue.png" background-size="cover"></image></view>
         <text>我的预约</text>
       </navigator>
 
         <view  class="item"  @tap="tiaozhuan('ucenter/index')">
-        <view class="icon-col" style="background:#fe6194;"><image src="https://yfmy.pro.youzewang.com/images/home/wo.png" background-size="cover"></image></view>
+        <view class="icon-col" style="background:#fe6194;"><image src="https://wxyy.cnyinfei.com/images/home/wo.png" background-size="cover"></image></view>
         <text>会员中心</text>
       </view>
 
         <view  class="item" @tap="fenxiao">
-        <view class="icon-col" style="background:#50c4d6;"><image src="https://yfmy.pro.youzewang.com/images/home/mall.png" background-size="cover"></image></view>
+        <view class="icon-col" style="background:#50c4d6;"><image src="https://wxyy.cnyinfei.com/images/home/mall.png" background-size="cover"></image></view>
         <text>分销商城</text>
       </view>
 
@@ -696,7 +696,7 @@
               {
                 console.log("#####3");
                 wx.navigateToMiniProgram({
-                  envVersion:'develop',
+                  envVersion:'trial',
                   appId: 'wxe206957266e9bb55', // 要跳转的小程序的appid
                   path: 'pages/index/index', // 跳转的目标页面
                   extarData: {
@@ -791,6 +791,54 @@
       }
     }
 
+        async  getUserInfo(code)
+         {
+
+
+          let rs = await util.request(api.getOpenid,{code:code});
+
+          console.log("登录");
+          console.log(rs.user_info.username);
+
+          if(rs)
+          {
+          console.log('app login');
+            wepy.setStorageSync('userInfo',rs.user_info);
+            this.$parent.globalData.userInfo = rs.user_info;
+            if(!this.$parent.globalData.userInfo.username)
+            {
+              wx.navigateTo({
+              url: "shouquan"
+              })
+            }
+          }
+
+
+        }
+
+    onShow()
+    {
+      
+
+        var that=this;
+
+        wx.login({
+          //获取code
+          success: function(res) {
+
+            console.log("启动");
+
+            var code = res.code //返回code
+            that.getUserInfo(code);
+
+
+          }
+        })
+
+
+
+
+    }
     onLoad() {
 
       this.getLunbo();
