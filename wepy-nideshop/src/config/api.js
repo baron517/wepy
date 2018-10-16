@@ -14,6 +14,7 @@ module.exports = {
   getAllOrder: ServerUrl + '/Api/CommonApi/getAllOrder',
 
   getOrderDetail: ServerUrl + '/Api/CommonApi/getOrderDetail',
+  pingjia: ServerUrl + '/Api/CommonApi/pingjia',
 
   getOrder: ServerUrl + '/Api/CommonApi/getOrder',
   quxiao: ServerUrl + '/Api/CommonApi/quxaoCaozuo',

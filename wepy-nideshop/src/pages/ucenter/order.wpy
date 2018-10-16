@@ -135,7 +135,7 @@
           <view class="status"></view>
         </view>
         <view class="b">
-          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">打折后：{{item.allMoney}} 元</text></view>
+          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">会员打折后：{{item.allMoney}} 元</text></view>
 
           <view class="r" wx:if="{{item.yy_status=='待商家确认'}}">
             <button class="btn"  data-order-index="{{index}}" catchtap="quxiao('{{item.yy_id}}',{{index}})">取消预约</button>
@@ -175,8 +175,12 @@
       dazhe:10,
       isHuiyuan:0
     }
-    async onLoad() {
+    async onShow()
+    {
       this.getOrderList();
+    }
+
+    async onLoad() {
 
       this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
 
@@ -232,48 +236,37 @@
 
     }
 
-    async weixinPay(body,indexStr) {
 
-
-      var that=this;
-      var shijiMoney=this.orderList[indexStr].allMoney;
-
-      let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:shijiMoney,detail:"daodian",body:body},"post");
+    async yuePay()
+    {
+      let res = await util.request(api.yuePay, {
+      openid:this.$parent.globalData.userInfo.openid,
+      p_money:this.shijiMoney,
+      p_xm_name:this.proName,
+      p_js_id:this.nameId,
+      p_js_name:this.jishiName,
+      p_dazhe:this.dazhe,
+      m_id:this.$parent.globalData.userInfo.m_id,
+      p_type:2
+    },"post");
 
 
       if(res.code==1000)
       {
-        console.log(res);
-        var $that=this;
-        wx.requestPayment({
-          'timeStamp': res.timeStamp,
-          'nonceStr': res.nonceStr,
-          'package': res.package,
-          'signType': res.signType,
-          'paySign': res.paySign,
-          'success':function(res){
-            console.log(res);
+        wepy.showToast({
+          title: "支付成功",
+          duration: 2000
+        })
 
-             wepy.showToast({
-              title: "支付成功",
-              duration: 2000
-            })
+        setTimeout(function()
+        {
 
-            that.orderList[indexStr].yy_status="待使用";
+          wx.switchTab({
+            url: "/pages/index"
+          })
 
-           
+        },200)
 
-
-          },
-          'fail':function(res){},
-          'complete':function(res){
-            console.log("完成");
-            console.log(res);
-
-          }
-        });
-
-        console.log("支付");
 
 
       }
@@ -282,11 +275,7 @@
         util.showErrorToast('支付失败');
       }
 
-
-
-
     }
-
 
     methods = {
       pingjia(yy_id)
@@ -319,7 +308,11 @@
 
         console.log(body);
 
-        this.weixinPay(body,index);
+        wx.navigateTo({
+          url: "pay?yy_id="+yy_id
+        })
+
+        //this.weixinPay(body,index);
 
       },
       async quxiao(yy_id,indexStr)
