@@ -123,9 +123,9 @@
     data = {
       topicList: [],
       page: 1,
-      isLoading:0,
-      loading:"正在加载",
       size: 10,
+      isLoading:1,
+      loading:"正在加载",
       count: 0,
       scrollTop: 0,
       showPage: false
@@ -160,12 +160,13 @@
     methods = {
       dibu(e)
       {
-        this.isLoading=1;
-        var $that=this;
-        setTimeout(function()
-        {
-          $that.getTopic();
-        },1000)
+        if(this.isLoading) {
+          this.isLoading = 1;
+          var $that = this;
+          setTimeout(function () {
+            $that.getTopic();
+          }, 1000)
+        }
 
 
       }

@@ -1,0 +1,539 @@
+<style lang="less">
+  page{
+    height: 100%;
+    width: 100%;
+    background: #fff;
+  }
+
+  .orders{
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .order{
+    margin-top: 20rpx;
+    background: #fff;
+  }
+
+  .order .h{
+    height: 83.3rpx;
+    line-height: 83.3rpx;
+    margin-left: 31.25rpx;
+    padding-right: 31.25rpx;
+    border-bottom: 1px solid #f4f4f4;
+    color: #333;
+  }
+
+  .order .h .l{
+    float: left;
+  }
+
+  .order .h.top .l{font-size: 32rpx;color:#000;}
+  .order .h.top .r{font-size: 32rpx;color:#000;}
+
+  .order .h .r{
+    float: right;
+    color: #b4282d;
+  }
+
+  .order .goods{
+    align-items: center;
+    padding:0  31.25rpx;
+  }
+
+  .order .goods .img{
+    height:145.83rpx;
+    width:145.83rpx;
+    background: #f4f4f4;
+  }
+
+  .order .goods .img image{
+    height:145.83rpx;
+    width:145.83rpx;
+  }
+
+  .order .goods .info{
+    height: 60rpx;
+  }
+
+  .order .goods text{
+    display: block;
+    width:33.33%;
+    float:left;
+    height: 60rpx;
+    line-height: 60rpx;
+    color: #333;
+    font-size: 30rpx;
+  }
+  .order .goods .middle{
+    text-align: center;;
+  }
+
+  .order .goods .number{
+    text-align: right;;
+  }
+
+  .order .goods .status{
+    width:105rpx;
+    color: #b4282d;
+    font-size: 25rpx;
+  }
+
+  .order .b{
+    height: 103rpx;
+    line-height: 103rpx;
+    margin-left: 31.25rpx;
+    padding-right: 31.25rpx;
+    border-top: 1px solid #f4f4f4;
+    font-size: 30rpx;
+    color: #333;
+  }
+
+  .order .b .l{
+    float: left;
+  }
+
+  .order .b .r{
+    float: right;
+  }
+
+  .order .b .btn{
+    margin-top: 19rpx;
+    height: 64.5rpx;
+    line-height: 64.5rpx;
+    text-align: center;
+    padding: 0 20rpx;
+    border-radius: 5rpx;
+    font-size: 28rpx;
+    color: #fff;
+    background: #b4282d;
+  }
+
+  .order .goods .info{
+    height: 80rpx;
+  }
+
+  .order .goods .info view{
+    display: block;
+    width:50%;
+    float:left;
+    height: 80rpx;
+    line-height: 80rpx;
+    color: #333;
+    font-size: 30rpx;
+  }
+  .order .goods .middle{
+    text-align: center;;
+  }
+
+  .order .goods .number{
+    text-align: right;;
+  }
+
+  .order .goods .status{
+    width:105rpx;
+    color: #b4282d;
+    font-size: 25rpx;
+  }
+
+  .bottom-btn{width:100%;margin:40rpx auto;background: #b4282d;color:#fff;padding:20rpx 0;text-align: center;}
+
+  .pay-way{height:100rpx;margin-top:30rpx;text-align: center;}
+  .pay-way view{width:230rpx;padding:20rpx 0;display: inline-block;text-align: center;border:1px solid #ddd;border-radius: 8px;margin:0 10rpx;box-sizing: border-box;}
+  .pay-way view.active{border:1px solid #b4282d;color:#b4282d;}
+  .pay-way view.active text{color:#b4282d;}
+
+</style>
+<template>
+  <view class="container">
+    <view class="orders">
+
+      <view  class="order">
+        <view class="h top">
+          <view class="l">杭州胤妃美业</view>
+          <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
+        </view>
+        <view class="h">
+          <view class="l">预约服务时间：{{item.yy_time}}</view>
+          <view class="r" wx:if="{{item.yy_status=='已确认'}}">状态：待支付</view>
+          <view class="r" wx:elif="{{item.yy_status=='已使用'}}">状态：待评价</view>
+
+          <view class="r" wx:else>状态：{{item.yy_status}}</view>
+        </view>
+
+        <view class="goods">
+          <view class="info" wx:for="{{item.yy_pro}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex">
+            <text class="name">编号：{{item.yy_js_id}} {{item.yy_js_name}}</text>
+            <text class="middle">{{iitem.name}}</text>
+            <text class="number">{{iitem.time}}分钟</text>
+          </view>
+          <view class="status"></view>
+        </view>
+
+        <view class="b">
+          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}"> 会员打折后：{{item.allMoney}} 元</text></view>
+
+        </view>
+
+
+
+        <view class="goods">
+          <view class="info">
+            <view class="name">优惠券(元)</view>
+            <view class="number">
+
+              <picker bindchange="bindPickerChange" value="{{index}}" range="{{arrayList}}" range-key="name">
+                <view class="picker">
+                 {{yhq_text}}
+                </view>
+              </picker>
+
+
+              <text style="float:none;display:inline-block;" class="iconfont icon-arrow-right"></text>
+
+            </view>
+          </view>
+        </view>
+
+        <view class="b">
+          <view class="l red">支付金额：￥{{payMoney}}</view>
+
+        </view>
+
+
+        <view class="pay-way">
+
+          <view class="{{active==0?'active':''}}" @tap="zhifu(0)"><text  class="iconfont icon-weixin-copy"></text> 微信支付</view>
+          <view class="{{active==1?'active':''}}" @tap="zhifu(1)"><text class="iconfont icon-yue"></text> 余额支付</view>
+
+        </view>
+
+        <view style="box-sizing: border-box;padding:20rpx;">
+
+
+          <view class="bottom-btn" @tap="fukuan">立即付款</view>
+
+        </view>
+
+
+
+
+      </view>
+
+
+
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import util from '../../utils/util.js'
+  import api from '../../config/api.js'
+
+  export default class Order extends wepy.page {
+    config = {
+      navigationBarTitleText: '支付'
+    }
+    data = {
+      item: [],
+      arrayList:[],
+      dazhe:10,
+      yy_id:0,
+      payMoney:0,
+      yy_pingjia_text:'',
+      yy_pingjia:5,
+      yhq_text:"请选择",
+      yhq_money:0,
+      p_yhq_id:0,
+      active:0,
+      array:[
+        {name: '5分', value: '5', checked: 'true'},
+        {name: '4分', value: '4'},
+        {name: '3分', value: '3'},
+        {name: '2分', value: '2'},
+        {name: '1分', value: '1'},
+      ],
+      isHuiyuan:0
+    }
+    async onLoad(options) {
+
+      console.log(options);
+
+      this.yy_id=options.yy_id;
+      this.getOrderList();
+
+
+
+      this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
+
+      if(this.isHuiyuan)
+      {
+        console.log(this.$parent.globalData.userInfo);
+        this.dazhe=this.$parent.globalData.userInfo.m_hy_zhekou;
+        console.log(this.dazhe);
+      }
+
+    }
+
+    async couponList()
+    {
+
+      var yhq_m_id=this.$parent.globalData.userInfo.m_id;
+
+      let res =await util.request(api.getMyYouhuiquan,{yhq_m_id:yhq_m_id});
+
+      if (res.code == 1000) {
+
+
+        console.log("所有："+this.item.allMoney);
+
+        for(var i=0;i<res.data.length;i++)
+        {
+
+          console.log(res.data[i].yhq_min_money);
+          console.log(this.item.allMoney>=res.data[i].yhq_min_money);
+          if(parseFloat(this.item.allMoney)>=parseFloat(res.data[i].yhq_min_money))
+          {
+            res.data[i].name="优惠券满"+res.data[i].yhq_min_money+"抵扣"+res.data[i].yhq_money;
+            this.arrayList.push(res.data[i]);
+          }
+        }
+        console.log(this.arrayList);
+
+        this.$apply()
+      }
+
+    }
+
+    async getOrderList() {
+      let res =await util.request(api.getOrderDetail,{yy_id:this.yy_id});
+      console.log(res);
+      if (res.code ==1000) {
+
+
+        console.log(this.dazhe/10);
+        res.data.allMoney=(res.data.yy_money*(this.dazhe/10)).toFixed(2);
+        res.data["yy_pro"]=JSON.parse(res.data["yy_pro"]);
+
+        this.payMoney=res.data.allMoney;
+
+        this.item = res.data;
+        this.$apply()
+        console.log(this.item);
+
+        this.couponList();
+
+      }
+    }
+
+    async weixinPay(body,indexStr) {
+
+
+      var that=this;
+      var shijiMoney=this.payMoney;
+
+      let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:shijiMoney,detail:"daodian",body:body},"post");
+
+
+      if(res.code==1000)
+      {
+        console.log(res);
+        var $that=this;
+        wx.requestPayment({
+          'timeStamp': res.timeStamp,
+          'nonceStr': res.nonceStr,
+          'package': res.package,
+          'signType': res.signType,
+          'paySign': res.paySign,
+          'success':function(res){
+            console.log(res);
+
+            wepy.showToast({
+              title: "支付成功",
+              duration: 2000
+            })
+
+
+            setTimeout(function()
+            {
+              wx.navigateBack({
+                delta: 2
+              })
+            },200);
+
+
+
+
+          },
+          'fail':function(res){},
+          'complete':function(res){
+            console.log("完成");
+            console.log(res);
+
+          }
+        });
+
+        console.log("支付");
+
+
+      }
+      else
+      {
+        util.showErrorToast('支付失败');
+      }
+
+
+
+
+    }
+
+    async yuePay(proName)
+    {
+      let res = await util.request(api.yuePay, {
+      openid:this.$parent.globalData.userInfo.openid,
+      p_money:this.payMoney,
+      p_xm_name:proName,
+      p_js_id:this.item.yy_js_id,
+      p_js_name:this.item.yy_js_name,
+      p_dazhe:this.dazhe,
+      m_id:this.$parent.globalData.userInfo.m_id,
+      p_yhq_price:this.yhq_money,
+      p_yy_id:this.yy_id,
+      p_yhq_id:this.p_yhq_id,
+      p_type:3
+    },"post");
+
+
+      if(res.code==1000)
+      {
+        wepy.showToast({
+          title: "支付成功",
+          duration: 2000
+        })
+
+        setTimeout(function()
+        {
+
+          setTimeout(function()
+          {
+            wx.navigateBack({
+              delta: 2
+            })
+          },200);
+
+
+        },200)
+
+
+
+      }
+      else
+      {
+        util.showErrorToast('支付失败');
+      }
+
+    }
+
+    methods = {
+      bindPickerChange(e)
+      {
+        console.log(e);
+        this.yhq_text= "抵扣"+this.arrayList[e.detail.value].yhq_money;
+        this.yhq_money=this.arrayList[e.detail.value].yhq_money;
+        this.payMoney=this.item.allMoney-this.yhq_money;
+        this.p_yhq_id=this.arrayList[e.detail.value].yhq_lq_id;
+        if(this.payMoney<0)
+        {
+          this.payMoney=0;
+        }
+        console.log(this.yhq_money);
+        console.log(this.payMoney);
+      },
+      zhifu(index)
+      {
+        console.log(index);
+        this.active=index;
+      },
+      fukuan()
+      {
+         if(this.payMoney<0.01&&this.active==0)
+         {
+           util.showErrorToast('不能小于0.01');
+           return;
+         }
+
+        var dangqian=this.item;
+        console.log(dangqian);
+
+        var proName="";
+        for(var i=0;i<dangqian.yy_pro.length;i++)
+        {
+          if(i==0)
+          {
+            proName=proName+dangqian.yy_pro[i].name;
+          }
+          else
+          {
+            proName=proName+","+dangqian.yy_pro[i].name;
+          }
+        }
+
+        var body=dangqian.yy_js_id+"#"+dangqian.yy_js_name+"#3#"+proName+"#"+this.dazhe+"#"+this.yy_id+"#"+this.p_yhq_id+"#"+this.yhq_money;
+
+        console.log(body);
+
+
+
+         if(this.active==0)
+         {
+            this.weixinPay(body);
+         }
+        else
+         {
+            this.yuePay(proName);
+         }
+
+
+
+      },
+      daifukuan(yy_id,index)
+      {
+
+        console.log(index);
+        var dangqian=this.orderList[index];
+        console.log(dangqian);
+
+        var proName="";
+        for(var i=0;i<dangqian.yy_pro.length;i++)
+        {
+          if(i==0)
+          {
+            proName=proName+dangqian.yy_pro[i].name;
+          }
+          else
+          {
+            proName=proName+","+dangqian.yy_pro[i].name;
+          }
+        }
+
+        var body=dangqian.yy_js_id+"#"+dangqian.yy_js_name+"#3#"+proName+"#"+this.dazhe+"#"+yy_id;
+
+        console.log(body);
+
+        this.weixinPay(body,index);
+
+      },
+      async quxiao(yy_id,indexStr)
+  {
+    this.quxiaoCaozuo(yy_id,indexStr);
+  },
+  async tel () {
+    wx.makePhoneCall({
+      phoneNumber: "8888888",
+    })
+  }
+  }
+  }
+</script>

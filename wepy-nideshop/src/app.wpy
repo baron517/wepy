@@ -23,6 +23,7 @@
   .clearfix:after{content:'';display:block;height:0;clear:both}
   .clearfix{zoom:1}
 
+  .red{color:#b4282d!important;}
 
   @font-face {font-family: "iconfont";
     src: url('//at.alicdn.com/t/font_860225_ooc7a7ctha.eot?t=1539517239204'); /* IE9*/
@@ -97,6 +98,7 @@ export default class extends wepy.app {
       'pages/cart',
       'pages/ucenter/index',
       'pages/ucenter/address',
+      'pages/ucenter/pingjia',
       'pages/ucenter/addressAdd',
       'pages/ucenter/collect',
       'pages/ucenter/coupon',
@@ -104,6 +106,7 @@ export default class extends wepy.app {
       'pages/ucenter/feedback',
       'pages/ucenter/footprint',
       'pages/ucenter/order',
+      'pages/ucenter/pay',
       'pages/ucenter/order1',
       'pages/ucenter/order2',
       'pages/ucenter/order3',
@@ -173,6 +176,7 @@ export default class extends wepy.app {
   }
 
   globalData = {
+    lianxi:'',
     userInfo: {
       nickname: 'Hi,游客',
       username: '点击去登录',

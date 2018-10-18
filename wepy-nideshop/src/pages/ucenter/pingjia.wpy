@@ -1,13 +1,12 @@
 <style lang="less">
-  page,.container{
+  page{
     height: 100%;
     width: 100%;
-    overflow: hidden;
-    background: #f4f4f4;
+    background: #fff;
   }
 
   .orders{
-    height:100%;
+    height: auto;
     width: 100%;
     overflow: hidden;
   }
@@ -110,12 +109,25 @@
     color: #fff;
     background: #b4282d;
   }
+
+  .bottom-btn{width:100%;margin:40rpx auto;background: #b4282d;color:#fff;padding:20rpx 0;text-align: center;}
+
+  radio-group{padding:12px 0;}
+
+  radio{position: relative;}
+  radio .wx-radio-input.wx-radio-input-checked::before{
+    width:66rpx;height:66rpx;line-height:66rpx;border-radius: 50%;background: #b4282d;color:#fff;
+    text-align: center;border:0;
+    position: absolute;top:50%;left:50%;
+    margin-top:-2rpx;
+  }
+
 </style>
 <template>
   <view class="container">
-    <scroll-view class="orders" scroll-y="true" scroll-top="{{scrollTop}}" bindscrolltolower="dibu">
+    <view class="orders">
 
-      <view  class="order"  wx:for="{{orderList}}" wx:key="item.yy_id" wx:for-item="item" wx:for-index="index">
+      <view  class="order">
         <view class="h top">
           <view class="l">杭州胤妃美业</view>
           <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
@@ -135,34 +147,35 @@
           </view>
           <view class="status"></view>
         </view>
-        <view class="b">
-          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">会员打折后：{{item.allMoney}} 元</text></view>
 
-          <view class="r" wx:if="{{item.yy_status=='待商家确认'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="quxiao('{{item.yy_id}}',{{index}})">取消预约</button>
+        <view style="box-sizing: border-box;padding:20rpx;">
+
+          <view>评分：
+
+            <radio-group bindchange="listenerRadioGroup">
+              <label style="display: inline-block;margin:0 12rpx;" wx:for-items="{{array}}">
+                <radio value="{{item.value}}" checked="{{item.checked}}"/>{{item.name}}
+              </label>
+            </radio-group>
+
+
           </view>
 
-          <view class="r" wx:if="{{item.yy_status=='已确认'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}})">立即付款</button>
-          </view>
-
-          <view class="r" wx:if="{{item.yy_status=='已取消'}}">
-           已取消
-          </view>
-
-          <view class="r" wx:if="{{item.yy_status=='已使用'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="pingjia('{{item.yy_id}}')">立即评价</button>
-          </view>
+          <textarea bindinput='textarea' style="width:100%;border:1px solid #ccc;padding:20rpx;box-sizing: border-box;" value="{{yy_pingjia_text}}"></textarea>
 
 
+          <view class="bottom-btn" @tap="pingjia">提交</view>
 
         </view>
+
+
+
+
       </view>
 
-      <view class="loading" wx:if="{{isLoading}}">{{loading}}</view>
 
 
-    </scroll-view>
+    </view>
   </view>
 </template>
 
@@ -173,22 +186,26 @@
 
   export default class Order extends wepy.page {
     data = {
-      orderList: [],
+      item: [],
       dazhe:10,
-      page: 1,
-      size: 10,
-      scrollTop:0,
-      isLoading:0,
-      isDibu:1,
-      loading:"正在加载",
+      yy_id:0,
+      yy_pingjia_text:'',
+      yy_pingjia:5,
+      array:[
+        {name: '5分', value: '5', checked: 'true'},
+        {name: '4分', value: '4'},
+        {name: '3分', value: '3'},
+        {name: '2分', value: '2'},
+        {name: '1分', value: '1'},
+      ],
       isHuiyuan:0
     }
-    async onShow()
-    {
-      this.getOrderList();
-    }
+    async onLoad(options) {
 
-    async onLoad() {
+      console.log(options);
+
+      this.yy_id=options.yy_id;
+      this.getOrderList();
 
       this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
 
@@ -201,55 +218,43 @@
 
     }
     async getOrderList() {
-      let res =await util.request(api.getAllOrder,{yy_m_id:this.$parent.globalData.userInfo.m_id,page: this.page, size: this.size});
+      let res =await util.request(api.getOrderDetail,{yy_id:this.yy_id});
       console.log(res);
       if (res.code ==1000) {
 
 
-        if(res.data.length>0)
-        {
+          console.log(this.dazhe/10);
+          res.data.allMoney=(res.data.yy_money*(this.dazhe/10)).toFixed(2);
+          res.data["yy_pro"]=JSON.parse(res.data["yy_pro"]);
 
-          this.page=this.page+1;
 
-          for(var i=0;i<res.data.length;i++)
-          {
-            console.log(this.dazhe/10);
-            res.data[i].allMoney=(res.data[i].yy_money*(this.dazhe/10)).toFixed(2);
-            res.data[i]["yy_pro"]=JSON.parse(res.data[i]["yy_pro"]);
-          }
-
-          this.orderList = this.orderList.concat(res.data);
-        }
-        if(res.data.length<this.size)
-        {
-          this.isLoading=0;
-          this.isDibu=0;
-        }
-
+        this.item = res.data;
         this.$apply()
-
-        console.log(this.orderList);
-
-
-
+        console.log(this.item);
       }
     }
-    async quxiaoCaozuo(yy_id,indexStr) {
+    async pingjiaPost() {
 
-      console.log(indexStr);
 
-      let res =await util.request(api.quxiao,{yy_id:yy_id});
+      let res =await util.request(api.pingjia,{yy_id:this.yy_id,yy_pingjia_text:this.yy_pingjia_text,yy_pingjia:this.yy_pingjia},'post');
       console.log(res);
       if (res.code ==1000) {
-
-        this.orderList[indexStr].yy_status="已取消";
 
         wepy.showToast({
           title:res.msg,
           duration: 2000
         })
 
-        this.$apply()
+        this.$apply();
+
+        setTimeout(function()
+        {
+          wx.navigateBack({
+            delta: 2
+          })
+        },200);
+
+
         console.log(this.orderList);
 
       }
@@ -262,82 +267,47 @@
     }
 
 
-    async yuePay()
-    {
-      let res = await util.request(api.yuePay, {
-      openid:this.$parent.globalData.userInfo.openid,
-      p_money:this.shijiMoney,
-      p_xm_name:this.proName,
-      p_js_id:this.nameId,
-      p_js_name:this.jishiName,
-      p_dazhe:this.dazhe,
-      m_id:this.$parent.globalData.userInfo.m_id,
-      p_type:2
-    },"post");
-
-
-      if(res.code==1000)
-      {
-        wepy.showToast({
-          title: "支付成功",
-          duration: 2000
-        })
-
-        setTimeout(function()
-        {
-
-          wx.switchTab({
-            url: "/pages/index"
-          })
-
-        },200)
-
-
-
-      }
-      else
-      {
-        util.showErrorToast('支付失败');
-      }
-
-    }
-
     methods = {
-      dibu(e)
-      {
-        console.log("底部"+this.isLoading);
-
-        if(this.isDibu)
-        {
-          this.isLoading=1;
-          var $that=this;
-          setTimeout(function()
-          {
-            $that.getOrderList();
-          },1000)
-        }
-
-
-
-
+      listenerRadioGroup:function(e) {
+        console.log(e);
+        this.yy_pingjia= e.detail.value;
       },
-      pingjia(yy_id)
+
+      textarea:function(e)
       {
-        wx.navigateTo({
-          url: "pingjia?yy_id="+yy_id
-        })
+        console.log(e);
+        this.yy_pingjia_text= e.detail.value;
+      },
+
+      pingjia()
+      {
+        this.pingjiaPost();
       },
       daifukuan(yy_id,index)
       {
 
         console.log(index);
+        var dangqian=this.orderList[index];
+        console.log(dangqian);
 
+        var proName="";
+        for(var i=0;i<dangqian.yy_pro.length;i++)
+        {
+          if(i==0)
+          {
+            proName=proName+dangqian.yy_pro[i].name;
+          }
+          else
+          {
+            proName=proName+","+dangqian.yy_pro[i].name;
+          }
+        }
 
-        wx.navigateTo({
-          url: "pay?yy_id="+yy_id
-        })
+        var body=dangqian.yy_js_id+"#"+dangqian.yy_js_name+"#3#"+proName+"#"+this.dazhe+"#"+yy_id;
 
-        //this.weixinPay(body,index);
+        console.log(body);
+
+        this.weixinPay(body,index);
 
       },
       async quxiao(yy_id,indexStr)
@@ -346,7 +316,7 @@
       },
       async tel () {
           wx.makePhoneCall({
-                  phoneNumber: this.$parent.globalData.lianxi
+                  phoneNumber: "8888888",
                   })
         }
     }

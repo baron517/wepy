@@ -8,8 +8,16 @@ module.exports = {
   userInfoSave: ServerUrl + '/Api/CommonApi/userInfoSave',
   weixinPay: ServerUrl + '/Api/CommonApi/weixinPay',
   yuyue: ServerUrl + '/Api/CommonApi/yuyue',
+  getYouhuiquan: ServerUrl + '/Api/CommonApi/getYouhuiquan',
+  getMyYouhuiquan: ServerUrl + '/Api/CommonApi/getMyYouhuiquan',
+  lingquYouhuiquan: ServerUrl + '/Api/CommonApi/lingquYouhuiquan',
   getAllOrder: ServerUrl + '/Api/CommonApi/getAllOrder',
+
+  getOrderDetail: ServerUrl + '/Api/CommonApi/getOrderDetail',
+  pingjia: ServerUrl + '/Api/CommonApi/pingjia',
+  config: ServerUrl + '/Api/CommonApi/config',
   getOrder: ServerUrl + '/Api/CommonApi/getOrder',
+  userCount: ServerUrl + '/Api/CommonApi/userCount',
   quxiao: ServerUrl + '/Api/CommonApi/quxaoCaozuo',
   yuePay: ServerUrl + '/Api/CommonApi/yuePay',
   IndexUrl: ServerUrl+'/Api/CommonApi/getJishiList', // 首页数据接口
@@ -22,6 +30,8 @@ module.exports = {
   GoodsCount: ApiRootUrl + 'goods/count',  // 统计商品总数
   GoodsList: ServerUrl + '/Api/CommonApi/getProList',
   proDetail: ServerUrl + '/Api/CommonApi/getProDetail',
+
+
 
 
   couponList: ServerUrl + '/Api/CommonApi/couponList',
