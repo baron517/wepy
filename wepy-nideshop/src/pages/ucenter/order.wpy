@@ -1,12 +1,13 @@
 <style lang="less">
-  page{
+  page,.container{
     height: 100%;
     width: 100%;
+    overflow: hidden;
     background: #f4f4f4;
   }
 
   .orders{
-    height: auto;
+    height:100%;
     width: 100%;
     overflow: hidden;
   }
@@ -112,7 +113,7 @@
 </style>
 <template>
   <view class="container">
-    <view class="orders">
+    <scroll-view class="orders" scroll-y="true" scroll-top="{{scrollTop}}" bindscrolltolower="dibu">
 
       <view  class="order"  wx:for="{{orderList}}" wx:key="item.yy_id" wx:for-item="item" wx:for-index="index">
         <view class="h top">
@@ -158,9 +159,10 @@
         </view>
       </view>
 
+      <view class="loading" wx:if="{{isLoading}}">{{loading}}</view>
 
 
-    </view>
+    </scroll-view>
   </view>
 </template>
 
@@ -173,6 +175,12 @@
     data = {
       orderList: [],
       dazhe:10,
+      page: 1,
+      size: 10,
+      scrollTop:0,
+      isLoading:0,
+      isDibu:1,
+      loading:"正在加载",
       isHuiyuan:0
     }
     async onShow()
@@ -193,20 +201,37 @@
 
     }
     async getOrderList() {
-      let res =await util.request(api.getAllOrder,{yy_m_id:this.$parent.globalData.userInfo.m_id});
+      let res =await util.request(api.getAllOrder,{yy_m_id:this.$parent.globalData.userInfo.m_id,page: this.page, size: this.size});
       console.log(res);
       if (res.code ==1000) {
 
-        for(var i=0;i<res.data.length;i++)
+
+        if(res.data.length>0)
         {
-          console.log(this.dazhe/10);
-          res.data[i].allMoney=(res.data[i].yy_money*(this.dazhe/10)).toFixed(2);
-          res.data[i]["yy_pro"]=JSON.parse(res.data[i]["yy_pro"]);
+
+          this.page=this.page+1;
+
+          for(var i=0;i<res.data.length;i++)
+          {
+            console.log(this.dazhe/10);
+            res.data[i].allMoney=(res.data[i].yy_money*(this.dazhe/10)).toFixed(2);
+            res.data[i]["yy_pro"]=JSON.parse(res.data[i]["yy_pro"]);
+          }
+
+          this.orderList = this.orderList.concat(res.data);
+        }
+        if(res.data.length<this.size)
+        {
+          this.isLoading=0;
+          this.isDibu=0;
         }
 
-        this.orderList = res.data;
         this.$apply()
+
         console.log(this.orderList);
+
+
+
       }
     }
     async quxiaoCaozuo(yy_id,indexStr) {
@@ -278,6 +303,24 @@
     }
 
     methods = {
+      dibu(e)
+      {
+        console.log("底部"+this.isLoading);
+
+        if(this.isDibu)
+        {
+          this.isLoading=1;
+          var $that=this;
+          setTimeout(function()
+          {
+            $that.getOrderList();
+          },1000)
+        }
+
+
+
+
+      },
       pingjia(yy_id)
       {
         wx.navigateTo({
@@ -288,25 +331,7 @@
       {
 
         console.log(index);
-        var dangqian=this.orderList[index];
-        console.log(dangqian);
 
-        var proName="";
-        for(var i=0;i<dangqian.yy_pro.length;i++)
-        {
-          if(i==0)
-          {
-            proName=proName+dangqian.yy_pro[i].name;
-          }
-          else
-          {
-            proName=proName+","+dangqian.yy_pro[i].name;
-          }
-        }
-
-        var body=dangqian.yy_js_id+"#"+dangqian.yy_js_name+"#3#"+proName+"#"+this.dazhe+"#"+yy_id;
-
-        console.log(body);
 
         wx.navigateTo({
           url: "pay?yy_id="+yy_id
@@ -321,7 +346,7 @@
       },
       async tel () {
           wx.makePhoneCall({
-                  phoneNumber: "8888888",
+                  phoneNumber: this.$parent.globalData.lianxi
                   })
         }
     }

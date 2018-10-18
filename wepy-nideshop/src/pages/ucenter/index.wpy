@@ -74,6 +74,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
   }
 
   .user-menu .item.no-border {
@@ -147,6 +148,8 @@
     color:#333;
   }
 
+  .user-menu .txt .quan{width:30rpx;font-size:20rpx;height:30rpx;position: absolute;line-height:30rpx;top:30rpx;right:30rpx;background: #b4282d;color:#fff;text-align: center;display: block;border-radius: 50%;}
+
   .logout{
     margin-top: 50rpx;
     height: 101rpx;
@@ -174,33 +177,33 @@
       <view class="item">
         <navigator url="/pages/ucenter/order" class="a">
           <text class="icon yuyue"></text>
-          <text class="txt">我的预约</text>
+          <text class="txt">我的预约<text class="quan" wx:if="{{countList.count0>0}}">{{countList.count0}}</text></text>
         </navigator>
       </view>
       <view class="item">
         <navigator url="/pages/ucenter/order1" class="a">
           <text class="icon dingdan"></text>
-          <text class="txt">待确认</text>
+          <text class="txt">待确认<text class="quan" wx:if="{{countList.count1>0}}">{{countList.count1}}</text></text>
         </navigator>
       </view>
       <view class="item no-border">
 
         <navigator url="/pages/ucenter/order2" class="a">
           <text class="icon zhifu"></text>
-          <text class="txt">待支付</text>
+          <text class="txt">待支付<text class="quan" wx:if="{{countList.count2>0}}">{{countList.count2}}</text></text>
         </navigator>
 
       </view>
       <view class="item">
         <navigator url="/pages/ucenter/order3" class="a">
           <text class="icon daishiyong"></text>
-          <text class="txt">待使用</text>
+          <text class="txt">待使用<text class="quan" wx:if="{{countList.count3>0}}">{{countList.count3}}</text></text>
         </navigator>
       </view>
       <view class="item">
         <navigator url="url" class="a" url="/pages/ucenter/order4">
           <text class="icon daipingjia"></text>
-          <text class="txt">待评价</text>
+          <text class="txt">待评价<text class="quan" wx:if="{{countList.count4>0}}">{{countList.count4}}</text></text>
         </navigator>
       </view>
       <view class="item no-border">
@@ -218,7 +221,7 @@
       <view class="item item-bottom">
         <navigator url="coupon" class="a">
           <text class="icon youhuiquan"></text>
-          <text class="txt">优惠券</text>
+          <text class="txt">优惠券<text class="quan" wx:if="{{countList.yhq_count>0}}">{{countList.yhq_count}}</text></text>
         </navigator>
       </view>
       <view class="item no-border item-bottom">
@@ -237,6 +240,8 @@
 
 <script>
   import wepy from 'wepy'
+  import util from '../../utils/util.js'
+  import api from '../../config/api.js'
   import user from '../../services/user.js'
 
   export default class Index extends wepy.page {
@@ -246,16 +251,25 @@
       navigationBarTitleText: '会员中心'
     }
     data = {
+      countList:{},
       userInfo: {},
       token: ''
     }
     onLoad() {
       console.log(this.$parent.globalData);
-
-
-
-
     }
+
+    async userCount () {
+      let res = await util.request(api.userCount,{yy_m_id:this.$parent.globalData.userInfo.m_id});
+      if (res.code == 1000) {
+
+        this.countList=res.data;
+        console.log(res.data);
+
+        this.$apply()
+      }
+    }
+
     onShow() {
       let userInfo = wepy.getStorageSync('userInfo')
       let token = wepy.getStorageSync('token')
@@ -266,6 +280,9 @@
       }
       this.userInfo = this.$parent.globalData.userInfo
       this.token = this.$parent.globalData.token
+
+      this.userCount();
+
     }
     methods = {
       async goLogin() {
@@ -288,7 +305,7 @@
 
       async tel () {
         wx.makePhoneCall({
-          phoneNumber: "8888888",
+          phoneNumber: this.$parent.globalData.lianxi
         })
       },
 

@@ -1,12 +1,13 @@
 <style lang="less">
-  page{
+  page,.container{
     height: 100%;
     width: 100%;
+    overflow: hidden;
     background: #f4f4f4;
   }
 
   .orders{
-    height: auto;
+    height:100%;
     width: 100%;
     overflow: hidden;
   }
@@ -67,7 +68,7 @@
     font-size: 30rpx;
   }
   .order .goods .middle{
-   text-align: center;;
+    text-align: center;;
   }
 
   .order .goods .number{
@@ -112,36 +113,56 @@
 </style>
 <template>
   <view class="container">
-    <view class="orders">
+    <scroll-view class="orders" scroll-y="true" scroll-top="{{scrollTop}}" bindscrolltolower="dibu">
 
-
-
-      <view  class="order" >
+      <view  class="order"  wx:for="{{orderList}}" wx:key="item.yy_id" wx:for-item="item" wx:for-index="index">
         <view class="h top">
           <view class="l">杭州胤妃美业</view>
           <view class="r" @tap="tel()"><i class="iconfont icon-dianhua"></i></view>
         </view>
         <view class="h">
-          <view class="l">预约服务时间：2018-10-07 10:30</view>
-          <view class="r">状态：已完成</view>
+          <view class="l">预约服务时间：{{item.yy_time}}</view>
+          <view class="r" wx:if="{{item.yy_status=='已确认'}}">状态：待支付</view>
+          <view class="r" wx:elif="{{item.yy_status=='已使用'}}">状态：待评价</view>
+
+          <view class="r" wx:else>状态：{{item.yy_status}}</view>
         </view>
         <view class="goods">
-          <view class="info">
-            <text class="name">编号：01 测试</text>
-            <text class="middle">足疗项目</text>
-            <text class="number">60分钟</text>
+          <view class="info" wx:for="{{item.yy_pro}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex">
+            <text class="name">编号：{{item.yy_js_id}} {{item.yy_js_name}}</text>
+            <text class="middle">{{iitem.name}}</text>
+            <text class="number">{{iitem.time}}分钟</text>
           </view>
           <view class="status"></view>
         </view>
         <view class="b">
-          <view class="l">总计：￥100</view>
-          <view class="r">
+          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">会员打折后：{{item.allMoney}} 元</text></view>
 
+          <view class="r" wx:if="{{item.yy_status=='待商家确认'}}">
+            <button class="btn"  data-order-index="{{index}}" catchtap="quxiao('{{item.yy_id}}',{{index}})">取消预约</button>
           </view>
+
+          <view class="r" wx:if="{{item.yy_status=='已确认'}}">
+            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}})">立即付款</button>
+          </view>
+
+          <view class="r" wx:if="{{item.yy_status=='已取消'}}">
+            已取消
+          </view>
+
+          <view class="r" wx:if="{{item.yy_status=='已使用'}}">
+            <button class="btn"  data-order-index="{{index}}" catchtap="pingjia('{{item.yy_id}}')">立即评价</button>
+          </view>
+
+
+
         </view>
       </view>
 
-    </view>
+      <view class="loading" wx:if="{{isLoading}}">{{loading}}</view>
+
+
+    </scroll-view>
   </view>
 </template>
 
@@ -152,26 +173,183 @@
 
   export default class Order extends wepy.page {
     data = {
-      orderList: []
+      orderList: [],
+      dazhe:10,
+      page: 1,
+      size: 10,
+      scrollTop:0,
+      isLoading:0,
+      isDibu:1,
+      loading:"正在加载",
+      isHuiyuan:0
     }
-    onLoad() {
-      this.getOrderList()
+    async onShow()
+    {
+      this.getOrderList();
+    }
+
+    async onLoad() {
+
+      this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
+
+      if(this.isHuiyuan)
+      {
+        console.log(this.$parent.globalData.userInfo);
+        this.dazhe=this.$parent.globalData.userInfo.m_hy_zhekou;
+        console.log(this.dazhe);
+      }
+
     }
     async getOrderList() {
-      let res =await util.request(api.OrderList);
+      let res =await util.request(api.getOrder,{yy_m_id:this.$parent.globalData.userInfo.m_id,page: this.page, size: this.size,yy_status:"已完成"});
+      console.log(res);
+      if (res.code ==1000) {
 
-      if (res.errno === 0) {
-        this.orderList = res.data;
+
+        if(res.data.length>0)
+        {
+
+          this.page=this.page+1;
+
+          for(var i=0;i<res.data.length;i++)
+          {
+            console.log(this.dazhe/10);
+            res.data[i].allMoney=(res.data[i].yy_money*(this.dazhe/10)).toFixed(2);
+            res.data[i]["yy_pro"]=JSON.parse(res.data[i]["yy_pro"]);
+          }
+
+          this.orderList = this.orderList.concat(res.data);
+        }
+
+        if(res.data.length<this.size)
+        {
+          this.isLoading=0;
+          this.isDibu=0;
+        }
+
         this.$apply()
+
         console.log(this.orderList);
+
+
+
       }
     }
-    methods = {
-      async tel () {
-    wx.makePhoneCall({
-            phoneNumber: "8888888",
-            })
-  }
+    async quxiaoCaozuo(yy_id,indexStr) {
+
+      console.log(indexStr);
+
+      let res =await util.request(api.quxiao,{yy_id:yy_id});
+      console.log(res);
+      if (res.code ==1000) {
+
+        this.orderList[indexStr].yy_status="已取消";
+
+        wepy.showToast({
+          title:res.msg,
+          duration: 2000
+        })
+
+        this.$apply()
+        console.log(this.orderList);
+
+      }
+      else {
+
+        util.showErrorToast(res.msg);
+
+      }
+
     }
+
+
+    async yuePay()
+    {
+      let res = await util.request(api.yuePay, {
+      openid:this.$parent.globalData.userInfo.openid,
+      p_money:this.shijiMoney,
+      p_xm_name:this.proName,
+      p_js_id:this.nameId,
+      p_js_name:this.jishiName,
+      p_dazhe:this.dazhe,
+      m_id:this.$parent.globalData.userInfo.m_id,
+      p_type:2
+    },"post");
+
+
+      if(res.code==1000)
+      {
+        wepy.showToast({
+          title: "支付成功",
+          duration: 2000
+        })
+
+        setTimeout(function()
+        {
+
+          wx.switchTab({
+            url: "/pages/index"
+          })
+
+        },200)
+
+
+
+      }
+      else
+      {
+        util.showErrorToast('支付失败');
+      }
+
+    }
+
+    methods = {
+      dibu(e)
+      {
+        console.log("底部"+this.isLoading);
+
+        if(this.isDibu)
+        {
+          this.isLoading=1;
+          var $that=this;
+          setTimeout(function()
+          {
+            $that.getOrderList();
+          },1000)
+        }
+
+
+
+
+      },
+      pingjia(yy_id)
+      {
+        wx.navigateTo({
+          url: "pingjia?yy_id="+yy_id
+        })
+      },
+      daifukuan(yy_id,index)
+      {
+
+        console.log(index);
+
+
+        wx.navigateTo({
+          url: "pay?yy_id="+yy_id
+        })
+
+        //this.weixinPay(body,index);
+
+      },
+      async quxiao(yy_id,indexStr)
+  {
+    this.quxiaoCaozuo(yy_id,indexStr);
+  },
+  async tel () {
+    wx.makePhoneCall({
+      phoneNumber: this.$parent.globalData.lianxi
+    })
+  }
+  }
   }
 </script>

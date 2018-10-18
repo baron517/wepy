@@ -15,8 +15,9 @@ module.exports = {
 
   getOrderDetail: ServerUrl + '/Api/CommonApi/getOrderDetail',
   pingjia: ServerUrl + '/Api/CommonApi/pingjia',
-
+  config: ServerUrl + '/Api/CommonApi/config',
   getOrder: ServerUrl + '/Api/CommonApi/getOrder',
+  userCount: ServerUrl + '/Api/CommonApi/userCount',
   quxiao: ServerUrl + '/Api/CommonApi/quxaoCaozuo',
   yuePay: ServerUrl + '/Api/CommonApi/yuePay',
   IndexUrl: ServerUrl+'/Api/CommonApi/getJishiList', // 首页数据接口

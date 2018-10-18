@@ -196,6 +196,11 @@
           </view>
         </view>
 
+        <view class="b">
+          <view class="l red">支付金额：￥{{payMoney}}</view>
+
+        </view>
+
 
         <view class="pay-way">
 
@@ -241,6 +246,7 @@
       yy_pingjia:5,
       yhq_text:"请选择",
       yhq_money:0,
+      p_yhq_id:0,
       active:0,
       array:[
         {name: '5分', value: '5', checked: 'true'},
@@ -281,16 +287,18 @@
       if (res.code == 1000) {
 
 
-        console.log(this.item.allMoney);
+        console.log("所有："+this.item.allMoney);
 
         for(var i=0;i<res.data.length;i++)
         {
-          if(this.item.allMoney>=res.data[i].yhq_min_money)
+
+          console.log(res.data[i].yhq_min_money);
+          console.log(this.item.allMoney>=res.data[i].yhq_min_money);
+          if(parseFloat(this.item.allMoney)>=parseFloat(res.data[i].yhq_min_money))
           {
             res.data[i].name="优惠券满"+res.data[i].yhq_min_money+"抵扣"+res.data[i].yhq_money;
             this.arrayList.push(res.data[i]);
           }
-
         }
         console.log(this.arrayList);
 
@@ -309,6 +317,7 @@
         res.data.allMoney=(res.data.yy_money*(this.dazhe/10)).toFixed(2);
         res.data["yy_pro"]=JSON.parse(res.data["yy_pro"]);
 
+        this.payMoney=res.data.allMoney;
 
         this.item = res.data;
         this.$apply()
@@ -323,7 +332,7 @@
 
 
       var that=this;
-      var shijiMoney=this.orderList[indexStr].allMoney;
+      var shijiMoney=this.payMoney;
 
       let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:shijiMoney,detail:"daodian",body:body},"post");
 
@@ -346,7 +355,13 @@
               duration: 2000
             })
 
-            that.orderList[indexStr].yy_status="待使用";
+
+            setTimeout(function()
+            {
+              wx.navigateBack({
+                delta: 2
+              })
+            },200);
 
 
 
@@ -374,6 +389,53 @@
 
     }
 
+    async yuePay(proName)
+    {
+      let res = await util.request(api.yuePay, {
+      openid:this.$parent.globalData.userInfo.openid,
+      p_money:this.payMoney,
+      p_xm_name:proName,
+      p_js_id:this.item.yy_js_id,
+      p_js_name:this.item.yy_js_name,
+      p_dazhe:this.dazhe,
+      m_id:this.$parent.globalData.userInfo.m_id,
+      p_yhq_price:this.yhq_money,
+      p_yy_id:this.yy_id,
+      p_yhq_id:this.p_yhq_id,
+      p_type:3
+    },"post");
+
+
+      if(res.code==1000)
+      {
+        wepy.showToast({
+          title: "支付成功",
+          duration: 2000
+        })
+
+        setTimeout(function()
+        {
+
+          setTimeout(function()
+          {
+            wx.navigateBack({
+              delta: 2
+            })
+          },200);
+
+
+        },200)
+
+
+
+      }
+      else
+      {
+        util.showErrorToast('支付失败');
+      }
+
+    }
+
     methods = {
       bindPickerChange(e)
       {
@@ -381,6 +443,7 @@
         this.yhq_text= "抵扣"+this.arrayList[e.detail.value].yhq_money;
         this.yhq_money=this.arrayList[e.detail.value].yhq_money;
         this.payMoney=this.item.allMoney-this.yhq_money;
+        this.p_yhq_id=this.arrayList[e.detail.value].yhq_lq_id;
         if(this.payMoney<0)
         {
           this.payMoney=0;
@@ -395,7 +458,45 @@
       },
       fukuan()
       {
-        this.pingjiaPost();
+         if(this.payMoney<0.01&&this.active==0)
+         {
+           util.showErrorToast('不能小于0.01');
+           return;
+         }
+
+        var dangqian=this.item;
+        console.log(dangqian);
+
+        var proName="";
+        for(var i=0;i<dangqian.yy_pro.length;i++)
+        {
+          if(i==0)
+          {
+            proName=proName+dangqian.yy_pro[i].name;
+          }
+          else
+          {
+            proName=proName+","+dangqian.yy_pro[i].name;
+          }
+        }
+
+        var body=dangqian.yy_js_id+"#"+dangqian.yy_js_name+"#3#"+proName+"#"+this.dazhe+"#"+this.yy_id+"#"+this.p_yhq_id+"#"+this.yhq_money;
+
+        console.log(body);
+
+
+
+         if(this.active==0)
+         {
+            this.weixinPay(body);
+         }
+        else
+         {
+            this.yuePay(proName);
+         }
+
+
+
       },
       daifukuan(yy_id,index)
       {

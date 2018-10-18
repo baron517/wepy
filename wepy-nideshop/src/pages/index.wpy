@@ -696,7 +696,7 @@
               {
                 console.log("#####3");
                 wx.navigateToMiniProgram({
-                  envVersion:'trial',
+                  //envVersion:'trial',
                   appId: 'wxe206957266e9bb55', // 要跳转的小程序的appid
                   path: 'pages/index/index', // 跳转的目标页面
                   extarData: {
@@ -816,7 +816,25 @@
 
         }
 
-    onShow()
+  async  geConfig()
+  {
+
+
+    let rs = await util.request(api.config);
+
+    console.log("config");
+    console.log(rs);
+
+    if(rs.code==1000)
+    {
+      this.$parent.globalData.lianxi = rs.data.c_lianxi;
+    }
+
+
+  }
+
+
+  onShow()
     {
       
 
@@ -836,6 +854,7 @@
         })
 
 
+      this.geConfig();
 
 
     }
