@@ -121,7 +121,9 @@
 
           </view>
 
-          <view class="desc bottom"><text class="left-col">杭州胤妃美业</text>  <button data-price="{{item.hy_xianjia}}" class="right-col">立即购买</button></view>
+          <view class="desc bottom"><text class="left-col">杭州胤妃美业</text>
+            <button data-price="{{item.hy_xianjia}}" class="right-col">立即购买</button>
+          </view>
 
 
         </view>

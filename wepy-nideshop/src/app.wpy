@@ -101,6 +101,7 @@ export default class extends wepy.app {
       'pages/ucenter/pingjia',
       'pages/ucenter/addressAdd',
       'pages/ucenter/collect',
+      'pages/ucenter/chongzhi',
       'pages/ucenter/coupon',
       'pages/ucenter/couponList',
       'pages/ucenter/feedback',
