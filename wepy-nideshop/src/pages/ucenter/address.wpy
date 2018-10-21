@@ -106,7 +106,7 @@
       <view class="info-col">
 
 
-        <view class="item" wx:if="{{topicList.is_huiyuan}}}">
+        <navigator class="item" wx:if="{{topicList.is_huiyuan}}}" url="/pages/ucenter/chongzhi">
           <view class="info">
             <view class="top-text">会员卡</view>
             <view class="info-middle">
@@ -121,11 +121,13 @@
 
             </view>
 
-            <view class="desc bottom"><text class="left-col">杭州胤妃美业</text>  </view>
+            <view class="desc bottom"><text class="left-col">杭州胤妃美业</text>
+              <button class="right-col">立即充值</button>
+            </view>
 
 
           </view>
-        </view>
+        </navigator>
 
 
 
