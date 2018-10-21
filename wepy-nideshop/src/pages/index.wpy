@@ -765,7 +765,8 @@
                 await this.getGoodsList()
               }
             }
-    async getGoodsList () {
+
+        async getGoodsList () {
               let res = await util.request(api.GoodsList, {categoryId: this.xm_type, page: this.page, size: this.size})
               if (res.data) {
                 this.goodsList = res.data
@@ -773,13 +774,13 @@
               }
             }
 
-  async getLunbo () {
-    let res = await util.request(api.getLunbo);
-    if (res.errno === 0) {
-      this.banner = res.data
-      this.$apply()
+    async getLunbo () {
+      let res = await util.request(api.getLunbo);
+      if (res.errno === 0) {
+        this.banner = res.data
+        this.$apply()
+      }
     }
-  }
 
     async getIndexData () {
       let res = await util.request(api.IndexUrl);
