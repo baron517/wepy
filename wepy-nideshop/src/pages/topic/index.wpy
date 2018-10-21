@@ -124,7 +124,8 @@
       topicList: [],
       page: 1,
       size: 10,
-      isLoading:1,
+      isLoading:0,
+	  isDibu:1,
       loading:"正在加载",
       count: 0,
       scrollTop: 0,
@@ -148,10 +149,14 @@
           this.page=this.page+1;
           this.topicList =this.topicList.concat(res.data);
         }
-        else
+		
+		 if(res.data.length<this.size)
         {
           this.isLoading=0;
+          this.isDibu=0;
         }
+		
+        
         this.$apply()
       }
 
@@ -160,7 +165,8 @@
     methods = {
       dibu(e)
       {
-        if(this.isLoading) {
+		console.log("底部");	
+        if(this.isDibu) {
           this.isLoading = 1;
           var $that = this;
           setTimeout(function () {
