@@ -106,10 +106,21 @@ function showErrorToast(msg) {
   })
 }
 
+function toast(msg) {
+
+  wepy.showToast({
+    title: msg,
+    icon: 'none',
+    duration: 1500
+
+  })
+}
+
 module.exports = {
   formatTime,
   request,
   redirect,
+  toast,
   showErrorToast,
   checkSession,
   login,

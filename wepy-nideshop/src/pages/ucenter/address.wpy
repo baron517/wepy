@@ -57,7 +57,7 @@
     color: #fff;
     overflow: hidden;
     font-size: 35rpx;
-    margin-top: 30rpx;
+    margin-top: 25rpx;
   }
 
   .topic-list .title .left-col{float:left;}
@@ -117,6 +117,8 @@
                 <view class="title"><text class="left-col">{{topicList.m_hy_name}}</text></view>
                 <view class="desc"><text class="left-col yuanjia">价格：￥{{topicList.m_hy_jiage}}</text></view>
                 <view class="desc"><text class="text">折扣：消费打{{topicList.m_hy_zhekou}}折</text></view>
+                <view class="desc"><text class="text">余额：{{yue}} 元</text></view>
+
               </view>
 
             </view>
@@ -153,11 +155,13 @@
       page: 1,
       size: 10,
       count: 0,
+      yue:0,
       scrollTop: 0,
       showPage: false
     }
     async onLoad() {
 
+      this.yue=this.$parent.globalData.userInfo.m_yue;
       this.topicList=this.$parent.globalData.userInfo;
 
     }

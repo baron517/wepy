@@ -123,6 +123,9 @@
           <view class="desc bottom"><text class="left-col">杭州胤妃美业</text> </view>
 
 
+
+
+
         </view>
       </view>
 
@@ -130,7 +133,7 @@
 
     </scroll-view>
 
-    <view class="bottom-btn" @tap="zhifu('{{topicList}}')">去支付(￥<text class="text">{{topicList.hy_jiage}}</text>)</view>
+    <view class="bottom-btn" @tap="zhifu('{{topicList}}')">去支付(￥<text class="text">{{payMoney}}</text>)</view>
   </view>
 </template>
 
@@ -145,12 +148,16 @@
       page: 1,
       size: 10,
       count: 0,
+      payMoney:0,
       id:0,
       scrollTop: 0,
       showPage: false
     }
     async onLoad(options) {
       // 页面初始化 options为页面跳转所带来的参数
+
+
+
       this.id = parseInt(options.id);
       await this.getTopic()
     }
@@ -190,9 +197,24 @@
 
       console.log(res);
 
+
+
+
       if (res.errno === 0) {
         this.scrollTop = 0
-        this.topicList = res.data
+        this.topicList = res.data;
+
+        if(this.$parent.globalData.userInfo.is_huiyuan==1&&this.$parent.globalData.userInfo.m_hy_id<this.id)
+        {
+          this.payMoney=parseFloat(this.topicList.hy_jiage)-parseFloat(this.$parent.globalData.userInfo.m_hy_jiage);
+
+        }
+        else
+        {
+          this.payMoney=parseFloat(this.topicList.hy_jiage);
+        }
+        console.log("价格:"+this.payMoney);
+
         this.$apply()
       }
       wepy.hideToast()
@@ -202,14 +224,29 @@
      
        console.log(this.$parent.globalData.userInfo.is_huiyuan);
 
-       if(this.$parent.globalData.userInfo.is_huiyuan==1)
-       {
-         util.showErrorToast('已经是会员了');
-         return;
-       }
 
-       var body=obj.hy_name+"#"+obj.hy_zhekou+"#1#"+obj.hy_img;
-       let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:obj.hy_jiage,detail:"ka",body:body},"post");
+      if(this.$parent.globalData.userInfo.is_huiyuan==0)
+      {
+        var body=obj.hy_name+"#"+obj.hy_zhekou+"#1#"+obj.hy_img+"#"+obj.hy_id;
+
+      }
+       else if(this.$parent.globalData.userInfo.is_huiyuan==1&&this.$parent.globalData.userInfo.m_hy_id<this.id)
+       {
+
+         var body=obj.hy_name+"#"+obj.hy_zhekou+"#5#"+obj.hy_img+"#"+obj.hy_id;
+
+
+       }
+      else
+      {
+        util.showErrorToast('已经是会员了');
+        return;
+      }
+
+
+
+
+       let res = await util.request(api.weixinPay, { openid:this.$parent.globalData.userInfo.openid,fee:this.payMoney,detail:"ka",body:body},"post");
 
        
        if(res.code==1000)

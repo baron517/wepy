@@ -358,9 +358,13 @@
 
             setTimeout(function()
             {
-              wx.navigateBack({
-                delta: 2
+
+              wx.switchTab({
+
+                url:"/pages/ucenter/index"
+
               })
+
             },200);
 
 
@@ -418,9 +422,12 @@
 
           setTimeout(function()
           {
-            wx.navigateBack({
-              delta: 2
+            wx.switchTab({
+
+              url:"/pages/ucenter/index"
+
             })
+
           },200);
 
 

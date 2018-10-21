@@ -391,6 +391,7 @@
     margin-top: 14rpx;
     height: auto;
     overflow: hidden;
+    padding-bottom:100rpx;
   }
 
   .cate-item .h{

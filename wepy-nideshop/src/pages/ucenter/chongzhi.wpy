@@ -223,9 +223,12 @@
           'success':function(res){
             console.log(res);
 
-            wx.switchTab({
-              url: "/pages/index"
-            })
+            setTimeout(function()
+            {
+              wx.navigateBack({
+                delta: 2
+              })
+            },200);
 
           },
           'fail':function(res){},
@@ -253,7 +256,14 @@
 
         if(this.shijiMoney<=0||this.shijiMoney=="")
         {
-          util.showErrorToast("金额不能为0");
+          util.toast("金额不能为0");
+          return;
+        }
+
+        if(this.shijiMoney>this.$parent.globalData.edu)
+        {
+
+         util.toast("大额度联系客服充值");
           return;
         }
 

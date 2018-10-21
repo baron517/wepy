@@ -240,12 +240,14 @@
           title: res.msg,
           duration: 2000
         });
+
         setTimeout(function()
         {
-          wx.switchTab({
-            url: "/pages/ucenter/index"
+          wx.navigateTo({
+            url: "/pages/ucenter/pay?yy_id="+res.data["yy_id"]
           });
-        },500);
+
+        },100);
 
 
       }

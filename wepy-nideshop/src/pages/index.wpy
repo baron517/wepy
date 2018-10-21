@@ -789,6 +789,9 @@
         this.newGoods = res.data
         this.$apply()
       }
+
+       wepy.hideLoading()
+
     }
 
         async  getUserInfo(code)
@@ -814,6 +817,8 @@
           }
 
 
+
+
         }
 
   async  geConfig()
@@ -828,6 +833,8 @@
     if(rs.code==1000)
     {
       this.$parent.globalData.lianxi = rs.data.c_lianxi;
+      this.$parent.globalData.edu=rs.data.c_chongzhi;
+
     }
 
 
@@ -836,7 +843,6 @@
 
   onShow()
     {
-      
 
         var that=this;
 
@@ -859,6 +865,10 @@
 
     }
     onLoad() {
+
+    wepy.showLoading({
+      title: '加载中...'
+    })
 
       this.getLunbo();
       this.getIndexData();

@@ -122,7 +122,7 @@
         </view>
         <view class="h">
           <view class="l">预约服务时间：{{item.yy_time}}</view>
-          <view class="r" wx:if="{{item.yy_status=='已确认'}}">状态：待支付</view>
+          <view class="r" wx:if="{{item.yy_status=='已确认'}}">状态：待使用</view>
           <view class="r" wx:elif="{{item.yy_status=='已使用'}}">状态：待评价</view>
 
           <view class="r" wx:else>状态：{{item.yy_status}}</view>
@@ -142,9 +142,7 @@
             <button class="btn"  data-order-index="{{index}}" catchtap="quxiao('{{item.yy_id}}',{{index}})">取消预约</button>
           </view>
 
-          <view class="r" wx:if="{{item.yy_status=='已确认'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}})">立即付款</button>
-          </view>
+
 
           <view class="r" wx:if="{{item.yy_status=='已取消'}}">
             已取消
