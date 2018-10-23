@@ -118,6 +118,7 @@ export default class extends wepy.app {
       'pages/ucenter/express',
       'pages/logs',
       'pages/shouquan',
+      'pages/bind',
       'pages/pay/pay',
       'pages/pay/result',
       'pages/shopping/address',

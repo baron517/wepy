@@ -809,10 +809,19 @@
           console.log('app login');
             wepy.setStorageSync('userInfo',rs.user_info);
             this.$parent.globalData.userInfo = rs.user_info;
+
+            console.log(this.$parent.globalData.userInfo);
+
             if(!this.$parent.globalData.userInfo.username)
             {
               wx.navigateTo({
               url: "shouquan"
+              })
+            }
+            else if(this.$parent.globalData.userInfo.phone=="null"||this.$parent.globalData.userInfo.phone=="")
+            {
+              wx.navigateTo({
+                url: "bind"
               })
             }
           }

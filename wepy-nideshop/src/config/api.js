@@ -30,9 +30,8 @@ module.exports = {
   GoodsCount: ApiRootUrl + 'goods/count',  // 统计商品总数
   GoodsList: ServerUrl + '/Api/CommonApi/getProList',
   proDetail: ServerUrl + '/Api/CommonApi/getProDetail',
-
-
-
+  sendMsg: ServerUrl + '/Api/CommonApi/sendMsg',
+  bindPhone: ServerUrl + '/Api/CommonApi/bindPhone',
 
   couponList: ServerUrl + '/Api/CommonApi/couponList',
   couponMyList: ServerUrl + '/Api/CommonApi/couponMyList',

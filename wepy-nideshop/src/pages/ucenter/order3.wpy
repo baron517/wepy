@@ -145,7 +145,7 @@
 
 
           <view class="r" wx:if="{{item.yy_status=='已取消'}}">
-            已取消
+            退款已到余额
           </view>
 
           <view class="r" wx:if="{{item.yy_status=='已使用'}}">
