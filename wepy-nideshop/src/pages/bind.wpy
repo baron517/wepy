@@ -1,7 +1,7 @@
 <style lang="less">
     .form-col .form-row{position: relative;border-bottom:1px solid #ddd;padding-top:20rpx;}
     .form-col .form-row input{text-align: left;font-size:28rpx;padding:12rpx 8rpx;}
-    .form-col .send-row .send{position: absolute;right:0;top:10rpx;display: inline-block;padding:26rpx 40rpx;font-size:26rpx;background: #fff;z-index:1000;}
+    .form-col .send-row .send{position: absolute;right:0;top:16rpx;display: inline-block;padding:20rpx 40rpx;font-size:26rpx;background: #fff;z-index:1000;}
 
 </style>
 <template>
@@ -23,7 +23,7 @@
 
     </view>
 
-  <button  style="background: #b4282d;color:#fff;margin-top:50rpx;font-size:28rpx;" @="bangding">立即绑定</button>
+  <button  style="background: #b4282d;color:#fff;margin-top:50rpx;font-size:28rpx;" @tap="bangding">立即绑定</button>
 
 </view>
 
@@ -50,27 +50,6 @@
       async sendMsg(obj) {
 
           this.sendFlag=0;
-
-          var count=59;
-          var that=this;
-          setInterval(function()
-          {
-              if(count<=1)
-              {
-                  this.sendText="发送";
-                  this.sendFlag=1;
-              }
-              else
-              {
-                  this.sendText=count+"秒重发";
-                  count--;
-              }
-              that.$apply();
-
-          },1000);
-          return;
-
-
           let rs = await util.request(api.sendMsg, obj);
           if (rs.code == 1000)
           {
@@ -79,6 +58,23 @@
                   duration: 2000
               })
 
+              var count=59;
+              var that=this;
+              setInterval(function()
+              {
+                  if(count<=1)
+                  {
+                      that.sendText="发送";
+                      that.sendFlag=1;
+                  }
+                  else
+                  {
+                      that.sendText=count+"秒重发";
+                      count--;
+                  }
+                  that.$apply();
+
+              },1000);
 
 
 
@@ -95,15 +91,28 @@
           if(rs.code==1000)
           {
 
-              wx.switchTab({
-                  url: "/pages/index"
+              this.$parent.globalData.userInfo.phone=obj.phone;
+
+              wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
+
+              wepy.showToast({
+                  title: "绑定成功",
+                  duration: 2000
               })
+
+
+              setTimeout(function()
+              {
+                  wx.switchTab({
+                      url: "/pages/index"
+                  })
+              },500)
+
           }
           else
           {
-              util.showErrorToast('绑定失败');
+              util.showErrorToast(rs.msg);
           }
-
 
       }
 
@@ -121,7 +130,7 @@
                  return;
              }
 
-             this.sendMsg({phone:this.phone,code:this.code,m_id:this.$parent.globalData.userInfo.m_id});
+             this.bindPhone({phone:this.phone,code:this.code,m_id:this.$parent.globalData.userInfo.m_id});
 
          },
          bindPhone:function(e)
@@ -142,7 +151,12 @@
                  return;
              }
 
-            this.sendMsg({phone:this.phone});
+             if(this.sendFlag)
+             {
+                 this.sendMsg({phone:this.phone});
+             }
+
+
 
         }
      }
