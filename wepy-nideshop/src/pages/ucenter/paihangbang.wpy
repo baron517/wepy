@@ -1,0 +1,229 @@
+<style lang="less">
+  page,.container{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+
+  .orders{
+    height:100%;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .order{
+    margin-top: 20rpx;
+    background: #fff;
+  }
+
+  .order .h{
+    height: 83.3rpx;
+    line-height: 83.3rpx;
+    margin-left: 31.25rpx;
+    padding-right: 31.25rpx;
+    border-bottom: 1px solid #f4f4f4;
+    color: #333;
+  }
+
+  .order .h .l{
+    float: left;
+  }
+
+  .order .h.top .l{font-size: 32rpx;color:#000;}
+  .order .h.top .r{font-size: 32rpx;color:#000;}
+
+  .order .h .r{
+    float: right;
+    color: #b4282d;
+  }
+
+  .order .goods{
+    align-items: center;
+    padding:0  31.25rpx;
+  }
+
+  .order .goods .img{
+    height:145.83rpx;
+    width:145.83rpx;
+    background: #f4f4f4;
+  }
+
+  .order .goods .img image{
+    height:145.83rpx;
+    width:145.83rpx;
+  }
+
+  .order .goods .info{
+    height: 60rpx;
+  }
+
+  .order .goods text{
+    display: block;
+    width:33.33%;
+    float:left;
+    height: 60rpx;
+    line-height: 60rpx;
+    color: #333;
+    font-size: 30rpx;
+  }
+  .order .goods .middle{
+    text-align: center;;
+  }
+
+  .order .goods .number{
+    text-align: right;;
+  }
+
+  .order .goods .status{
+    width:105rpx;
+    color: #b4282d;
+    font-size: 25rpx;
+  }
+
+  .order .b{
+    height: 103rpx;
+    line-height: 103rpx;
+    margin-left: 31.25rpx;
+    padding-right: 31.25rpx;
+    border-top: 1px solid #f4f4f4;
+    font-size: 30rpx;
+    color: #333;
+  }
+
+  .order .b .l{
+    float: left;
+  }
+
+  .order .b .r{
+    float: right;
+  }
+
+  .order .b .btn{
+    margin-top: 19rpx;
+    height: 64.5rpx;
+    line-height: 64.5rpx;
+    text-align: center;
+    padding: 0 20rpx;
+    border-radius: 5rpx;
+    font-size: 28rpx;
+    color: #fff;
+    background: #b4282d;
+  }
+
+  .top-tiaojian{background: #fff;}
+  .top-tiaojian .date{padding:10rpx 0;}
+
+</style>
+<template>
+  <view class="container">
+    <scroll-view class="orders" scroll-y="true" scroll-top="{{scrollTop}}" bindscrolltolower="dibu">
+
+      <view class="red top-tiaojian" style="padding:30rpx 30rpx 20rpx 30rpx;">
+        <picker mode="date" class="date" value="{{date1}}" start="1978-01-01" end="2217-1-23" bindchange="bindDateChange1">
+          <view class="picker">
+            开始时间: {{date1}}
+          </view>
+        </picker>
+
+        <picker mode="date" class="date" value="{{date2}}" start="1978-01-01" end="2217-1-23" bindchange="bindDateChange2">
+        <view class="picker">
+          结束时间: {{date2}}
+        </view>
+      </picker>
+      </view>
+
+      <view  class="order"  wx:for="{{orderList}}" wx:key="item.p_id" wx:for-item="item" wx:for-index="index">
+
+        <view class="h">
+          <view class="l">排名：{{item.rank}}</view>
+          <view class="r">单数：{{item.money==null?0:item.count}}</view>
+        </view>
+        <view class="b">
+          <view class="l red">业绩：￥{{item.money==null?0:item.money}} 元</view>
+
+          <view class="r">
+            技师：{{item.js_id}}-{{item.js_name}}
+          </view>
+
+
+        </view>
+      </view>
+
+
+
+
+    </scroll-view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import util from '../../utils/util.js'
+  import api from '../../config/api.js'
+  import moment from '../../utils/moment.min.js'
+
+  export default class Order extends wepy.page {
+    data = {
+      orderList: [],
+      dazhe:10,
+      date1:moment().startOf('month').format("YYYY-MM-DD"),
+      date2:moment().endOf('month').format("YYYY-MM-DD"),
+      allMoney: 0,
+      scrollTop:0,
+      startTime:moment().startOf('month').format("YYYY-MM-DD 00:00:00"),
+      endTime:moment().endOf('month').format("YYYY-MM-DD 24:00:00"),
+      isHuiyuan:0
+    }
+    async onShow()
+    {
+      this.getOrderList();
+    }
+
+    async onLoad() {
+
+
+
+    }
+    async getOrderList() {
+
+      this.startTime=this.date1+" 00:00:00";
+      this.endTime=this.date2+" 24:00:00";
+
+      let res =await util.request(api.getPaihangbang,{startTime:this.startTime,endTime:this.endTime});
+      console.log(res);
+      if (res.code ==1000) {
+
+
+        for(var i=0;i<res.data.length;i++)
+        {
+          res.data[i].rank=i+1;
+        }
+
+        this.orderList = res.data;
+
+
+        this.$apply()
+
+
+      }
+    }
+    methods = {
+      bindDateChange1(e)
+      {
+        console.log(e);
+        this.date1= e.detail.value;
+        this.getOrderList();
+
+      },
+      bindDateChange2(e)
+      {
+
+        this.date2= e.detail.value;
+        this.getOrderList();
+
+      }
+
+     }
+  }
+</script>

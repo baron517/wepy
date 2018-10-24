@@ -160,6 +160,9 @@
     color: #333;
     font-size: 30rpx;
   }
+
+  .iconfont{font-size:32px;}
+
 </style>
 <template>
   <view class="container">
@@ -215,25 +218,38 @@
           <text class="txt">已完成</text>
         </navigator>
       </view>
-      <view class="item item-bottom">
+      <view class="item">
         <navigator url="/pages/ucenter/address" class="a">
           <text class="icon huiyuanka"></text>
           <text class="txt">会员卡</text>
         </navigator>
       </view>
-      <view class="item item-bottom">
+      <view class="item">
         <navigator url="coupon" class="a">
           <text class="icon youhuiquan"></text>
           <text class="txt">优惠券<text class="quan" wx:if="{{countList.yhq_count>0}}">{{countList.yhq_count}}</text></text>
         </navigator>
       </view>
-      <view class="item no-border item-bottom">
+      <view class="item no-border">
         <view  class="a" @tap="tel()">
           <text class="icon kefu"></text>
           <text class="txt">联系客服</text>
         </view>
       </view>
-      
+
+
+      <view class="item" wx:if="{{m_is_js}}">
+        <navigator url="/pages/ucenter/yeji" class="a">
+          <text class="iconfont icon-weibiaoti-"></text>
+          <text class="txt">业绩</text>
+        </navigator>
+      </view>
+      <view class="item" wx:if="{{m_is_js}}">
+        <navigator url="/pages/ucenter/paihangbang" class="a">
+          <text class="iconfont icon-paiming"></text>
+          <text class="txt">排行榜</text>
+        </navigator>
+      </view>
      
     </view>
 
@@ -256,7 +272,8 @@
     data = {
       countList:{},
       userInfo: {},
-      token: ''
+      token: '',
+      m_is_js:''
     }
 
     async getUserInfo() {
@@ -269,6 +286,8 @@
 
         this.userInfo = this.$parent.globalData.userInfo;
 
+        this.m_is_js=this.$parent.globalData.userInfo.m_is_js;
+
         console.log(this.$parent.globalData.userInfo);
 
       }
@@ -278,6 +297,7 @@
 
     onLoad() {
       console.log(this.$parent.globalData);
+
     }
 
     async userCount () {

@@ -33,6 +33,9 @@ module.exports = {
   sendMsg: ServerUrl + '/Api/CommonApi/sendMsg',
   bindPhone: ServerUrl + '/Api/CommonApi/bindPhone',
 
+  getYeji: ServerUrl + '/Api/CommonApi/getYeji',
+  getPaihangbang: ServerUrl + '/Api/CommonApi/getPaihangbang',
+
   couponList: ServerUrl + '/Api/CommonApi/couponList',
   couponMyList: ServerUrl + '/Api/CommonApi/couponMyList',
 
