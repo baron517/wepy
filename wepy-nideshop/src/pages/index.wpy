@@ -783,7 +783,7 @@
     }
 
     async getIndexData () {
-      let res = await util.request(api.IndexUrl);
+      let res = await util.request(api.IndexUrl,{m_id:this.$parent.globalData.userInfo.m_id});
     console.log("###########3");
     console.log(res);
       if (res.errno === 0) {
@@ -811,6 +811,10 @@
             this.$parent.globalData.userInfo = rs.user_info;
 
             console.log(this.$parent.globalData.userInfo);
+
+
+            this.getIndexData();
+
 
             if(!this.$parent.globalData.userInfo.username)
             {
@@ -881,7 +885,7 @@
     })
 
       this.getLunbo();
-      this.getIndexData();
+
 
       console.log("#########88888###");
 

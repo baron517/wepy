@@ -1,0 +1,170 @@
+<style lang="less">
+    .form-col .form-row{position: relative;border-bottom:1px solid #ddd;padding-top:20rpx;}
+    .form-col .form-row input{text-align: left;font-size:28rpx;padding:12rpx 8rpx;}
+    .form-col .send-row .send{position: absolute;right:0;top:16rpx;display: inline-block;padding:20rpx 40rpx;font-size:26rpx;background: #fff;z-index:1000;}
+
+</style>
+<template>
+
+<view style="padding:40rpx 30rpx;text-align:center;" class="form-col">
+
+
+  <view class="form-row">
+
+        <input value="{{phone}}" bindinput="bindPhone"  placeholder="输入手机号码" type="number"/>
+
+  </view>
+
+    <view class="form-row send-row">
+
+    <input type="number" bindinput="bindCode"  placeholder="输入验证码" />
+
+    <view class="send"  @tap="send">{{sendText}}</view>
+
+    </view>
+
+  <button  style="background: #b4282d;color:#fff;margin-top:50rpx;font-size:28rpx;" @tap="bangding">立即提交</button>
+
+</view>
+
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import util from '../../utils/util.js'
+    import api from '../../config/api.js'
+
+  export default class Example extends wepy.page {
+    config = {
+      navigationBarTitleText: '修改手机'
+    }
+
+      data={
+      sendText:"发送",
+      code:"",
+      sendFlag:1,
+      phone:""
+
+  }
+
+      async sendMsg(obj) {
+
+          this.sendFlag=0;
+          let rs = await util.request(api.sendMsg, obj);
+          if (rs.code == 1000)
+          {
+              wepy.showToast({
+                  title: "发送成功",
+                  duration: 2000
+              })
+
+              var count=59;
+              var that=this;
+              setInterval(function()
+              {
+                  if(count<=1)
+                  {
+                      that.sendText="发送";
+                      that.sendFlag=1;
+                  }
+                  else
+                  {
+                      that.sendText=count+"秒重发";
+                      count--;
+                  }
+                  that.$apply();
+
+              },1000);
+
+
+
+          }
+          else
+          {
+              util.showErrorToast("发送失败");
+          }
+      }
+
+      async  bindPhone(obj) {
+
+          let rs = await util.request(api.bindPhone,obj,"post");
+          if(rs.code==1000)
+          {
+
+              this.$parent.globalData.userInfo.phone=obj.phone;
+
+              wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
+
+              wepy.showToast({
+                  title: "修改成功",
+                  duration: 2000
+              })
+
+
+              setTimeout(function()
+              {
+                  wx.switchTab({
+                      url: "/pages/ucenter/index"
+                  })
+              },500)
+
+          }
+          else
+          {
+              util.showErrorToast(rs.msg);
+          }
+
+      }
+
+     methods = {
+         bangding:function()
+         {
+             if(!this.phone)
+             {
+                 util.showErrorToast('手机不能为空');
+                 return;
+             }
+             if(!this.code)
+             {
+                 util.showErrorToast('验证码不能为空');
+                 return;
+             }
+
+             this.bindPhone({phone:this.phone,code:this.code,m_id:this.$parent.globalData.userInfo.m_id});
+
+         },
+         bindPhone:function(e)
+         {
+             this.phone= e.detail.value
+         },
+         bindCode:function(e)
+         {
+            this.code= e.detail.value
+         },
+         send: function (e) {
+
+             console.log("发送");
+
+             if(!this.phone)
+             {
+                 util.showErrorToast('手机不能为空');
+                 return;
+             }
+
+             if(this.sendFlag)
+             {
+                 this.sendMsg({phone:this.phone});
+             }
+
+
+
+        }
+     }
+
+    onLoad() {
+
+
+
+    }
+  }
+</script>

@@ -3,7 +3,9 @@
     width: 100%;
     height: auto;
     font-size: 0;
-    background: #fff;;
+    background: #fff;
+    padding:0 30rpx 80rpx 30rpx;
+    box-sizing: border-box;
   }
 
   .content image{
@@ -191,8 +193,18 @@
 <template>
   <scroll-view class="container">
     <scroll-view class="content">
+
+      <view style="font-weight: bold;padding:20rpx 0 10rpx 0;text-align: center;font-size:36rpx;">
+        {{topic.hd_title}}
+      </view>
+      <view style="padding:8rpx 0;color:#666;font-size:24rpx;text-align: center;">
+        创建时间：{{topic.hd_create_time}}
+      </view>
+      <view>
       <import src="../../lib/wxParse/wxParse.wxml"/>
       <template is="wxParse" data="{{wxParseData:topicDetail.nodes}}"/>
+      </view>
+
     </scroll-view>
    
     

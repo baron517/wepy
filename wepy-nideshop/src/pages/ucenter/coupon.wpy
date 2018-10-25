@@ -254,7 +254,7 @@
 
       }
     }
-    async couponList()
+    async getCouponList()
     {
 
       var yhq_m_id=this.$parent.globalData.userInfo.m_id;
@@ -269,8 +269,8 @@
     }
     onLoad() {
 
-
-      this.couponList();
+      console.log("列表");
+      this.getCouponList();
 
     }
   }

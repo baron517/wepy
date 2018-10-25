@@ -513,7 +513,7 @@
 
     }
     async getIndexData () {
-      let res = await util.request(api.IndexUrl);
+      let res = await util.request(api.IndexUrl,{m_id:this.$parent.globalData.userInfo.m_id});
       console.log("###########3");
       console.log(res);
       if (res.errno === 0) {

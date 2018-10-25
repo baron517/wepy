@@ -220,6 +220,14 @@
     data={
       couponList:[]
     }
+
+    async onShow() {
+
+      console.log(this);
+      this.getCouponList();
+
+    }
+
     async lingquYouhuiquan(index)
     {
       var obj=this.couponList[index];
@@ -243,16 +251,7 @@
 
     }
 
-    methods = {
-      shiyong(index)
-      {
-        console.log(index);
-        console.log("使用");
-        this.lingquYouhuiquan(index);
-
-      }
-    }
-    async couponList()
+    async getCouponList()
     {
       let res =await util.request(api.getYouhuiquan);
 
@@ -262,11 +261,17 @@
         this.$apply()
       }
     }
-    onLoad() {
 
 
-      this.couponList();
+    methods = {
+      shiyong(index)
+      {
+        console.log(index);
+        console.log("使用");
+        this.lingquYouhuiquan(index);
 
+      }
     }
+
   }
 </script>

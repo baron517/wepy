@@ -161,12 +161,12 @@
     font-size: 30rpx;
   }
 
-  .iconfont{font-size:32px;}
+  .iconfont{font-size:32px;color:#555;}
 
 </style>
 <template>
   <view class="container">
-    <view class="profile-info" bindtap="goLogin">
+    <view class="profile-info">
       <image class="avatar" src="{{userInfo.avatar}}"></image>
       <view class="info">
         <text class="name">{{userInfo.username}}</text>
@@ -237,6 +237,12 @@
         </view>
       </view>
 
+      <view class="item">
+        <navigator url="/pages/ucenter/xiugai" class="a">
+          <text class="iconfont icon-shouji"></text>
+          <text class="txt">修改手机</text>
+        </navigator>
+      </view>
 
       <view class="item" wx:if="{{m_is_js}}">
         <navigator url="/pages/ucenter/yeji" class="a">
