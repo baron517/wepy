@@ -323,6 +323,8 @@
 
         console.log("####"+navArray.selectedList);
 
+          console.log("money####"+this.allMoney);
+
 
       },
 

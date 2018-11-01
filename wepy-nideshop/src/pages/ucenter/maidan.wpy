@@ -287,6 +287,10 @@
 
 
       }
+      else
+      {
+          util.showErrorToast('支付失败');
+      }
 
 
 
@@ -329,7 +333,7 @@
       }
       else
       {
-        util.showErrorToast('支付失败');
+          util.showErrorToast(res.msg);
       }
 
     }

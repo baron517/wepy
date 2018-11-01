@@ -723,7 +723,7 @@
       </swiper>
       <view class="service-policy">
         <view class="item">{{goods.js_danshu}}单</view>
-        <view class="item">已为您服务多少{{}}次</view>
+        <view class="item">已为您服务{{goods.count==null?0:goods.count}}次</view>
       </view>
       <view class="goods-info">
         <view class="c">
@@ -780,7 +780,7 @@
 
     }
     async getGoodsInfo () {
-      let res = await util.request(api.getJishiDetail, { id: this.id });
+      let res = await util.request(api.getJishiDetail, { id: this.id ,m_id:this.$parent.globalData.userInfo.m_id});
       console.log("详情");
       console.log(res);
       if (res.errno === 0) {

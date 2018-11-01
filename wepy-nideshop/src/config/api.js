@@ -17,6 +17,9 @@ module.exports = {
   pingjia: ServerUrl + '/Api/CommonApi/pingjia',
   config: ServerUrl + '/Api/CommonApi/config',
   getOrder: ServerUrl + '/Api/CommonApi/getOrder',
+  getJishiOrder: ServerUrl + '/Api/CommonApi/getJishiOrder',
+  yuyuePanduan: ServerUrl + '/Api/CommonApi/yuyuePanduan',
+
   userCount: ServerUrl + '/Api/CommonApi/userCount',
   quxiao: ServerUrl + '/Api/CommonApi/quxaoCaozuo',
   yuePay: ServerUrl + '/Api/CommonApi/yuePay',
@@ -38,6 +41,8 @@ module.exports = {
 
   couponList: ServerUrl + '/Api/CommonApi/couponList',
   couponMyList: ServerUrl + '/Api/CommonApi/couponMyList',
+
+  yishiyong: ServerUrl + '/Api/CommonApi/yishiyong',
 
 
   GoodsCategory: ServerUrl + '/Api/CommonApi/getTagList',  // 获得分类数据

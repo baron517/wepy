@@ -113,22 +113,52 @@
       secondTabActive:1,
       goods: {}
     }
+
+      async yuyuePanduan () {
+
+
+          let res = await util.request(api.yuyuePanduan, {
+              yy_m_id:this.$parent.globalData.userInfo.m_id,yy_time:this.xuanzhong,yy_js_id:this.id},"post");
+
+          console.log(res);
+
+          if(res.code==1000)
+          {
+
+              wx.navigateTo({
+                  url: '/pages/category/category?time='+this.xuanzhong+"&id="+this.id+"&js_name="+this.js_name
+
+              })
+
+          }
+          else
+          {
+              wepy.showToast({
+                  title: res.msg,
+                  icon:"none",
+                  duration: 2000
+              })
+
+          }
+
+
+      }
+
     methods = {
 
       queren()
       {
 
-        console.log("############"+this.xuanzhong);
+        console.log("888888#########"+this.xuanzhong);
         if(this.xuanzhong=="")
         {
           util.showErrorToast('时间没有选');
           return;
         }
 
-        wx.navigateTo({
-          url: '/pages/category/category?time='+this.xuanzhong+"&id="+this.id+"&js_name="+this.js_name
+       this.yuyuePanduan();
 
-        })
+
 
       },
       qiehuan(str){
