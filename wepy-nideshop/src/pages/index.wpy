@@ -518,14 +518,13 @@
 </style>
 <template>
 
- 
 
   <view class="container">
     <swiper class="banner" indicator-dots="true" autoplay="true" interval="3000" duration="1000">
       <swiper-item wx:for="{{banner}}" wx:key="{{item.lb_id}}">
-        <navigator url="{{item.link}}">
+        <view @tap="lunbo({{item.lb_link}})">
           <image src="{{item.lb_img}}" background-size="cover"></image>
-        </navigator>
+        </view>
       </swiper-item>
     </swiper>
     <view class="m-menu">
@@ -692,6 +691,18 @@
 
     }
     methods = {
+			  lunbo(link)
+			  {
+			     console.log(link);
+			  
+			     if(link)
+				 {
+				   wx.navigateTo({
+				  url: "/pages/topic/detail?id="+link
+				  })
+				 }
+			  },
+	
               fenxiao()
               {
                 console.log("#####3");
@@ -802,7 +813,7 @@
           let rs = await util.request(api.getOpenid,{code:code});
 
           console.log("登录");
-          console.log(rs.user_info.username);
+          console.log(rs.user_info);
 
           if(rs)
           {

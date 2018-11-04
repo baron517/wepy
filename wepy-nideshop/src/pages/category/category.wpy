@@ -357,7 +357,7 @@
           this.xm_type = res.data[0].t_name;
         }
         // nav位置
-        let currentIndex = 0
+    /*    let currentIndex = 0
         let navListCount = this.navList.length
         for (let i = 0; i < navListCount; i++) {
           currentIndex += 1
@@ -367,7 +367,7 @@
         }
         if (currentIndex > navListCount / 2 && navListCount > 5) {
           this.scrollLeft = currentIndex * 60
-        }
+        }*/
         this.$apply()
 
       }

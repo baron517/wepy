@@ -216,7 +216,7 @@
   import util from '../../utils/util.js'
   import api from '../../config/api.js'
   import WxParse from '../../lib/wxParse/wxParse.js'
-
+  
   export default class Detail extends wepy.page {
     data = {
       id: 0,

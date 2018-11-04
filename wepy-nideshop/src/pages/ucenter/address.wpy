@@ -106,7 +106,7 @@
       <view class="info-col">
 
 
-        <navigator class="item" wx:if="{{topicList.is_huiyuan}}}" url="/pages/ucenter/chongzhi">
+        <navigator class="item" wx:if="{{topicList.is_huiyuan==1}}" url="/pages/ucenter/chongzhi">
           <view class="info">
             <view class="top-text">会员卡</view>
             <view class="info-middle">
@@ -114,7 +114,7 @@
               <image class="img" src="{{topicList.m_hy_img}}" background-size="cover"></image>
 
               <view class="info-right">
-                <view class="title"><text class="left-col">{{topicList.m_hy_name}}</text></view>
+                <view class="title"><text class="left-col">{{topicList.m_hy_name}} {{topicList.m_kahao}}</text></view>
                 <view class="desc"><text class="left-col yuanjia">价格：￥{{topicList.m_hy_jiage}}</text></view>
                 <view class="desc"><text class="text">折扣：消费打{{topicList.m_hy_zhekou}}折</text></view>
                 <view class="desc"><text class="text">余额：{{yue}} 元</text></view>
@@ -163,6 +163,7 @@
 
       this.yue=this.$parent.globalData.userInfo.m_yue;
       this.topicList=this.$parent.globalData.userInfo;
+      console.log(this.topicList);
 
     }
 

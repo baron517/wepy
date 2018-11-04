@@ -22,6 +22,7 @@ module.exports = {
 
   userCount: ServerUrl + '/Api/CommonApi/userCount',
   quxiao: ServerUrl + '/Api/CommonApi/quxaoCaozuo',
+  quxiaoOrder: ServerUrl + '/Api/CommonApi/quxiaoOrder',
   yuePay: ServerUrl + '/Api/CommonApi/yuePay',
   IndexUrl: ServerUrl+'/Api/CommonApi/getJishiList', // 首页数据接口
   getLunbo: ServerUrl+'/Api/CommonApi/getLunbo',
