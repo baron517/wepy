@@ -106,7 +106,7 @@
       <view class="info-col">
 
 
-        <navigator class="item" wx:if="{{topicList.is_huiyuan}}}" url="/pages/ucenter/chongzhi">
+        <navigator class="item" wx:if="{{topicList.is_huiyuan=='1'}}}" url="/pages/ucenter/chongzhi">
           <view class="info">
             <view class="top-text">会员卡</view>
             <view class="info-middle">

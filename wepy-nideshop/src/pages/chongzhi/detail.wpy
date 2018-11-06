@@ -204,7 +204,7 @@
         this.scrollTop = 0
         this.topicList = res.data;
 
-        if(this.$parent.globalData.userInfo.is_huiyuan==1&&this.$parent.globalData.userInfo.m_hy_id<this.id)
+        if(this.$parent.globalData.userInfo.is_huiyuan=='1'&&this.$parent.globalData.userInfo.m_hy_id<this.id)
         {
           this.payMoney=parseFloat(this.topicList.hy_jiage)-parseFloat(this.$parent.globalData.userInfo.m_hy_jiage);
 
@@ -225,12 +225,12 @@
        console.log(this.$parent.globalData.userInfo.is_huiyuan);
 
 
-      if(this.$parent.globalData.userInfo.is_huiyuan==0)
+      if(this.$parent.globalData.userInfo.is_huiyuan=='0')
       {
         var body=obj.hy_name+"#"+obj.hy_zhekou+"#1#"+obj.hy_img+"#"+obj.hy_id;
 
       }
-       else if(this.$parent.globalData.userInfo.is_huiyuan==1&&this.$parent.globalData.userInfo.m_hy_id<this.id)
+       else if(this.$parent.globalData.userInfo.is_huiyuan=='1'&&this.$parent.globalData.userInfo.m_hy_id<this.id)
        {
 
          var body=obj.hy_name+"#"+obj.hy_zhekou+"#5#"+obj.hy_img+"#"+obj.hy_id;

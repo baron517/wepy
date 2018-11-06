@@ -96,16 +96,14 @@
 
   .section-nav{
     width: 750rpx;
-    height: 108rpx;
     background: #fff;
     margin-bottom: 20rpx;
   }
 
   .section-nav .t{
     float: left;
-    width: 600rpx;
-    height: 108rpx;
-    line-height: 108rpx;
+    width: 750rpx;
+    line-height: 58rpx;
     font-size: 29rpx;
     color: #333;
     margin-left: 31.25rpx;
@@ -736,6 +734,11 @@
           {{goods.js_pingfen==""?"暂无评分":goods.js_pingfen+"分"}}
         </view>
       </view>
+
+      <view class="section-nav section-attr">
+        <view class="t">技师级别：{{goods.jt_name}}</view>
+      </view>
+
       <view class="section-nav section-attr">
         <view class="t">擅长：{{goods.js_shanchang}}</view>
       </view>
@@ -759,7 +762,7 @@
   </scroll-view>
 
   <view class="bottom-btn">
-    <navigator class="r" url="/pages/category/shijian?id={{id}}&js_name={{goods.js_name}}">立即预约</navigator>
+    <view class="r" @tap="yuyue('{{goods.js_name}}');" >立即预约</view>
   </view>
 
 </template>
@@ -776,7 +779,14 @@
       goods: {}
     }
     methods = {
+        yuyue:function(js_name)
+        {
 
+
+            wx.navigateTo({
+                url: "/pages/category/shijian?id="+this.id+"&js_name="+js_name
+            })
+        }
 
     }
     async getGoodsInfo () {

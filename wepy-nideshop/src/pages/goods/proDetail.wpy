@@ -739,9 +739,7 @@
           分类：{{goods.xm_type}}
         </view>
       </view>
-      <view class="section-nav section-attr">
-        <view class="t">地址：{{goods.js_shanchang}}</view>
-      </view>
+
 
 
       <view class="goods-attr">

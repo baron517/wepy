@@ -209,7 +209,7 @@
 
       this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
 
-      if(this.isHuiyuan)
+      if(this.isHuiyuan=="1")
       {
         console.log(this.$parent.globalData.userInfo);
         this.dazhe=this.$parent.globalData.userInfo.m_hy_zhekou;

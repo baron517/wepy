@@ -57,9 +57,9 @@
     height: 60rpx;
   }
 
-  .order .goods text{
+  .order .goods view text{
     display: block;
-    width:33.33%;
+    width:50%;
     float:left;
     height: 60rpx;
     line-height: 60rpx;
@@ -67,7 +67,7 @@
     font-size: 30rpx;
   }
   .order .goods .middle{
-    text-align: center;;
+    text-align: center;
   }
 
   .order .goods .number{
@@ -113,6 +113,9 @@
   .order .goods .info{
     height: 80rpx;
   }
+  .order .goods .row-info{
+    height: 160rpx;
+  }
 
   .order .goods .info view{
     display: block;
@@ -123,6 +126,9 @@
     color: #333;
     font-size: 30rpx;
   }
+
+  .order .goods .info .row-col{width:100%;}
+
   .order .goods .middle{
     text-align: center;;
   }
@@ -163,10 +169,18 @@
         </view>
 
         <view class="goods">
-          <view class="info" wx:for="{{item.yy_pro}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex">
+          <view class="info row-info" wx:for="{{item.yy_pro}}" wx:key="iitem.id" wx:for-item="iitem" wx:for-index="iindex">
+
+             <view class="row-col">
             <text class="name">编号：{{item.yy_js_id}} {{item.yy_js_name}}</text>
-            <text class="middle">{{iitem.name}}</text>
+            <text class="number">技师级别：{{item.js_info.jt_name}}</text>
+             </view>
+
+            <view class="row-col">
+            <text class="name">{{iitem.name}}</text>
             <text class="number">{{iitem.time}}分钟</text>
+            </view>
+
           </view>
           <view class="status"></view>
         </view>
@@ -268,7 +282,7 @@
 
       this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
 
-      if(this.isHuiyuan)
+      if(this.isHuiyuan=="1")
       {
         console.log(this.$parent.globalData.userInfo);
         this.dazhe=this.$parent.globalData.userInfo.m_hy_zhekou;
@@ -309,8 +323,10 @@
 
     async getOrderList() {
       let res =await util.request(api.getOrderDetail,{yy_id:this.yy_id});
+      console.log("订单");
       console.log(res);
       if (res.code ==1000) {
+
 
 
         console.log(this.dazhe/10);

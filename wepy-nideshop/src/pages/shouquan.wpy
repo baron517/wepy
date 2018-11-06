@@ -31,6 +31,8 @@
           if(rs.code==1000)
           {
 
+              wepy.setStorageSync('shouquan',1);
+
               wx.switchTab({
                   url: "/pages/index"
               })
@@ -55,6 +57,7 @@
                 this.$parent.globalData.userInfo.username=e.detail.userInfo.nickName;
 
                 wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
+                wepy.setStorageSync('');
 
                 var obj=this.$parent.globalData.userInfo;
 

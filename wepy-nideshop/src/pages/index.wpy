@@ -815,8 +815,9 @@
 
             this.getIndexData();
 
+            console.log("shouquan"+wepy.getStorageSync('shouquan'));
 
-            if(!this.$parent.globalData.userInfo.username)
+            if(wepy.getStorageSync('shouquan')!=1)
             {
               wx.navigateTo({
               url: "shouquan"
