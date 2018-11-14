@@ -57,7 +57,7 @@
                 this.$parent.globalData.userInfo.username=e.detail.userInfo.nickName;
 
                 wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
-                wepy.setStorageSync('');
+
 
                 var obj=this.$parent.globalData.userInfo;
 
@@ -67,6 +67,10 @@
 
 
 
+            }
+            else
+            {
+                util.showErrorToast('授权失败');
             }
 
         }

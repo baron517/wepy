@@ -191,7 +191,10 @@ export default class extends wepy.app {
       'request': 10000,
       'downloadFile': 10000
     },
-    'debug': true
+    'debug': true,
+    "navigateToMiniProgramAppIdList": [
+          "wxe206957266e9bb55"
+     ]
   }
 
   globalData = {

@@ -476,11 +476,15 @@
         <view class="item" wx:for="{{newGoods}}" wx:for-index="index" wx:for-item="item" wx:key="{{item.js_id}}">
           <navigator url="/pages/goods/index?id={{item.js_id}}">
             <image class="img" src="{{item.js_img1}}" background-size="cover"></image>
+
             <view class="price">
               <text class="top"> 编号：{{item.js_id}}</text>
-              <text class="bottom"> {{item.js_pingfen==''?'暂无评分':item.js_pingfen+'分'}}</text>
+              <text class="bottom"> {{item.js_pingfen=="" ?'暂无评分':item.js_pingfen+"分"}}</text>
             </view>
-            <view class="name"><text class="left">{{item.js_danshu}}单</text><text class="right">已为您服务{{item.count==null?0:item.count}}次</text></view>
+            <view class="name">
+              <text class="left">{{item.js_danshu}}单</text>
+              <text class="right">已为您服务{{item.count==null?0:item.count}}次</text>
+            </view>
 
           </navigator>
         </view>

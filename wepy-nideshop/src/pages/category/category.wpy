@@ -357,7 +357,7 @@
           this.xm_type = res.data[0].t_name;
         }
         // nav位置
-        let currentIndex = 0
+    /*    let currentIndex = 0
         let navListCount = this.navList.length
         for (let i = 0; i < navListCount; i++) {
           currentIndex += 1
@@ -367,12 +367,15 @@
         }
         if (currentIndex > navListCount / 2 && navListCount > 5) {
           this.scrollLeft = currentIndex * 60
-        }
+        }*/
         this.$apply()
 
       }
     }
     async getGoodsList () {
+
+        var jishiInfo=wepy.getStorageSync('jishiInfo');
+
         let res = await util.request(api.GoodsList, {categoryId: this.xm_type, page: this.page, size: this.size})
         if (res.data) {
           this.goodsList = res.data;
@@ -383,6 +386,12 @@
           }
           for(var i=0;i<this.goodsList.length;i++)
           {
+             if(jishiInfo.jt_price)
+             {
+                 this.goodsList[i].xm_xianjia=this.goodsList[i].xm_xianjia*jishiInfo.jt_price;
+             }
+
+
              for(var j=0;j<navArray.selectedList.length;j++)
              {
                 if(navArray.selectedList[j]==this.goodsList[i].xm_id)

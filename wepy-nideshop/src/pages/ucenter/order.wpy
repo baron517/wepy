@@ -104,12 +104,18 @@
     height: 64.5rpx;
     line-height: 64.5rpx;
     text-align: center;
-    padding: 0 20rpx;
+    padding: 0 28rpx;
     border-radius: 5rpx;
     font-size: 28rpx;
     color: #fff;
+    display: inline-block;
+    box-sizing: border-box;
+    margin:16rpx 10rpx;
     background: #b4282d;
   }
+
+  .order .b .r .btn:first-child{background: #fff;border:1px solid #b4282d;color:#b4282d;}
+
 </style>
 <template>
   <view class="container">
@@ -136,14 +142,15 @@
           <view class="status"></view>
         </view>
         <view class="b">
-          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">会员打折后：{{item.allMoney}} 元</text></view>
+          <view class="l">总计：￥{{item.yy_money}}  <text wx:if="{{isHuiyuan}}">打折后：{{item.allMoney}} 元</text></view>
 
           <view class="r" wx:if="{{item.yy_status=='待商家确认'}}">
             <button class="btn"  data-order-index="{{index}}" catchtap="quxiao('{{item.yy_id}}',{{index}})">取消预约</button>
           </view>
 
           <view class="r" wx:if="{{item.yy_status=='待支付'}}">
-            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}})">立即付款</button>
+            <button class="btn"  data-order-index="{{index}}" catchtap="quxiaoOrder('{{item.yy_id}}',{{index}})">取消</button>
+            <button class="btn"  data-order-index="{{index}}" catchtap="daifukuan('{{item.yy_id}}',{{index}})">付款</button>
           </view>
 
           <view class="r" wx:if="{{item.yy_status=='已取消'}}">
@@ -157,6 +164,7 @@
 
 
         </view>
+
       </view>
 
       <view class="loading" wx:if="{{isLoading}}">{{loading}}</view>
@@ -261,6 +269,34 @@
 
     }
 
+    async quxiaoYuyue(yy_id,indexStr) {
+
+      console.log(indexStr);
+
+      let res =await util.request(api.quxiaoOrder,{yy_id:yy_id,yy_m_id:this.$parent.globalData.userInfo.m_id});
+      console.log(res);
+      if (res.code ==1000) {
+
+
+        this.orderList.splice(indexStr, 1);
+
+        wepy.showToast({
+          title:res.msg,
+          duration: 2000
+        })
+
+        this.$apply()
+        console.log(this.orderList);
+
+      }
+      else {
+
+        util.showErrorToast(res.msg);
+
+      }
+
+    }
+
 
     async yuePay()
     {
@@ -340,6 +376,13 @@
         //this.weixinPay(body,index);
 
       },
+
+
+      async quxiaoOrder(yy_id,indexStr)
+      {
+        this.quxiaoYuyue(yy_id,indexStr);
+      },
+
       async quxiao(yy_id,indexStr)
       {
         this.quxiaoCaozuo(yy_id,indexStr);

@@ -327,7 +327,10 @@
       console.log(res);
       if (res.code ==1000) {
 
-
+        /*if(res.data.js_info.jt_price)
+        {
+            res.data.yy_money=(res.data.yy_money*res.data.js_info.jt_price).toFixed(2);
+        }*/
 
         console.log(this.dazhe/10);
         res.data.allMoney=(res.data.yy_money*(this.dazhe/10)).toFixed(2);

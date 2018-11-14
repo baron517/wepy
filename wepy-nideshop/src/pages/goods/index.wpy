@@ -781,7 +781,11 @@
     methods = {
         yuyue:function(js_name)
         {
-
+            var jishiInfo={};
+            jishiInfo.jt_id=this.goods.jt_id;
+            jishiInfo.jt_name=this.goods.jt_name;
+            jishiInfo.jt_price=this.goods.jt_price;
+            wepy.setStorageSync('jishiInfo',jishiInfo);
 
             wx.navigateTo({
                 url: "/pages/category/shijian?id="+this.id+"&js_name="+js_name

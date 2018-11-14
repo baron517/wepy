@@ -244,19 +244,19 @@
         </navigator>
       </view>
 
-      <view class="item" wx:if="{{m_is_js}}">
+      <view class="item" wx:if="{{m_is_js==1}}">
         <navigator url="/pages/ucenter/yeji" class="a">
           <text class="iconfont icon-weibiaoti-"></text>
           <text class="txt">业绩</text>
         </navigator>
       </view>
-      <view class="item" wx:if="{{m_is_js}}">
+      <view class="item" wx:if="{{m_is_js==1}}">
         <navigator url="/pages/ucenter/paihangbang" class="a">
           <text class="iconfont icon-paiming"></text>
           <text class="txt">排行榜</text>
         </navigator>
       </view>
-      <view class="item" wx:if="{{m_is_js}}">
+      <view class="item" wx:if="{{m_is_js==1}}">
         <navigator url="/pages/ucenter/jishiOrder" class="a">
           <text class="iconfont icon-dingdan"></text>
           <text class="txt">技师订单</text>
