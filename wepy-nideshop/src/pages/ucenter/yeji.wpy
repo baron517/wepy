@@ -117,6 +117,9 @@
 
       <view class="red" style="padding:30rpx 30rpx 20rpx 30rpx;">
         月总业绩：{{allMoney}} 元
+		
+		<text class="red" style="margin-left:10px;">月总提成：{{ticheng}} 元</text>
+		
       </view>
 
       <view  class="order"  wx:for="{{orderList}}" wx:key="item.p_id" wx:for-item="item" wx:for-index="index">
@@ -152,6 +155,7 @@
       orderList: [],
       dazhe:10,
       allMoney: 0,
+	  ticheng:0,
       scrollTop:0,
       isHuiyuan:0
     }
@@ -174,8 +178,10 @@
           for(var i=0;i<res.data.length;i++)
           {
             this.allMoney=this.allMoney+parseFloat(res.data[i].p_money);
+			this.ticheng=this.ticheng+parseFloat(res.data[i].p_money)*parseFloat(res.data[i].js_tc);
           }
-
+		  
+		  
           this.orderList = res.data;
 
 
