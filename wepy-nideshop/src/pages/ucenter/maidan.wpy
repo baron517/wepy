@@ -217,7 +217,7 @@
       nameId:'',
       active:0,
       proName:'',
-      dazhe:1,
+      dazhe:10,
       isHuiyuan:0,
       jishiName:''
     }
@@ -242,7 +242,7 @@
       if(options.money)
       {
         this.money=options.money;
-        this.shijiMoney=this.money*this.dazhe/10;
+        this.shijiMoney=(this.money*this.dazhe/10).toFixed(2);
         this.proName=options.pro_name;
       }
 

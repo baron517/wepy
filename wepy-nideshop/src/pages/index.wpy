@@ -30,10 +30,9 @@
   .m-menu .item .icon-col{width:80rpx;height:80rpx;background: #ff4545;margin:0 auto 16rpx auto;border-radius: 50%;text-align: center;}
 
   .m-menu image {
-    width: 48rpx;
-    height: 48rpx;
-    margin: 12rpx auto;
-    margin-bottom: 12rpx;
+    width: 80rpx;
+    height: 80rpx;
+	border-radius:50%;
   }
 
   .m-menu text {
@@ -529,43 +528,43 @@
     </swiper>
     <view class="m-menu">
       <view  class="item"  @tap="tiaozhuan('category/catalog')">
-        <view class="icon-col"><image src="https://wxyy.cnyinfei.com/images/home/yuyue.png" background-size="cover"></image></view>
-        <text>技师预约</text>
+        <view class="icon-col"><image src="https://wxyy.cnyinfei.com{{iconList[0].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[0].i_name}}</text>
       </view>
 
         <navigator  class="item" url="/pages/ucenter/couponList">
-        <view class="icon-col" style="background:#ff6c44;"><image src="https://wxyy.cnyinfei.com/images/home/youhuiquan.png" background-size="cover"></image></view>
-        <text>优惠券</text>
+        <view class="icon-col" ><image src="https://wxyy.cnyinfei.com{{iconList[1].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[1].i_name}}</text>
       </navigator>
 
         <view  class="item"  @tap="tiaozhuan('chongzhi/index')">
-        <view class="icon-col" style="background:#ff962a;"><image src="https://wxyy.cnyinfei.com/images/home/chongzhi.png" background-size="cover"></image></view>
-        <text>会员充值</text>
+        <view class="icon-col" ><image src="https://wxyy.cnyinfei.com{{iconList[2].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[2].i_name}}</text>
       </view>
 
         <navigator  class="item" url="/pages/ucenter/maidan">
-        <view class="icon-col" style="background:#947fff;"><image src="https://wxyy.cnyinfei.com/images/home/maidan.png" background-size="cover"></image></view>
-        <text>店内买单</text>
+        <view class="icon-col" ><image src="https://wxyy.cnyinfei.com{{iconList[3].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[3].i_name}}</text>
       </navigator>
 
       <view  class="item" @tap="tiaozhuan('topic/index')" >
-        <view class="icon-col" style="background:#fe5e5e;"><image src="https://wxyy.cnyinfei.com/images/home/huodong.png" background-size="cover"></image></view>
-        <text>活动</text>
+        <view class="icon-col" ><image src="https://wxyy.cnyinfei.com{{iconList[4].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[4].i_name}}</text>
       </view>
 
         <navigator  class="item" url="/pages/ucenter/order">
-        <view class="icon-col" style="background:#3298e6;"><image src="https://wxyy.cnyinfei.com/images/home/wodeyuyue.png" background-size="cover"></image></view>
-        <text>我的预约</text>
+        <view class="icon-col" ><image src="https://wxyy.cnyinfei.com{{iconList[5].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[5].i_name}}</text>
       </navigator>
 
         <view  class="item"  @tap="tiaozhuan('ucenter/index')">
-        <view class="icon-col" style="background:#fe6194;"><image src="https://wxyy.cnyinfei.com/images/home/wo.png" background-size="cover"></image></view>
-        <text>会员中心</text>
+        <view class="icon-col" ><image src="https://wxyy.cnyinfei.com{{iconList[6].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[6].i_name}}</text>
       </view>
 
         <view  class="item" @tap="fenxiao">
-        <view class="icon-col" style="background:#50c4d6;"><image src="https://wxyy.cnyinfei.com/images/home/mall.png" background-size="cover"></image></view>
-        <text>分销商城</text>
+        <view class="icon-col" ><image src="https://wxyy.cnyinfei.com{{iconList[7].i_url}}" background-size="cover"></image></view>
+        <text>{{iconList[7].i_name}}</text>
       </view>
 
 
@@ -682,6 +681,7 @@
       brands: [],
       floorGoods: [],
       banner: [],
+	  iconList:[],
       channel: [],
       tabActive:1,
       navList: [],
@@ -796,6 +796,16 @@
         this.$apply()
       }
     }
+	
+	 async getIcon () {
+      let res = await util.request(api.getIconList);
+      if (res.errno === 0) {
+		console.log("图标");
+		console.log(res.data);
+        this.iconList = res.data
+        this.$apply()
+      }
+    }
 
     async getIndexData () {
       let res = await util.request(api.IndexUrl,{m_id:this.$parent.globalData.userInfo.m_id});
@@ -901,6 +911,8 @@
     })
 
       this.getLunbo();
+	  
+	  this.getIcon();
 
 
       console.log("#########88888###");
