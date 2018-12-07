@@ -589,10 +589,10 @@
 
 
     <view class="tab-col">
-      <view class="tab-detail {{tabActive==1?'active':''}}" @tap="tabSwitch(1)">
+      <view class="tab-detail {{tabActive==1?'active':''}}" @tap="tabSwitch(1)" style="{{tabActive==1?'color:'+color+';border-color:'+color:''}}">
       <i class="iconfont icon-yuyue"></i>预约
       </view>
-      <view class="tab-detail {{tabActive==2?'active':''}}" @tap="tabSwitch(2)">
+      <view class="tab-detail {{tabActive==2?'active':''}}" @tap="tabSwitch(2)" style="{{tabActive==2?'color:'+color+';border-color:'+color:''}}">
         <i class="iconfont icon-biaoqian"></i>项目展示
       </view>
     </view>
@@ -690,6 +690,7 @@
       scrollLeft: 0,
       scrollTop: 0,
       page: 1,
+	  color:'',
       size: 10000
 
 
@@ -874,6 +875,9 @@
     {
       this.$parent.globalData.lianxi = rs.data.c_lianxi;
       this.$parent.globalData.edu=rs.data.c_chongzhi;
+	  this.$parent.globalData.color=rs.data.c_color;
+	  this.color=rs.data.c_color;
+	  this.$apply();
 
     }
 

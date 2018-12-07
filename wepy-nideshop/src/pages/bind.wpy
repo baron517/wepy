@@ -29,141 +29,56 @@
 </template>
 
 <script>
-    import wepy from 'wepy'
-    import util from '../utils/util.js'
-    import api from '../config/api.js'
+    
+	//初始化数据
+function tabbarinit() {
+ return [
+      { "current":0,
+        "pagePath": "/pages/index/index",
+        "iconPath": "/imgs/home.png",
+        "selectedIconPath": "/imgs/home_on.png",
+        "text": "主页"
+      },
+      {
+        "current": 0,
+        "pagePath": "/pages/news/news",
+        "iconPath": "/imgs/message.png",
+        "selectedIconPath": "/imgs/message_on.png",
+        "text": "资讯"
 
-  export default class Example extends wepy.page {
-    config = {
-      navigationBarTitleText: '绑定手机'
-    }
-
-      data={
-      sendText:"发送",
-      code:"",
-      sendFlag:1,
-      phone:""
-
-  }
-
-      async sendMsg(obj) {
-
-          this.sendFlag=0;
-          let rs = await util.request(api.sendMsg, obj);
-          if (rs.code == 1000)
-          {
-              wepy.showToast({
-                  title: "发送成功",
-                  duration: 2000
-              })
-
-              var count=59;
-              var that=this;
-              setInterval(function()
-              {
-                  if(count<=1)
-                  {
-                      that.sendText="发送";
-                      that.sendFlag=1;
-                  }
-                  else
-                  {
-                      that.sendText=count+"秒重发";
-                      count--;
-                  }
-                  that.$apply();
-
-              },1000);
-
-
-
-          }
-          else
-          {
-              util.showErrorToast("发送失败");
-          }
+      },
+      {
+        "current": 0,
+        "pagePath": "/pages/category/category",
+        "iconPath": "/imgs/category.png",
+        "selectedIconPath": "/imgs/category_on.png",
+        "text": "分类"
+      },
+      {
+        "current": 0,
+        "pagePath": "/pages/buy/buy",
+        "iconPath": "/imgs/buy.png",
+        "selectedIconPath": "/imgs/buy_on.png",
+        "text": "购物"
       }
+    ]
 
-      async  bindPhone(obj) {
+}
+//tabbar 主入口
+function tabbarmain(bindName = "tabdata", id, target) {
+  var that = target;
+  var bindData = {};
+  var otabbar = tabbarinit();
+  otabbar[id]['iconPath'] = otabbar[id]['selectedIconPath']//换当前的icon
+  otabbar[id]['current'] = 1;
+  bindData[bindName] = otabbar
+  that.setData({ bindData });
+}
 
-          let rs = await util.request(api.bindPhone,obj,"post");
-          if(rs.code==1000)
-          {
+module.exports = {
+  tabbar: tabbarmain
+}
 
-              this.$parent.globalData.userInfo.phone=obj.phone;
-
-              wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
-
-              wepy.showToast({
-                  title: "绑定成功",
-                  duration: 2000
-              })
-
-
-              setTimeout(function()
-              {
-                  wx.switchTab({
-                      url: "/pages/index"
-                  })
-              },500)
-
-          }
-          else
-          {
-              util.showErrorToast(rs.msg);
-          }
-
-      }
-
-     methods = {
-         bangding:function()
-         {
-             if(!this.phone)
-             {
-                 util.showErrorToast('手机不能为空');
-                 return;
-             }
-             if(!this.code)
-             {
-                 util.showErrorToast('验证码不能为空');
-                 return;
-             }
-
-             this.bindPhone({phone:this.phone,code:this.code,m_id:this.$parent.globalData.userInfo.m_id});
-
-         },
-         bindPhone:function(e)
-         {
-             this.phone= e.detail.value
-         },
-         bindCode:function(e)
-         {
-            this.code= e.detail.value
-         },
-         send: function (e) {
-
-             console.log("发送");
-
-             if(!this.phone)
-             {
-                 util.showErrorToast('手机不能为空');
-                 return;
-             }
-
-             if(this.sendFlag)
-             {
-                 this.sendMsg({phone:this.phone});
-             }
-
-
-
-        }
-     }
-
-    onLoad() {
-
-
-
-    }
-  }
+	
+	
 </script>

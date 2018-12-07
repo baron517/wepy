@@ -38,7 +38,6 @@
     background: #d9282e;
     box-sizing: border-box;
     color:#fff;
-    border-radius: 20rpx;
   }
   .topic-list .info .info-middle{height:180rpx;}
   .topic-list .info .info-right{float:left;width:416rpx;color:#fff;}
@@ -108,11 +107,11 @@
 
         <navigator class="item" wx:if="{{topicList.is_huiyuan=='1'}}" url="/pages/ucenter/chongzhi">
 
-          <view class="info">
+          <view class="info" style="background: url('{{topicList.hy_img}}');background-size: 100% 100%;">
             <view class="top-text">会员卡</view>
             <view class="info-middle">
 
-              <image class="img" src="{{topicList.m_hy_img}}" background-size="cover"></image>
+              <view class="img"></view>
 
               <view class="info-right">
                 <view class="title"><text class="left-col">{{topicList.m_hy_name}} {{topicList.m_kahao}}</text></view>

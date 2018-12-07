@@ -30,7 +30,7 @@ module.exports = {
   getAllJishi: ServerUrl+'/Api/CommonApi/getAllJishi',
   
   getIconList: ServerUrl+'/Api/CommonApi/getIconList',
-
+  getHyIconList: ServerUrl+'/Api/CommonApi/getHyIconList',
   
   getLunbo: ServerUrl+'/Api/CommonApi/getLunbo',
   CatalogList: ApiRootUrl + 'catalog/index',  // 分类目录全部分类数据接口

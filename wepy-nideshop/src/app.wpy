@@ -149,6 +149,7 @@ export default class extends wepy.app {
       navigationBarTextStyle: 'black',
       enablePullDownRefresh: false
     },
+
     'tabBar': {
       'backgroundColor': '#fafafa',
       'borderStyle': 'white',

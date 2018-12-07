@@ -85,6 +85,8 @@
     border-bottom: none;
   }
 
+  .user-menu .item image{width:60rpx;height:60rpx;}
+
   .user-menu .icon{
     margin: 0 auto;
     display: block;
@@ -179,14 +181,14 @@
     <view class="user-menu">
       <view class="item">
         <navigator url="/pages/ucenter/order" class="a">
-          <text class="icon yuyue"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=41" background-size="cover"></image>
           <text class="txt">我的预约<text class="quan" wx:if="{{countList.count0>0}}">{{countList.count0}}</text></text>
         </navigator>
       </view>
       <view class="item">
 
         <navigator url="/pages/ucenter/order1" class="a">
-          <text class="icon zhifu"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=42" background-size="cover"></image>
           <text class="txt">待支付<text class="quan" wx:if="{{countList.count1>0}}">{{countList.count1}}</text></text>
         </navigator>
 
@@ -195,70 +197,70 @@
       <view class="item no-border">
 
         <navigator url="/pages/ucenter/order2" class="a">
-          <text class="icon dingdan"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=43" background-size="cover"></image>
           <text class="txt">待确认<text class="quan" wx:if="{{countList.count2>0}}">{{countList.count2}}</text></text>
         </navigator>
 
       </view>
       <view class="item">
         <navigator url="/pages/ucenter/order3" class="a">
-          <text class="icon daishiyong"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=44" background-size="cover"></image>
           <text class="txt">待使用<text class="quan" wx:if="{{countList.count3>0}}">{{countList.count3}}</text></text>
         </navigator>
       </view>
       <view class="item">
         <navigator url="url" class="a" url="/pages/ucenter/order4">
-          <text class="icon daipingjia"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=45" background-size="cover"></image>
           <text class="txt">待评价<text class="quan" wx:if="{{countList.count4>0}}">{{countList.count4}}</text></text>
         </navigator>
       </view>
       <view class="item no-border">
         <navigator url="/pages/ucenter/order5" class="a">
-          <text class="icon pingjia"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=46" background-size="cover"></image>
           <text class="txt">已完成</text>
         </navigator>
       </view>
       <view class="item">
         <navigator url="/pages/ucenter/address" class="a">
-          <text class="icon huiyuanka"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=47" background-size="cover"></image>
           <text class="txt">会员卡</text>
         </navigator>
       </view>
       <view class="item">
         <navigator url="coupon" class="a">
-          <text class="icon youhuiquan"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=48" background-size="cover"></image>
           <text class="txt">优惠券<text class="quan" wx:if="{{countList.yhq_count>0}}">{{countList.yhq_count}}</text></text>
         </navigator>
       </view>
       <view class="item no-border">
         <view  class="a" @tap="tel()">
-          <text class="icon kefu"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=49" background-size="cover"></image>
           <text class="txt">联系客服</text>
         </view>
       </view>
 
       <view class="item">
         <navigator url="/pages/ucenter/xiugai" class="a">
-          <text class="iconfont icon-shouji"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=50" background-size="cover"></image>
           <text class="txt">修改手机</text>
         </navigator>
       </view>
 
       <view class="item" wx:if="{{m_is_js==1}}">
         <navigator url="/pages/ucenter/yeji" class="a">
-          <text class="iconfont icon-weibiaoti-"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=51" background-size="cover"></image>
           <text class="txt">业绩</text>
         </navigator>
       </view>
       <view class="item" wx:if="{{m_is_js==1}}">
         <navigator url="/pages/ucenter/paihangbang" class="a">
-          <text class="iconfont icon-paiming"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=52" background-size="cover"></image>
           <text class="txt">排行榜</text>
         </navigator>
       </view>
       <view class="item" wx:if="{{m_is_js==1}}">
         <navigator url="/pages/ucenter/jishiOrder" class="a">
-          <text class="iconfont icon-dingdan"></text>
+          <image src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=53" background-size="cover"></image>
           <text class="txt">技师订单</text>
         </navigator>
       </view>

@@ -38,7 +38,6 @@
     background: #d9282e;
     box-sizing: border-box;
     color:#fff;
-    border-radius: 20rpx;
   }
 .topic-list .info .info-middle{height:180rpx;}
   .topic-list .info .info-right{float:left;width:416rpx;color:#fff;}
@@ -106,12 +105,12 @@
       <view class="info-col">
 
 
-      <navigator class="item" wx:for="{{topicList}}" wx:key="{{item.hy_id}}" url="detail?id={{item.hy_id}}" wx:if="{{item.hy_id>m_hy_id}}">
-        <view class="info">
+      <navigator class="item" wx:for="{{topicList}}"  wx:key="{{item.hy_id}}" url="detail?id={{item.hy_id}}" wx:if="{{item.hy_id>m_hy_id}}">
+        <view class="info" style="background: url('{{item.hy_img}}');background-size: 100% 100%;">
           <view class="top-text">会员卡</view>
           <view class="info-middle">
 
-            <image class="img" src="{{item.hy_img}}" background-size="cover"></image>
+            <view class="img"></view>
 
             <view class="info-right">
             <view class="title"><text class="left-col">{{item.hy_name}}</text></view>
