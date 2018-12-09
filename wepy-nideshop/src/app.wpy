@@ -3,6 +3,8 @@
     box-sizing: border-box;
     background-color: #f4f4f4;
     font-family: PingFangSC-Light,helvetica,'Heiti SC';
+	padding-bottom:90rpx;
+	min-height:100%;
   }
 
   view,image,text,navigator{
@@ -17,6 +19,12 @@
     font-size: 29rpx;
     color: #333;
   }
+  
+  .tab-bar{height:90rpx;position:fixed;bottom:0;left:0;z-index:10;background:#F7F7FA;width:100%;font-size:24rpx;}
+  .tab-bar .tab-item{width:20%;float:left;display:block;text-align:center;}
+  
+  .tab-bar .tab-item image{width:46rpx;height:46rpx;display:block;margin:6rpx auto 0 auto;}
+  
 
   .loading{text-align: center;padding:6rpx 0;}
 
@@ -150,44 +158,7 @@ export default class extends wepy.app {
       enablePullDownRefresh: false
     },
 
-    'tabBar': {
-      'backgroundColor': '#fafafa',
-      'borderStyle': 'white',
-      'selectedColor': '#b4282d',
-      'color': '#666',
-      'list': [
-        {
-          'pagePath': 'pages/index',
-          'iconPath': 'static/images/ic_menu_choice_nor.png',
-          'selectedIconPath': 'static/images/ic_menu_choice_pressed.png',
-          'text': '首页'
-        },
-        {
-          'pagePath': 'pages/category/catalog',
-          'iconPath': 'static/images/ic_menu_topic_nor.png',
-          'selectedIconPath': 'static/images/ic_menu_topic_pressed.png',
-          'text': '预约'
-        },
-        {
-          'pagePath': 'pages/chongzhi/index',
-          'iconPath': 'static/images/money.png',
-          'selectedIconPath': 'static/images/money_active.png',
-          'text': '充值'
-        },
-        {
-          'pagePath': 'pages/topic/index',
-          'iconPath': 'static/images/ic_menu_sort_nor.png',
-          'selectedIconPath': 'static/images/ic_menu_sort_pressed.png',
-          'text': '活动'
-        },
-        {
-          'pagePath': 'pages/ucenter/index',
-          'iconPath': 'static/images/ic_menu_me_nor.png',
-          'selectedIconPath': 'static/images/ic_menu_me_pressed.png',
-          'text': '我的'
-        }
-      ]
-    },
+   
     'networkTimeout': {
       'request': 10000,
       'downloadFile': 10000

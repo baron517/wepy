@@ -662,6 +662,35 @@
    
   </view>
 
+  <view class="tab-bar">
+  
+	<navigator  open-type="redirect" class="tab-item" url="/pages/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=55" mode="aspectFill"></image>
+		<view style="color:{{color}}">首页</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/category/catalog">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=56" mode="aspectFill"></image>
+		<view>预约</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/chongzhi/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=58" mode="aspectFill"></image>
+		<view>充值</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/topic/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=60" mode="aspectFill"></image>
+		<view>活动</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/ucenter/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=62" mode="aspectFill"></image>
+		<view>我的</view>
+	</navigator>
+  
+  </view>
+  
 </template>
 
 <script>
@@ -726,9 +755,12 @@
               },
               tiaozhuan(url)
               {
-                  wx.switchTab({
-                    url:url
-                })
+                 
+				
+				wx.redirectTo({
+				  url:url
+				})
+				
               },
               tabSwitch(index)
               {

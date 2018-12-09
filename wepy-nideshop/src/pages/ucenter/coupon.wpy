@@ -248,9 +248,11 @@
       {
         console.log(index);
         console.log("使用");
-        wx.switchTab({
-          url:"/pages/category/catalog"
-        })
+       
+		wx.redirectTo({
+		  url:"/pages/category/catalog"
+		})
+		
 
       }
     }

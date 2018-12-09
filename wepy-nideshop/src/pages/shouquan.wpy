@@ -33,9 +33,11 @@
 
               wepy.setStorageSync('shouquan',1);
 
-              wx.switchTab({
-                  url: "/pages/index"
-              })
+			  
+			   wx.redirectTo({
+				   url: "/pages/index"
+				})
+			  
           }
           else
           {

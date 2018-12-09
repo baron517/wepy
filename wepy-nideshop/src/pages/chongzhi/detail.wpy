@@ -176,9 +176,12 @@
         duration: 2000
       })
 
-       wx.switchTab({
-           url: "/pages/ucenter/index"
-           })
+     
+		   
+	   wx.redirectTo({
+		  url: "/pages/ucenter/index"
+		})
+		   
 
 
     }

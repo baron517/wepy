@@ -103,9 +103,11 @@
 
               setTimeout(function()
               {
-                  wx.switchTab({
-                      url: "/pages/ucenter/index"
-                  })
+                 
+				    wx.redirectTo({
+					  url: "/pages/ucenter/index"
+					})
+				  
               },500)
 
           }

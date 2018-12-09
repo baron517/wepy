@@ -137,6 +137,36 @@
 
     </scroll-view>
   </view>
+  
+   <view class="tab-bar">
+  
+	<navigator  open-type="redirect" class="tab-item" url="/pages/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=54" mode="aspectFill"></image>
+		<view>首页</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/category/catalog">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=56" mode="aspectFill"></image>
+		<view>预约</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/chongzhi/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=59" mode="aspectFill"></image>
+		<view style="color:{{color}}">充值</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/topic/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=60" mode="aspectFill"></image>
+		<view>活动</view>
+	</navigator>
+	
+	<navigator  open-type="redirect" class="tab-item" url="/pages/ucenter/index">
+		<image class="img" src="https://wxyy.cnyinfei.com/Api/CommonApi/getIconImg?i_id=62" mode="aspectFill"></image>
+		<view>我的</view>
+	</navigator>
+  
+  </view>
+  
 </template>
 
 <script>
@@ -151,6 +181,7 @@
       size: 10,
       m_hy_id:0,
       count: 0,
+	  color:'',
       showPage: false
     }
 
@@ -178,6 +209,9 @@
     async onShow() {
 
       await this.getUserInfo();
+	  
+	  this.color= this.$parent.globalData.color;
+	  this.$apply();
 
 
 

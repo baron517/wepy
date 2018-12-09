@@ -377,12 +377,11 @@
 
             setTimeout(function()
             {
-
-              wx.switchTab({
-
-                url:"/pages/ucenter/index"
-
-              })
+			  
+			  wx.redirectTo({
+			  url:"/pages/ucenter/index"
+			})
+			  
 
             },200);
 
@@ -441,11 +440,12 @@
 
           setTimeout(function()
           {
-            wx.switchTab({
-
-              url:"/pages/ucenter/index"
-
-            })
+          
+			
+			 wx.redirectTo({
+					  url:"/pages/ucenter/index"
+					})
+			
 
           },200);
 

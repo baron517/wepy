@@ -242,9 +242,11 @@
         setTimeout(function()
         {
 
-          wx.switchTab({
-            url: "/pages/index"
-          })
+		  
+		  wx.redirectTo({
+			  url: "/pages/index"
+			})
+		  
 
         },200)
 
