@@ -621,10 +621,12 @@
 
     <view wx:if="{{tabActive==2}}">
 
-     <view class="cate-nav">
-      <scroll-view scroll-x="true" class="cate-nav-body" style="width: 750rpx;" scroll-left="{{scrollLeft}}">
-        <view  wx:for="{{navList}}" wx:key="item.t_id" class="item {{ xm_type == item.t_name ? 'active' : ''}}" data-id="{{item.t_name}}" data-index="{{index}}" bindtap="switchCate">
-          <view class="name">{{item.t_name}}</view>
+<view class="cate-nav">
+<scroll-view scroll-x="true" class="cate-nav-body" style="width: 750rpx;" scroll-left="{{scrollLeft}}">
+<view  wx:for="{{navList}}" wx:key="item.t_id" class="item {{ xm_type == item.t_name ? 'active' : ''}}"  data-id="{{item.t_name}}" data-index="{{index}}" bindtap="switchCate">
+<view class="name" style="{{ xm_type == item.t_name ? 'color:'+color+';border-bottom:2px solid '+color : '#ab2b2b'}};">
+{{item.t_name}}
+</view>
         </view>
       </scroll-view>
     </view>
