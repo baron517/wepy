@@ -5,80 +5,164 @@
 </style>
 <template>
 
-<view style="padding:40rpx 30rpx;text-align:center;" class="form-col">
+    <view style="padding:40rpx 30rpx;text-align:center;" class="form-col">
 
 
-  <view class="form-row">
+        <view class="form-row">
 
-        <input value="{{phone}}" bindinput="bindPhone"  placeholder="输入手机号码" type="number"/>
+            <input value="{{phone}}" bindinput="bindPhone"  placeholder="输入手机号码" type="number"/>
 
-  </view>
+        </view>
 
-    <view class="form-row send-row">
+        <view class="form-row send-row">
 
-    <input type="number" bindinput="bindCode"  placeholder="输入验证码" />
+            <input type="number" bindinput="bindCode"  placeholder="输入验证码" />
 
-    <view class="send"  @tap="send">{{sendText}}</view>
+            <view class="send"  @tap="send">{{sendText}}</view>
+
+        </view>
+
+        <button  style="background: #b4282d;color:#fff;margin-top:50rpx;font-size:28rpx;" @tap="bangding">立即绑定</button>
 
     </view>
-
-  <button  style="background: #b4282d;color:#fff;margin-top:50rpx;font-size:28rpx;" @tap="bangding">立即绑定</button>
-
-</view>
 
 </template>
 
 <script>
-    
-	//初始化数据
-function tabbarinit() {
- return [
-      { "current":0,
-        "pagePath": "/pages/index/index",
-        "iconPath": "/imgs/home.png",
-        "selectedIconPath": "/imgs/home_on.png",
-        "text": "主页"
-      },
-      {
-        "current": 0,
-        "pagePath": "/pages/news/news",
-        "iconPath": "/imgs/message.png",
-        "selectedIconPath": "/imgs/message_on.png",
-        "text": "资讯"
+    import wepy from 'wepy'
+    import util from '../utils/util.js'
+    import api from '../config/api.js'
 
-      },
-      {
-        "current": 0,
-        "pagePath": "/pages/category/category",
-        "iconPath": "/imgs/category.png",
-        "selectedIconPath": "/imgs/category_on.png",
-        "text": "分类"
-      },
-      {
-        "current": 0,
-        "pagePath": "/pages/buy/buy",
-        "iconPath": "/imgs/buy.png",
-        "selectedIconPath": "/imgs/buy_on.png",
-        "text": "购物"
-      }
-    ]
+    export default class Example extends wepy.page {
+        config = {
+            navigationBarTitleText: '绑定手机'
+        }
 
-}
-//tabbar 主入口
-function tabbarmain(bindName = "tabdata", id, target) {
-  var that = target;
-  var bindData = {};
-  var otabbar = tabbarinit();
-  otabbar[id]['iconPath'] = otabbar[id]['selectedIconPath']//换当前的icon
-  otabbar[id]['current'] = 1;
-  bindData[bindName] = otabbar
-  that.setData({ bindData });
-}
+        data={
+            sendText:"发送",
+            code:"",
+            sendFlag:1,
+            phone:""
 
-module.exports = {
-  tabbar: tabbarmain
-}
+        }
 
-	
-	
+        async sendMsg(obj) {
+
+            this.sendFlag=0;
+            let rs = await util.request(api.sendMsg, obj);
+            if (rs.code == 1000)
+            {
+                wepy.showToast({
+                    title: "发送成功",
+                    duration: 2000
+                })
+
+                var count=59;
+                var that=this;
+                setInterval(function()
+                {
+                    if(count<=1)
+                    {
+                        that.sendText="发送";
+                        that.sendFlag=1;
+                    }
+                    else
+                    {
+                        that.sendText=count+"秒重发";
+                        count--;
+                    }
+                    that.$apply();
+
+                },1000);
+
+
+
+            }
+            else
+            {
+                util.showErrorToast("发送失败");
+            }
+        }
+
+        async  bindPhone(obj) {
+
+            let rs = await util.request(api.bindPhone,obj,"post");
+            if(rs.code==1000)
+            {
+
+                this.$parent.globalData.userInfo.phone=obj.phone;
+
+                wepy.setStorageSync('userInfo',this.$parent.globalData.userInfo);
+
+                wepy.showToast({
+                    title: "绑定成功",
+                    duration: 2000
+                })
+
+                setTimeout(function()
+                {
+                    wx.redirectTo({
+                        url: "/pages/index"
+                    })
+                },500)
+
+            }
+            else
+            {
+                util.showErrorToast(rs.msg);
+            }
+
+        }
+
+        methods = {
+            bangding:function()
+            {
+                if(!this.phone)
+                {
+                    util.showErrorToast('手机不能为空');
+                    return;
+                }
+                if(!this.code)
+                {
+                    util.showErrorToast('验证码不能为空');
+                    return;
+                }
+
+                this.bindPhone({phone:this.phone,code:this.code,m_id:this.$parent.globalData.userInfo.m_id});
+
+            },
+            bindPhone:function(e)
+            {
+                this.phone= e.detail.value
+            },
+            bindCode:function(e)
+            {
+                this.code= e.detail.value
+            },
+            send: function (e) {
+
+                console.log("发送");
+
+                if(!this.phone)
+                {
+                    util.showErrorToast('手机不能为空');
+                    return;
+                }
+
+                if(this.sendFlag)
+                {
+                    this.sendMsg({phone:this.phone});
+                }
+
+
+
+            }
+        }
+
+        onLoad() {
+
+
+
+        }
+    }
 </script>

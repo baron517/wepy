@@ -710,6 +710,27 @@
     text-align: center;
     line-height: 65rpx;
   }
+
+  .bottom-btn .r{
+    background: #b4282d;
+    display: block;
+    height: 80rpx;
+    width:100%;
+    line-height: 80rpx;
+    text-align: center;
+    color: #fff;
+  }
+
+  .bottom-btn{
+    position: fixed;
+    left:0;
+    bottom:0;
+    z-index: 1000;
+    width: 750rpx;
+    height: 80rpx;
+    background: #fff;
+  }
+
 </style>
 <template>
   <scroll-view class="container" scroll-y="true">
@@ -765,12 +786,16 @@
       </view>
 
 
-
-
     </view>
 
 
   </scroll-view>
+
+
+  <view class="bottom-btn">
+    <navigator class="r" open-type="redirect"  url="/pages/category/catalog">技师选择</navigator>
+  </view>
+
 </template>
 
 <script>

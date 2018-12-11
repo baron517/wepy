@@ -144,6 +144,7 @@ export default class extends wepy.app {
       'pages/logs',
       'pages/shouquan',
       'pages/bind',
+      'pages/xieyi',
       'pages/pay/pay',
       'pages/pay/result',
       'pages/shopping/address',

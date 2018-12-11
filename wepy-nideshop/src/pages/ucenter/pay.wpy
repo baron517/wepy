@@ -223,6 +223,18 @@
 
         </view>
 
+        <view style="text-align: center;padding:20rpx 0 0 0;">
+
+          <checkbox-group class="radio-group" bindchange="radioChange" style="font-size:30rpx;">
+            <label class="radio">
+              <checkbox   checked="{{xieyi}}" /> <navigator url="/pages/xieyi" style="display: inline-block;">我接受当前协议</navigator>
+            </label>
+          </checkbox-group>
+
+
+        </view>
+
+
         <view style="box-sizing: border-box;padding:20rpx;">
 
 
@@ -252,6 +264,7 @@
     }
     data = {
       item: [],
+      xieyi:false,
       arrayList:[],
       dazhe:10,
       yy_id:0,
@@ -275,9 +288,14 @@
 
       console.log(options);
 
+      if(wepy.getStorageSync('xieyi')==true)
+      {
+        this.xieyi=true;
+      }
+
+
       this.yy_id=options.yy_id;
       this.getOrderList();
-
 
 
       this.isHuiyuan=this.$parent.globalData.userInfo.is_huiyuan;
@@ -463,6 +481,18 @@
     }
 
     methods = {
+
+      radioChange(e)
+      {
+
+        this.xieyi=!this.xieyi;
+        wepy.setStorageSync('xieyi',this.xieyi);
+
+        console.log(this.xieyi);
+
+
+      },
+
       bindPickerChange(e)
       {
         console.log(e);
@@ -484,6 +514,15 @@
       },
       fukuan()
       {
+        console.log("协议");
+        console.log(this.xieyi);
+
+        if(this.xieyi==0)
+        {
+          util.showErrorToast('请先同意协议');
+          return;
+        }
+
          if(this.payMoney<0.01&&this.active==0)
          {
            util.showErrorToast('不能小于0.01');

@@ -1,0 +1,45 @@
+<style lang="less">
+    .form-col .form-row{position: relative;border-bottom:1px solid #ddd;padding-top:20rpx;}
+    .form-col .form-row input{text-align: left;font-size:28rpx;padding:12rpx 8rpx;}
+    .form-col .send-row .send{position: absolute;right:0;top:16rpx;display: inline-block;padding:20rpx 40rpx 16rpx 40rpx;font-size:26rpx;background: #fff;z-index:1000;}
+</style>
+<template>
+
+    <view style="padding:10rpx 10rpx;text-align:center;" class="form-col">
+
+
+        <image style="width:100%;" mode="widthFix" src="https://wxyy.cnyinfei.com/data/upload/{{xieyiUrl}}"></image>
+
+
+    </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy'
+    import util from '../utils/util.js'
+    import api from '../config/api.js'
+
+    export default class Example extends wepy.page {
+        config = {
+            navigationBarTitleText: '协议内容'
+        }
+
+        data={
+            xieyiUrl:"",
+
+        }
+
+
+
+        methods = {
+
+        }
+
+        onLoad() {
+
+            this.xieyiUrl=this.$parent.globalData.c_xieyi;
+
+        }
+    }
+</script>

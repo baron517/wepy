@@ -910,6 +910,7 @@
       this.$parent.globalData.lianxi = rs.data.c_lianxi;
       this.$parent.globalData.edu=rs.data.c_chongzhi;
 	  this.$parent.globalData.color=rs.data.c_color;
+      this.$parent.globalData.c_xieyi=rs.data.c_xieyi;
 	  this.color=rs.data.c_color;
 	  this.$apply();
 
